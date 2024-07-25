@@ -6,6 +6,11 @@ theme:
   palette:
     primary: deep purple
     accent: purple
+  font:
+    text: LXGW WenKai TC
+    # text: PT Sans Caption
+  language: zh
+  
 markdown_extensions:
   # - pymdownx.arithmatex
   - markdown.extensions.extra
