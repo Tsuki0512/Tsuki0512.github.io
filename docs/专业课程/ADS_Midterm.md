@@ -952,3 +952,14 @@ $BC$串行，根据之前的定理$W = O(N), D= O(\log{N})$
 这章可以看[Isshiki修's notebook](https://note.isshikih.top/cour_note/D2CX_AdvancedDataStructure/Lec15/)的
 
 考后补坑：这块修佬的笔记确实很足够了，时间来不及也可以面向历年卷复习，主要考点是：多个tape怎么merge的、怎么计算多少次pass，replacement到底如何执行的。
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>

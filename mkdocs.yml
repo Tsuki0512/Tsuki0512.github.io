@@ -7,7 +7,5 @@ theme:
     primary: deep purple
     accent: purple
 markdown_extensions:
-  - pymdownx.arithmatex:
-      generic: true
-      preview: true
+  # - pymdownx.arithmatex
   - markdown.extensions.extra
