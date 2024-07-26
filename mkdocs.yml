@@ -1,5 +1,5 @@
 site_name: wyr's notes #网站名字
-site_url: #你的网址
+site_url: https://wyrnotes.com/docs/ #你的网址
 site_author: wyr #你的名字
 theme:
   name: material #主题
@@ -10,7 +10,25 @@ theme:
     text: LXGW WenKai TC
     # text: PT Sans Caption
   language: zh
-  
+
 markdown_extensions:
-  # - pymdownx.arithmatex
+  - pymdownx.arithmatex:
+      generic: true
   - markdown.extensions.extra
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - admonition
+
+nav:
+  - Home: index.md
+  - 专业课程: 
+    - 高级数据结构与算法分析: ADS_复习整理.md
+  - 课程心得:
+    - 通识课: 通识课心得.md
+    - 数理基础课: 数理基础课心得.md
+    - 专业必修课: 专业必修课心得.md
+    - 专业选修课: 专业选修课心得.md
+    - 一些碎碎念: 碎碎念.md
+  - CMU_DeepVision项目记录:
+    - 自学笔记: CMU_DeepVision.md
