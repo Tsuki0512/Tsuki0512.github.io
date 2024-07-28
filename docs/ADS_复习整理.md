@@ -312,26 +312,19 @@ Backtracking = dfs + 剪枝
 
 #### 4.1.2 例题分析 - 对于每一个问题可以清晰说出4.1.1的4个问题即可
 
-1. **N Queens Problem**
-
+1. **N Queens Problem**<br>
 比较基本的遍历，剪枝就是在已经会attack的地方不往下走了
 
-2. **Turnpike Problem**
-
+2. **Turnpike Problem**<br>
 问题就是根据距离集复原点集，主要抓住可能性最少的点（max距离）入手去作分类讨论和剪枝
 
-3. **三子棋游戏**
-
+3. **三子棋游戏**<br>
 不同于前两个问题，这个问题只有走完才能知道win/lose，所以我们用$f(p) = W_{you} - W_{oppo}$来评估每个情况的胜率，并在我方和对方轮次分别取max和min，而max和min的取值则诞生了两个剪枝方式：
-
-- $\alpha$ pruning - 父节点要取max，子节点取min ![image-20240419203533150](./markdown-img/ADS_知识框架_midterm.assets/image-20240419203533150.png)
-
-- $\beta$ pruning - 父节点要取min，子节点取max ![image-20240419203629259](./markdown-img/ADS_知识框架_midterm.assets/image-20240419203629259.png)
+    - $\alpha$ pruning - 父节点要取max，子节点取min ![image-20240419203533150](./markdown-img/ADS_知识框架_midterm.assets/image-20240419203533150.png)
+    - $\beta$ pruning - 父节点要取min，子节点取max ![image-20240419203629259](./markdown-img/ADS_知识框架_midterm.assets/image-20240419203629259.png)<br>
 
 关于$\alpha$/$\beta$ pruning的历年题会问，哪个是第一个被剪枝的节点，这个时候我们要注意剪枝不止是一层的，有可能上面的grandparent也会带来剪枝，一定要从root开始分析：
-
 ![image-20240420192130962](./markdown-img/ADS_知识框架_midterm.assets/image-20240420192130962.png) 
-
 这道题答案是d，一定要从`68`这个节点开始看，只分析右子树就会选错。
 
 ### 4.2 Divide and Conquer
@@ -344,18 +337,13 @@ Backtracking = dfs + 剪枝
 
 #### 4.2.2 例题分析
 
-1. **Counting Inversion**
-
-首先由分治法我们自然而然想到把问题分成left、right和split三块，然后left和right可以递归解决；
-
+1. **Counting Inversion**<br>
+首先由分治法我们自然而然想到把问题分成left、right和split三块，然后left和right可以递归解决；<br>
 在处理split的时候，我们发现归并排序可以让每一次split的问题$O(N)$解决，所以一边归并一边数split逆序对。
 
-2. **Closest Pair Problem**
-
-如果说上一题的核心思想是寻找类似算法、磨刀不误砍柴工，那么这道题的核心思想就是利用前面的left和right两种情况对spilt情况进行剪枝优化。
-
-还是一样将问题分成left、right和split三块，然后left和right可以递归解决；
-
+2. **Closest Pair Problem**<br>
+如果说上一题的核心思想是寻找类似算法、磨刀不误砍柴工，那么这道题的核心思想就是利用前面的left和right两种情况对spilt情况进行剪枝优化。<br>
+还是一样将问题分成left、right和split三块，然后left和right可以递归解决；<br>
 我们利用前两种情况得到的最小值约束split情况点可能的范围，并且指定纵坐标范围内的点个数有限（≤8个），于是我们先对范围内的点按纵坐标排序，对于每个点我们只需要考虑下面7个点即可，单次遍历是$O(1)$复杂度的。
 
 #### 4.2.3 主定理（Master Theory）
@@ -707,25 +695,19 @@ earliest finish time
 
 这个问题本身是NP-Hard的，所以我们要采取一些近似算法。
 
-1. next fit - 顺序存放，放不下就放下一个箱子 - 2-approximation（bound is tight）
-
-   *一个 tight 的近似比只能说明你对这种算法的分析到位了，而不能说明这个问题没有更好的算法*
+1. next fit - 顺序存放，放不下就放下一个箱子 - 2-approximation（bound is tight）<br>
+*一个 tight 的近似比只能说明你对这种算法的分析到位了，而不能说明这个问题没有更好的算法*
 
 2. any fit
-
-   - first fit - 找第一个可以装的装 - 1.7approximation（bound is tight）
-   - best fit - 找最满的装 - 1.7approximation（bound is tight）
-   - worst fit - 找最空的装
+    - first fit - 找第一个可以装的装 - 1.7approximation（bound is tight）
+    - best fit - 找最满的装 - 1.7approximation（bound is tight）
+    - worst fit - 找最空的装
 
 3. fit+sort
-
-   - first fit decreasing - sort + first fit
-
-   - best fit decreasing - sort + best fit
-
-     近似比：
-
-     ![image-20240623161508362](./markdown-img/ADS_Midterm.assets/image-20240623161508362.png) 
+    - first fit decreasing - sort + first fit
+    - best fit decreasing - sort + best fit<br>
+      近似比：
+      ![image-20240623161508362](./markdown-img/ADS_Midterm.assets/image-20240623161508362.png) 
 
 对于这个问题的近似比有以下结论：除非P=NP，否则online的算法近似比上限是$\frac{5}{3}$，offline则是$\frac{3}{2}$。
 
@@ -900,27 +882,20 @@ $BC$串行，根据之前的定理$W = O(N), D= O(\log{N})$
 
 ![image-20240623201452145](./markdown-img/ADS_Midterm.assets/image-20240623201452145.png) 
 
-对于并行计算每一个rank，也有三种方式：
+对于并行计算每一个rank，也有三种方式：<br>
 
 1. 两个指针分别在A和B上，顺序扫描：
-
-   ![image-20240623201702505](./markdown-img/ADS_Midterm.assets/image-20240623201702505.png) 
+![image-20240623201702505](./markdown-img/ADS_Midterm.assets/image-20240623201702505.png) 
 
 2. 对每一个元素二分查找：
-
-   ![image-20240623201743757](./markdown-img/ADS_Midterm.assets/image-20240623201743757.png) 
+![image-20240623201743757](./markdown-img/ADS_Midterm.assets/image-20240623201743757.png) 
 
 3. parallel ranking
-
-   首先对A和B每隔k取一个元素，对这些元素并行采用二分查找（方式2）算出rank并按照rank的位置分组，可以通过反证法证明两线不会交叉，那么每组最多2k个元素：
-
-   ![image-20240623202341124](./markdown-img/ADS_Midterm.assets/image-20240623202341124.png) 
-
-   $W_1 = O(\frac{2N}{k}\log{N}), D_1 = O(\log{N})$
-
-   对每一个组并行地采用方式1串行扫描，$W_2 = O(N), D_2 = O(k)$
-
-   因为步骤1和2串行，可得复杂度：![image-20240623202537789](./markdown-img/ADS_Midterm.assets/image-20240623202537789.png)
+首先对A和B每隔k取一个元素，对这些元素并行采用二分查找（方式2）算出rank并按照rank的位置分组，可以通过反证法证明两线不会交叉，那么每组最多2k个元素：
+![image-20240623202341124](./markdown-img/ADS_Midterm.assets/image-20240623202341124.png) 
+$W_1 = O(\frac{2N}{k}\log{N}), D_1 = O(\log{N})$<br>
+对每一个组并行地采用方式1串行扫描，$W_2 = O(N), D_2 = O(k)$<br>
+因为步骤1和2串行，可得复杂度：![image-20240623202537789](./markdown-img/ADS_Midterm.assets/image-20240623202537789.png)
 
 ### 6.4 Maximum Finding
 
@@ -934,21 +909,15 @@ $BC$串行，根据之前的定理$W = O(N), D= O(\log{N})$
 
 3. 基于pair比较的分治法，即分成$\sqrt{N}$块，每块并行地跑2，复杂度：![image-20240623203449785](./markdown-img/ADS_Midterm.assets/image-20240623203449785.png)
 
-4. 结合方法1和方法3，分成$k$块，先对每一块并行地串行扫描，扫出$k$个最大值，再对这$k$个值采用方法3。复杂度：
+4. 结合方法1和方法3，分成$k$块，先对每一块并行地串行扫描，扫出$k$个最大值，再对这$k$个值采用方法3。<br>复杂度：
+![image-20240623203746068](./markdown-img/ADS_Midterm.assets/image-20240623203746068.png) let $k = \frac{N}{\log{\log{N}}}$
 
-   ![image-20240623203746068](./markdown-img/ADS_Midterm.assets/image-20240623203746068.png) let $k = \frac{N}{\log{\log{N}}}$
-
-5. Random Sampling
-
-   概括来讲就是把A通过random sample算法变成一个$N^{\frac{7}{8}}$规模的B：
-
-   ![image-20240623204401382](./markdown-img/ADS_Midterm.assets/image-20240623204401382.png) 
-
-   然后不停地巧妙分治找到B的max：
-
-   ![image-20240623204441089](./markdown-img/ADS_Midterm.assets/image-20240623204441089.png) 
-
-   最后的复杂度和概率：![image-20240623204505635](./markdown-img/ADS_Midterm.assets/image-20240623204505635.png)
+5. Random Sampling<br>
+概括来讲就是把A通过random sample算法变成一个$N^{\frac{7}{8}}$规模的B：<br>
+![image-20240623204401382](./markdown-img/ADS_Midterm.assets/image-20240623204401382.png) 
+然后不停地巧妙分治找到B的max：<br>
+![image-20240623204441089](./markdown-img/ADS_Midterm.assets/image-20240623204441089.png) <br>
+最后的复杂度和概率：![image-20240623204505635](./markdown-img/ADS_Midterm.assets/image-20240623204505635.png)
 
 ## 7 External Sorting
 
