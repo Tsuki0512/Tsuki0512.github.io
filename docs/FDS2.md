@@ -10,21 +10,21 @@
 
 **Undirected graph**：无向图，$(v_i,v_j)=(v_j,v_i)$，是同一条边
 
-**Directed graph (digraph)**：有向图，![image-20231113142616856](.\markdown-img\FDS2.assets\image-20231113142616856.png)
+**Directed graph (digraph)**：有向图，![image-20231113142616856](./markdown-img/FDS2.assets/image-20231113142616856.png)
 
 - Self loop is illegal. 环是不合法的
 - 不考虑Multigraph（重复的边）
 
-**Complete graph**：具有最大边个数（不考虑multigraph）的图![image-20231113142851270](.\markdown-img\FDS2.assets\image-20231113142851270.png)
+**Complete graph**：具有最大边个数（不考虑multigraph）的图![image-20231113142851270](./markdown-img/FDS2.assets/image-20231113142851270.png)
 
 **adjacent**：
-- 无向图：$v_i$ and $v_j$ are **adjacent** / $(v_i,v_j)$ is **incident** on $v_i$ and $v_j$ ![image-20231113143319760](.\markdown-img\FDS2.assets\image-20231113143319760.png)
-- 有向图：$v_i$ is adjacent to $v_j$ / $v_j$ is adjacent from $v_i$ / $<v_i,v_j>$ is **incident** on $v_i$ and $v_j$ ![image-20231113143519400](.\markdown-img\FDS2.assets\image-20231113143519400.png)
+- 无向图：$v_i$ and $v_j$ are **adjacent** / $(v_i,v_j)$ is **incident** on $v_i$ and $v_j$ ![image-20231113143319760](./markdown-img/FDS2.assets/image-20231113143319760.png)
+- 有向图：$v_i$ is adjacent to $v_j$ / $v_j$ is adjacent from $v_i$ / $<v_i,v_j>$ is **incident** on $v_i$ and $v_j$ ![image-20231113143519400](./markdown-img/FDS2.assets/image-20231113143519400.png)
 
-**Subgraph G' $\subset$ G**：![image-20231113143717957](.\markdown-img\FDS2.assets\image-20231113143717957.png)
+**Subgraph G' $/subset$ G**：![image-20231113143717957](./markdown-img/FDS2.assets/image-20231113143717957.png)
 
-**Path($\subset$ G) from $v_p$ to $v_q$**：路径
-![image-20231113143946934](.\markdown-img\FDS2.assets\image-20231113143946934.png)
+**Path($/subset$ G) from $v_p$ to $v_q$**：路径
+![image-20231113143946934](./markdown-img/FDS2.assets/image-20231113143946934.png)
 
 **Length of a path**：路径的长度就是路上的边的数量
 
@@ -47,39 +47,39 @@
 
 **DAG**：有向无环图
 
-**Degree(v)**：![image-20231113144757445](.\markdown-img\FDS2.assets\image-20231113144757445.png)
+**Degree(v)**：![image-20231113144757445](./markdown-img/FDS2.assets/image-20231113144757445.png)
 
-- **握手法则**：![image-20231113144925522](.\markdown-img\FDS2.assets\image-20231113144925522.png)
+- **握手法则**：![image-20231113144925522](./markdown-img/FDS2.assets/image-20231113144925522.png)
 
 ## Representation of Graphs
 
 ### Adjacency Matrix
 
-![image-20231113145158893](.\markdown-img\FDS2.assets\image-20231113145158893.png)
+![image-20231113145158893](./markdown-img/FDS2.assets/image-20231113145158893.png)
 
 对时间和空间复杂度浪费较多
 
 ### Adjacency Lists
 
-把**每一行**用链表替代 ![image-20231113145620909](.\markdown-img\FDS2.assets\image-20231113145620909.png)
+把**每一行**用链表替代 ![image-20231113145620909](./markdown-img/FDS2.assets/image-20231113145620909.png)
 
-![image-20231113145736130](.\markdown-img\FDS2.assets\image-20231113145736130.png)
+![image-20231113145736130](./markdown-img/FDS2.assets/image-20231113145736130.png)
 
 无向图的degree和有向图的out-degree都可以通过graph[i]的节点数获得
 
 如果是处理有向图的in-degree，那么应该
 
-- 方法1：把**每一列**用链表处理，得：![image-20231113150041339](.\markdown-img\FDS2.assets\image-20231113150041339.png) （Inverse Adjacency Lists）
+- 方法1：把**每一列**用链表处理，得：![image-20231113150041339](./markdown-img/FDS2.assets/image-20231113150041339.png) （Inverse Adjacency Lists）
 - 方法2：构建Multi-list 
 
 ### Adjacency Multi-lists
 
-![image-20231113151045130](.\markdown-img\FDS2.assets\image-20231113151045130.png)
+![image-20231113151045130](./markdown-img/FDS2.assets/image-20231113151045130.png)
 
 ### Weighted Edges
 
 - 数组：直接把值变成weight
-- adjacency lists \ multi-lists: add a weight field to the node
+- adjacency lists / multi-lists: add a weight field to the node
 
 ## Topological Sort 拓扑排序
 
@@ -91,7 +91,7 @@ V(G): activities
 
 E(G): 优先级关系
 
-![image-20231113152049226](.\markdown-img\FDS2.assets\image-20231113152049226.png)
+![image-20231113152049226](./markdown-img/FDS2.assets/image-20231113152049226.png)
 
 **Partial order**：传递性、非自反性（项目必须可行）
 
@@ -160,7 +160,7 @@ $T = O(|V| + |E|)$
 
 - 输入：
     - 有向图$G=(V,E)$
-    - cost function (weight) $c(e)$ for $e$ in $E(G)$ $\rightarrow$ length = ![image-20231120142427477](.\markdown-img\FDS2.assets\image-20231120142427477.png)
+    - cost function (weight) $c(e)$ for $e$ in $E(G)$ $/rightarrow$ length = ![image-20231120142427477](./markdown-img/FDS2.assets/image-20231120142427477.png)
 
 - 计算点到点的最短路和遍历点计算全局最短距离的复杂度是一致的
 
@@ -235,7 +235,7 @@ $T=O(|V|+|E|)$
 - 前提条件：不带负边
 - 定义一个$S$ - { s and vi’s whose shortest paths have been found }（由起始点和已知最短路的点构成）
 - 思路：贪心算法，cost随着加edge的过程是递增的，因此当前最小就是全局最小
-- ![image-20231120150943829](.\markdown-img\FDS2.assets\image-20231120150943829.png)
+- ![image-20231120150943829](./markdown-img/FDS2.assets/image-20231120150943829.png)
 ```c
   void Dijkstra( Table T )
   {   
@@ -260,8 +260,8 @@ $T=O(|V|+|E|)$
 ```
 
 - 对于`V = smallest unknown distance vertex`的不同实现方式：
-    - Implementation1 - scan ![image-20231120152539099](.\markdown-img\FDS2.assets\image-20231120152539099.png)
-    - Implementation2 - heap ![image-20231120152601828](.\markdown-img\FDS2.assets\image-20231120152601828.png)
+    - Implementation1 - scan ![image-20231120152539099](./markdown-img/FDS2.assets/image-20231120152539099.png)
+    - Implementation2 - heap ![image-20231120152601828](./markdown-img/FDS2.assets/image-20231120152601828.png)
         - Method1
             - 第一项：每个顶点处理一次然后deletemin - find the smallest unknown
             - 第二项：Decrease
@@ -306,23 +306,23 @@ $T = O( |E| + |V| )$ and no priority queue is needed.
 
 - AOE (Activity On Edge) Networks的应用 - CPM
 
-    - ![image-20231120154130606](.\markdown-img\FDS2.assets\image-20231120154130606.png)
+    - ![image-20231120154130606](./markdown-img/FDS2.assets/image-20231120154130606.png)
 
-    - e.g. ![image-20231120154440767](.\markdown-img\FDS2.assets\image-20231120154440767.png)
+    - e.g. ![image-20231120154440767](./markdown-img/FDS2.assets/image-20231120154440767.png)
 
 ### 所有顶点最短路 - 直接遍历所有顶点解最短路图
 
-![image-20231120155138378](.\markdown-img\FDS2.assets\image-20231120155138378.png)
+![image-20231120155138378](./markdown-img/FDS2.assets/image-20231120155138378.png)
 
 ## 最大流问题
 
 方法1：最开始的残差图是原来的图，不断寻找最短路（从流量最少的开始）存入flow graph并在残差图中删除，直到残差图中没有最短路：
 
-![image-20231127143733384](.\markdown-img\FDS2.assets\image-20231127143733384.png)
+![image-20231127143733384](./markdown-img/FDS2.assets/image-20231127143733384.png)
 
 方法2：每次对于被选中的边，在残差图中add一个反向的边，这个算法可以得到**全局最优解**
 
-![image-20231127144258501](.\markdown-img\FDS2.assets\image-20231127144258501.png)
+![image-20231127144258501](./markdown-img/FDS2.assets/image-20231127144258501.png)
 
 具体实现1： 把G看成无权图，每次使用bfs找到一条路径然后对残差图添加反向路径，直到没有路径可找
 
@@ -330,11 +330,11 @@ $T=O(f·|E|)$ where $f$ is the maximum flow.
 
 具体实现2： 类Dijkstra's algorithm，只不过每次选known vertex的标准是**allows the largest increase in flow**
 
-![image-20231127150549470](.\markdown-img\FDS2.assets\image-20231127150549470.png)
+![image-20231127150549470](./markdown-img/FDS2.assets/image-20231127150549470.png)
 
 具体实现3：在具体实现1的基础上减去的路径数不是1而是整个路径的流量的最小值
 
-![image-20231127210842215](.\markdown-img\FDS2.assets\image-20231127210842215.png)
+![image-20231127210842215](./markdown-img/FDS2.assets/image-20231127210842215.png)
 
 note：
 
@@ -345,7 +345,7 @@ note：
 
 图G的生成树是由**V(G)**和**E(G)的子集**组成的树
 
-![image-20231127145830260](.\markdown-img\FDS2.assets\image-20231127145830260.png)
+![image-20231127145830260](./markdown-img/FDS2.assets/image-20231127145830260.png)
 
 - 最小生成树是树，因为它是无环的——边的个数是|V| - 1
 
@@ -428,11 +428,11 @@ void ListComponents ( Graph G )
     - 单个节点是一个双向连通分量
     - 两个或多个双连接分量不能共享任何边。因此E(G)被G的双连通分量分割。
 
-![image-20231204204350375](.\markdown-img\FDS2.assets\image-20231204204350375.png)
+![image-20231204204350375](./markdown-img/FDS2.assets/image-20231204204350375.png)
 
 #### 寻找双连通分量
 
-![image-20231204205243176](.\markdown-img\FDS2.assets\image-20231204205243176.png)
+![image-20231204205243176](./markdown-img/FDS2.assets/image-20231204205243176.png)
 
 - DFS获得生成树，记录DFS访问顺序 - If u is an ancestor of v, then Num( u ) < Num( v )
 - 把原图中没有出现在spanning tree的边用虚线表示
@@ -443,7 +443,7 @@ void ListComponents ( Graph G )
         - 不可能向下走至少一步之后可以跳到u's ancestor - 例如这张图依据这个性质排除了2、4、6
 
 具体算法：
-- 定义：![image-20231204210231459](.\markdown-img\FDS2.assets\image-20231204210231459.png)
+- 定义：![image-20231204210231459](./markdown-img/FDS2.assets/image-20231204210231459.png)
     - 根节点和不含back edge的叶节点的Low number就是自己的num
 
 - articulation point条件：
@@ -459,7 +459,7 @@ void ListComponents ( Graph G )
 
 输出欧拉环：多轮DFS（算法目的：寻找一张图有几个欧拉环）
 
-![image-20231204213000721](.\markdown-img\FDS2.assets\image-20231204213000721.png)
+![image-20231204213000721](./markdown-img/FDS2.assets/image-20231204213000721.png)
 
 - 该路径应该被维护为一个链表
 - 对于每个邻接表，维护一个指向最后扫描到的边的指针
