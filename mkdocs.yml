@@ -52,3 +52,5 @@ nav:
 
 repo_url: https://github.com/Tsuki0512/Tsuki0512.github.io
 repo_name: Wyr's Notes
+extra_css:
+  - assets/stylesheets.css
