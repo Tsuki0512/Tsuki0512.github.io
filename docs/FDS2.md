@@ -18,13 +18,12 @@
 **Complete graph**：具有最大边个数（不考虑multigraph）的图![image-20231113142851270](.\markdown-img\FDS2.assets\image-20231113142851270.png)
 
 **adjacent**：
--  无向图：$v_i$ and $v_j$ are **adjacent** / $(v_i,v_j)$ is **incident** on $v_i$ and $v_j$ ![image-20231113143319760](.\markdown-img\FDS2.assets\image-20231113143319760.png)
+- 无向图：$v_i$ and $v_j$ are **adjacent** / $(v_i,v_j)$ is **incident** on $v_i$ and $v_j$ ![image-20231113143319760](.\markdown-img\FDS2.assets\image-20231113143319760.png)
 - 有向图：$v_i$ is adjacent to $v_j$ / $v_j$ is adjacent from $v_i$ / $<v_i,v_j>$ is **incident** on $v_i$ and $v_j$ ![image-20231113143519400](.\markdown-img\FDS2.assets\image-20231113143519400.png)
 
 **Subgraph G' $\subset$ G**：![image-20231113143717957](.\markdown-img\FDS2.assets\image-20231113143717957.png)
 
 **Path($\subset$ G) from $v_p$ to $v_q$**：路径
-
 ![image-20231113143946934](.\markdown-img\FDS2.assets\image-20231113143946934.png)
 
 **Length of a path**：路径的长度就是路上的边的数量
