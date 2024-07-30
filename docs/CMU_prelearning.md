@@ -7,7 +7,8 @@
 ### 基本技术
 
 - python
-- pytorch
+- pytorch<br>
+    - 一点零碎的基础学习笔记：[pytorch](pytorch.md)
 - GitHub
 - LLM (ChatGPT等)
 
@@ -77,6 +78,76 @@ IMU（Inertial Measurement Unit，惯性测量单元）是一种测量和报告�
 ![image-20240719213546527](./markdown-img/CMU_prelearning.assets/image-20240719213546527.png) 
 
 可微性是指函数在定义域内各点处均具有导数，这是执行梯度下降等基于梯度的优化算法的先决条件。梯度下降算法通过迭代过程寻找损失函数的最小值，逐步调整模型参数以最小化误差。
+
+---
+
+#### 补充：梯度下降法原理与细节
+线性回归模型的损失函数是每一个点误差平方的平均数：![image-20240730220557887](./markdown-img/CMU_prelearning.assets/image-20240730220557887.png)
+
+由此我们可以给出一个保证梯度下降（损失函数递减）的算法：
+
+![image-20240730220811498](./markdown-img/CMU_prelearning.assets/image-20240730220811498.png)
+
+而根据上述线性的例子，我们也可以给出梯度下降法的范式：
+
+![image-20240730220851728](./markdown-img/CMU_prelearning.assets/image-20240730220851728.png)
+
+这个不断沿着梯度下降的方向更新参数使得损失递减的过程也叫做**向前传递**。
+
+---
+
+代码实现：
+
+##### 1.定义模型
+
+![image-20240730222040353](./markdown-img/CMU_prelearning.assets/image-20240730222040353.png)
+
+一般情况下初始化不会这么简单，在这里为了方便把初始参数都赋值为0。
+
+##### 2.梯度下降法
+
+`optimizer = torch.optim.SGD(model.parameters(), lr = learning_rate)` - 定义使用梯度下降法学习，把`.SGD`改成`.Adam`就是使用Adam法学习
+
+在计算梯度这一步使用反向传播法`loss.backward()`计算，在每一次计算之前记得清空上次的计算`optimizer.zero_gard()`
+
+![image-20240730222706048](./markdown-img/CMU_prelearning.assets/image-20240730222706048.png)
+
+其中，我们可以手动实现（不调用第三方库）模型参数的更新：
+
+![image-20240730223206349](./markdown-img/CMU_prelearning.assets/image-20240730223206349.png)
+
+---
+
+反向传播
+
+在我们讨论反向传播算法之前，需要先分清楚几个概念：
+
+![image-20240730235703645](./markdown-img/CMU_prelearning.assets/image-20240730235703645.png)
+
+通俗来讲，反向传播就是根据损失函数计算梯度，而向后传播则包括：
+
+1. 调用反向传播计算梯度
+2. 根据梯度的值更新模型参数
+
+//todo
+
+---
+
+局限：
+
+![image-20240730223610296](./markdown-img/CMU_prelearning.assets/image-20240730223610296.png)
+
+*上图左边4这个点梯度为0，但并不是我们想要的点*
+
+优化：随机梯度下降法
+
+![image-20240730223806742](./markdown-img/CMU_prelearning.assets/image-20240730223806742.png)
+
+![image-20240730224323022](./markdown-img/CMU_prelearning.assets/image-20240730224323022.png)
+
+其他优化：![image-20240730224629721](./markdown-img/CMU_prelearning.assets/image-20240730224629721.png)
+
+归一化：通过调整learning rate去消除梯度绝对值差距过大的影响。
 
 ### 3 - Rigid Body Transformations
 
@@ -245,10 +316,21 @@ ResNet 的基础构件是残差块，每个残差块包括两条路径：
 早期卷积神经网络，应用：数字识别<br>
 主要包括：输入层、几个卷积层（使用卷积核提取图像特征）、池化层（下采样层，减少参数数量和计算复杂度），全连接层和输出层
 
-2. AlexNet
-使用ReLU作为激活函数，有效解决梯度消失问题，加速网络训练过程
+2. AlexNet<br>
+在CPU上计算CNN，支持更大更深层次的网络
 
-3. VGG
+3. VGG<br>
+使用了非常均一的架构，只使用了3x3的小卷积核和2x2的最大池化层，层次结构非常简单但效果显著
+
+4. ResNet<br>
+解决梯度消失问题，网络可以承载更多的层次而不会丢失梯度信息，大幅度提升网络深度
+
+### ResNet补充
+参考视频：[ResNet](https://www.bilibili.com/video/BV1D1421r7sj?vd_source=6f82f093f306817f2a6bd3375dacfd43)<br>
+注：这整个系列都讲得特别好且适合入门
+
+### Start your first deep learning project
+
 
 ### 3D Vision: Triangulation and Bundle Adjustment
 

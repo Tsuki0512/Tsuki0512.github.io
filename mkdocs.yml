@@ -49,6 +49,7 @@ nav:
     - 一些碎碎念: 碎碎念.md
   - CMU_DeepVision项目记录:
     - 线上课程: CMU_prelearning.md
+    - pytorch入门: pytorch.md
     - CV自学笔记: CMU_DeepVision.md
 
 repo_url: https://github.com/Tsuki0512/Tsuki0512.github.io
