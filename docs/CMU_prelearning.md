@@ -235,6 +235,62 @@ what is a camera? - a projection from 3D to 2D
 
 ## Lec2: Deep Learning Basics
 
+### 0 - 补充：CNN基础
+
+#### 1 图像识别
+
+##### 1.1 图片的数字化
+
+图像识别的第一步就是将图片数字化，表示为张量。
+
+![image-20240802212106969](./markdown-img/CMU_prelearning.assets/image-20240802212106969.png)
+
+*像素点的值表示该像素点的黑白程度*
+
+对于彩色图片，采用三原色分解，使用三位张量表示。
+
+##### 1.2 模型结构
+
+首先把数字化之后的图片数据铺平（有数据损失，但是依然可以得到比较好的训练结果）变成一维，即可输入到模型结构：
+
+![image-20240802212558121](./markdown-img/CMU_prelearning.assets/image-20240802212558121.png)
+
+##### 1.3 代码实现（机器学习范式）
+
+1. 数据准备<br>
+![image-20240802223705405](./markdown-img/CMU_prelearning.assets/image-20240802223705405.png)
+
+2. 生成模型<br>
+一般情况下需要定义模型这个类，但多层感知器可以直接使用pytorch提供的线性模型（在使用pytorch的封装库的时候尽可能多去看官方文档）
+![image-20240802224024635](./markdown-img/CMU_prelearning.assets/image-20240802224024635.png)
+
+3. 评估模型 - 在训练模型之前，可以直接测试我们生成的模型是否可以正常运行
+![image-20240802224458584](./markdown-img/CMU_prelearning.assets/image-20240802224458584.png)
+
+4. 训练模型<br>
+遍历训练数据 - 取出张量形状 - 计算`logits` - 计算损失 - 清空梯度（图片中应该是`zero_grad`） - 触发反向传播算法 - 更新参数
+![image-20240802230021913](./markdown-img/CMU_prelearning.assets/image-20240802230021913.png)
+
+5. 生成并训练模型<br>
+![image-20240802230512544](./markdown-img/CMU_prelearning.assets/image-20240802230512544.png)
+优化：使用更优的激活函数、加入归一化层
+
+6. 处理过拟合问题<br>
+    - 随机失活<br>使用pytorch提供的`Dropout`即可实现
+     ![image-20240802230420272](./markdown-img/CMU_prelearning.assets/image-20240802230420272.png)
+    - 添加惩罚项<br>
+     ![image-20240802231237991](./markdown-img/CMU_prelearning.assets/image-20240802231237991.png)
+
+附：<br>
+关于模型、组件的模式问题：在评估模式和训练模式下不同模型和组件的表现不同，因此需要手动通过代码切换以达到最佳的训练效果
+例如评估模型的代码：![image-20240802231121289](./markdown-img/CMU_prelearning.assets/image-20240802231121289.png)
+随机失活组件：
+![image-20240802231203277](./markdown-img/CMU_prelearning.assets/image-20240802231203277.png)
+
+//TODO
+
+---
+
 ```
 Lecture Topic 1: From Neural Nets to CNN
 Lecture Topic 2: Legendary Alexnet and ResNet
@@ -245,7 +301,15 @@ Lecture Topic 3: More Architectures: Unet, YOLO and more
 
 ![image-20240721201304960](./markdown-img/CMU_prelearning.assets/image-20240721201304960.png) 
 
-最后一步是因为二维空间的分类可能是非线性的![image-20240721201518399](./markdown-img/CMU_prelearning.assets/image-20240721201518399.png)
+接收 - 加总 - 转换（激活函数） - 发出
+
+激活函数例子![image-20240802232550290](./markdown-img/CMU_prelearning.assets/image-20240802232550290.png)
+
+![image-20240802232814846](./markdown-img/CMU_prelearning.assets/image-20240802232814846.png)
+
+但是二维空间的分类可能是非线性的，也就有了不同的激活函数
+
+![image-20240721201518399](./markdown-img/CMU_prelearning.assets/image-20240721201518399.png)
 
 现在我们需要把这些东西写成矩阵形式而不是求和 - 更快的计算速度
 
@@ -331,8 +395,70 @@ ResNet 的基础构件是残差块，每个残差块包括两条路径：
 
 ### Start your first deep learning project
 
+学习pytorch的最好资料就是[官网](https://pytorch.org/tutorials/beginner/basics/intro.html)
+
+![image-20240803025203448](./markdown-img/CMU_prelearning.assets/image-20240803025203448.png)
+
+阅读代码的时候关注上述三个过程是如何实现的，以及如何定义自己的数据集结构；训练集、验证集（训练的时候可以不断切换、调整）和测试集（在最开始就分离出来，不参与训练，不获得feedback；用于展示模型的能力）的定义。
+
+![image-20240803030231262](./markdown-img/CMU_prelearning.assets/image-20240803030231262.png)
+
+不同的模式下需求不一样，对应算法处理也有不一样，例如`train()`过程中会有`Dropout`来提升鲁棒性，而`Eval()`中不会有（以节省算力）；`no_gard()`会把grad flow disable掉，节省算力，支持在短时间内跑大量的验证集。
+
+![image-20240803030937145](./markdown-img/CMU_prelearning.assets/image-20240803030937145.png)
+
+OOM - cuda内存不够，可以调整`batch_size`
+
+![image-20240803031212965](./markdown-img/CMU_prelearning.assets/image-20240803031212965.png)
+
+合理使用循环
+
+![image-20240803031249446](./markdown-img/CMU_prelearning.assets/image-20240803031249446.png)
+
+*differentiable - 可微的*<br>
+- histogram function - 直方图函数
+- `argmax`&`argmin` - 返回最大最小值的下标<br>
+如果我们的final result是建立在不可微的函数的基础上，我们可能需要做出一些调整
+
+### More Advanced Architectures in CNN
+
+#### 1.FCNN
+
+FCNN: 对每一个图片的像素作分类 - 图片划分(segmentation)
+
+![image-20240803032122123](./markdown-img/CMU_prelearning.assets/image-20240803032122123.png)
+
+输出：假设有21个类，每个像素点对应了一个21维度的向量，包含了每个类的可能性信息。
+
+#### 2.Unet
+
+![image-20240804024158746](./markdown-img/CMU_prelearning.assets/image-20240804024158746.png)
+
+也是一个广泛用于segmentation的方法，主要用于医学图像的分割，分割处理效果很好
+
+#### 3.YOLO - you look only once
+
+用于detection - 检测到物体的位置+识别物体类别
+
+主要框架（下图左边，已经是一个比较通用的范式）不变，右边根据不同功能和算法有调整
+
+![image-20240804024513746](./markdown-img/CMU_prelearning.assets/image-20240804024513746.png)
+
+画一个框需要几个参数？- 4个（2个角），也就是这个算法的输出
+
+### Summary in CNN
+
+对神经网络我们更应该关注为什么这样设计、原理是什么，而不是每层的参数，这些通常都是很经验主义的。
 
 ### 3D Vision: Triangulation and Bundle Adjustment
+
+#### 1.Triangulation - 三角化
+
+#### 2.Epipolar Geometry - 对极线几何
+
+#### 3.Essential/Fundamental Matrix - 本质矩阵&基础矩阵
+
+#### 4.Bundle Adjustment - 光束平差
 
 ### Know About Your Sensors
 
