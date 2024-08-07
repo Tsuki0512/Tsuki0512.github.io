@@ -313,7 +313,19 @@ Lecture Topic 3: More Architectures: Unet, YOLO and more
 
 现在我们需要把这些东西写成矩阵形式而不是求和 - 更快的计算速度
 
-这个模型的参数由上面提到的梯度下降法训练确定
+这个模型的参数由上面提到的梯度下降法训练确定。
+
+最简单的神经网络模型为多层感知器模型：
+
+![image-20240804230547315](./markdown-img/CMU_prelearning.assets/image-20240804230547315.png)
+
+其具体运算实现如下：
+
+![cf5bafcaed93d4c1ee2c0c666a57e09](./markdown-img/CMU_prelearning.assets/cf5bafcaed93d4c1ee2c0c666a57e09.jpg)
+
+由下图我们可以看到，相比简单的逻辑回归模型，多层感知器可以完成更多更复杂的分类，不过针对一部分数据，在不加优化地训练的时候会出现一定的瓶颈期，loss几乎不变。
+
+![8035be4bc585568fdfbafa0683d756a](./markdown-img/CMU_prelearning.assets/8035be4bc585568fdfbafa0683d756a.jpg)
 
 ### 1 - Image formation model
 
@@ -341,6 +353,10 @@ Lecture Topic 3: More Architectures: Unet, YOLO and more
 - Vertical Sobel filter - 第三张
 
 ![image-20240721210845389](./markdown-img/CMU_prelearning.assets/image-20240721210845389.png)
+
+根据这个效果我们做出了横/竖edge检测的filter：
+
+![image-20240806033002276](./markdown-img/CMU_prelearning.assets/image-20240806033002276.png)
 
 在pytorch内有现成的可以调用的函数
 
@@ -452,26 +468,218 @@ FCNN: 对每一个图片的像素作分类 - 图片划分(segmentation)
 
 ### 3D Vision: Triangulation and Bundle Adjustment
 
-#### 1.Triangulation - 三角化
+#### 1.Triangulation - 三角化 
+
+**3D points from 2D points in two views**
+
+如何从一张2D的照片重构出3D的立体场景，我们可以考虑之前（Lec1）提到的相机成像原理，采取3D到2D映射的逆运算，但是这会导致什么问题呢？
+
+![image-20240806020649365](./markdown-img/CMU_prelearning.assets/image-20240806020649365.png)
+
+首先我们不能保证`P'`有唯一解，在这种情况下通常是无穷解（数学角度没给出完整的证明，不过可以比较容易得出一张平面照片可以对应多种3D场景）。
+
+![image-20240806021303876](./markdown-img/CMU_prelearning.assets/image-20240806021303876.png)
+
+我们可以看到一个向量轴上的所有点在指定平面上面成像的位置是完全一样的，所以需要比物体所在空间维度多一个维度去确定具体的位置（？
+
+![image-20240806021716629](./markdown-img/CMU_prelearning.assets/image-20240806021716629.png)
+
+拿二维类比的话就是最后一个矩阵的最后一个参数无论怎么调整，对应变换后的点都在这条直线上
+
+![image-20240806021906699](./markdown-img/CMU_prelearning.assets/image-20240806021906699.png)
+
+由此，我们可以通过pinhole的坐标以及`P'`的坐标表示这个点在3D空间的所有坐标可能性（是在红色的一条轴上面的）。
+
+那么通过两张图片我们就可以得到两条轴，理想情况下两条轴的交点就是那个点的实际空间位置。
+
+![image-20240806022400682](./markdown-img/CMU_prelearning.assets/image-20240806022400682.png)
+
+但是实际情况下两轴可能会因为少量误差而不相交，我们怎么解决这个问题呢？
+
+这个时候我们就引出了三角化这个问题：
+
+![image-20240806022658298](./markdown-img/CMU_prelearning.assets/image-20240806022658298.png)
+
+我们先定义三维空间下的叉乘运算并写出其矩阵形式![image-20240806023046142](./markdown-img/CMU_prelearning.assets/image-20240806023046142.png)
+
+我们把3D到2D的映射写成矩阵形式，可以发现`x`叉乘`PX`为$0$（叉乘的性质）：
+
+![image-20240806023711653](./markdown-img/CMU_prelearning.assets/image-20240806023711653.png)
+
+把这个式子展开我们可以解出`X`的所有解。
+
+// 为什么这个可以解决实际不相交问题？- TODO
 
 #### 2.Epipolar Geometry - 对极线几何
 
+定义如下，`o`是两个pinhole，P是理想情况下的3D点位
+
+![image-20240806024448532](./markdown-img/CMU_prelearning.assets/image-20240806024448532.png)
+
+根据几何关系我们可以得到`x`在另一张图上的映射`x'`一定存在于另一张图的对齐线`l'`上：
+
+![image-20240806024646956](./markdown-img/CMU_prelearning.assets/image-20240806024646956.png)
+
+All epipolar lines in an image intersect at the epipole. - 不同的实际点会确定不同的`l`，但是它们一定都经过`e`
+
+`e`是由`o`和`o'`点连线的baseline在两张平面上面投影确定的，可以在平面外
+
+在我们知道这个原理之后，在一张图片上找另一种图片的对应点的搜索范围可以从整张图片减小到一条直线。
+
+**$O(N^2)\to O(N)$**
+
 #### 3.Essential/Fundamental Matrix - 本质矩阵&基础矩阵
 
-#### 4.Bundle Adjustment - 光束平差
+Epipolar line的矩阵表示：
 
-### Know About Your Sensors
+![image-20240806025835560](./markdown-img/CMU_prelearning.assets/image-20240806025835560.png)
 
-### SfM and SLAM
+由此我们有了对Essential matrix `E`的定义，即将`x`映射到`l'`的转换矩阵：
+
+![image-20240806030145999](./markdown-img/CMU_prelearning.assets/image-20240806030145999.png)
+
+我们不难推出：
+
+![image-20240806030506877](./markdown-img/CMU_prelearning.assets/image-20240806030506877.png)
+
+由上述等式我们可以解出`E`
+
+### Finding Correspondence
+
+我们把不同平面的两个点的相对距离记为`d`（视差 - disparity），通过这个值我们可以算出这个实际位置距离baseline的深度。
+
+![image-20240806031500688](./markdown-img/CMU_prelearning.assets/image-20240806031500688.png)
+
+也就是利用这个原理，诞生了3D电影技术。
+
+那么我们如何通过同一物体两张照片计算物体距离baseline的深度呢？
+
+- 首先我们的baseline要足够长，两个眼睛之间的距离过短通常情况下不会有很明显的视差
+- 要把两张图片先作矫正（rectified）使得图片呈现平行拍摄的效果，这样搜索对应点的算法可以变成只在一条线上搜索，大幅度减小算法复杂度
+
+算法流程如下：
+
+![image-20240806032440607](./markdown-img/CMU_prelearning.assets/image-20240806032440607.png)
+
+但是实际上保证两张照片平行拍摄是很困难的，我们应该如何进行修正呢？- OpenCV有提供将两张图片映射到同一平面的函数
+
+我们如何实现上述算法过程中的2.b的best match？
+
+有三种方法：
+
+1. filter
+2. filter with *zero-mean* template
+![image-20240806033311220](./markdown-img/CMU_prelearning.assets/image-20240806033311220.png)
+3. SSD
+![image-20240806033544339](./markdown-img/CMU_prelearning.assets/image-20240806033544339.png)
+
+在这个过程中窗口大小make sense，窗口越小noise越多也细节越多。
+
+### More Sensors (for 3D)
+
+- Stereo Camera
+
+- Light Field Camera
+
+- Structured Light - 通过不同频率点的投影精确定位3D point
+
+  ![image-20240806034555910](./markdown-img/CMU_prelearning.assets/image-20240806034555910.png)
+
+- 1D LiDAR
+
+  ![image-20240806034714509](./markdown-img/CMU_prelearning.assets/image-20240806034714509.png)
+
+- Time of flight LiDARs - 通过光飞行的时间测距
+
+- Infrared Camera - 检测红外光等，检测human/heat sources
+
+- Event Camera - only capture pixel change 
+
+  ![image-20240806035146008](./markdown-img/CMU_prelearning.assets/image-20240806035146008-1722887508765-3.png)
+
+  通过event camera重建出来的3D Vision只有边缘、角，因为这些运动容易触发event camera的追踪![image-20240806035453599](./markdown-img/CMU_prelearning.assets/image-20240806035453599.png)
+
+对于实际问题，我们通常有不止两台相机，怎么解决这个问题呢？
+
+- Start with an initial guess - 使用两张照片获取一个初始3D猜测点
+- Project the estimated 3D points into the estimated camera images
+- Compare locations of the projected 3D points with measured(2D) ones
+- Adjust to minimize error in the images
 
 ## Lec4
 
-### Transformers: Backbone of Modern AI
+### SLAM - Simultaneous Localization and Mapping
 
-### Generative Models: from VAE to Diffusion
+实时的3D建模
 
-### Physics Based Machine Vision
+调整精度、解决accumulated error的一种方式 - loop closure
 
+### Advanced Computer Vision
+
+从神经网络开始，根据输入输出规模我们可以把神经网络分类：
+
+![image-20240806044639623](./markdown-img/CMU_prelearning.assets/image-20240806044639623.png)
+
+#### RNN
+
+通常接收序列数据输入，这个神经网络隐藏层的结点的内部状态是不断更新的
+
+![image-20240806044851788](./markdown-img/CMU_prelearning.assets/image-20240806044851788.png)
+
+这个过程可以用如下的图示表示（不过$W$是一直不变的）
+
+![image-20240806045028434](./markdown-img/CMU_prelearning.assets/image-20240806045028434.png)
+
+这个神经网络也可以实现many to many的输入输出
+
+![image-20240806045206100](./markdown-img/CMU_prelearning.assets/image-20240806045206100.png)
+
+缺陷：无法解决倒装问题。
+
+可以先输出一个整体的decode方式$h_T$再逐个输出
+
+![image-20240806045552525](./markdown-img/CMU_prelearning.assets/image-20240806045552525.png)
+
+可以使用CNN和RNN结合的方式实现图片内容的概述
+
+![image-20240806045915776](./markdown-img/CMU_prelearning.assets/image-20240806045915776.png)
+
+**LSTM**解决了RNN的梯度消失问题，核心思想和resnet一致。
+
+解决数据、坐标轴交换问题：permutation matrix
+
+![image-20240806050823221](./markdown-img/CMU_prelearning.assets/image-20240806050823221.png)
+
+#### 自注意力机制
+
+![image-20240806051419214](./markdown-img/CMU_prelearning.assets/image-20240806051419214.png)
+
+同样，图片概述的任务可以结合CNN和自注意力机制完成：
+
+![image-20240806051619296](./markdown-img/CMU_prelearning.assets/image-20240806051619296.png)
+
+CNN之后将图片分割成blocks然后再使用自注意力机制captioning
+
+#### Transformer
+
+![image-20240806051713603](./markdown-img/CMU_prelearning.assets/image-20240806051713603.png)
+
+优点：
+
+- Parallel
+- Long range attention
+- Scales up at $O(N^2)$
+
+### Vision Transformer
+
+CNN缺陷：局部性
+
+![image-20240806052652022](./markdown-img/CMU_prelearning.assets/image-20240806052652022.png)
+
+Vision Transformer可以训练每个block（分成16×16的pieces）之间的关系，更好地理解复杂的图片
+
+### Generative Models
+//todo
 <script>
 MathJax = {
   tex: {

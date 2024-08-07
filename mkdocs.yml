@@ -50,7 +50,8 @@ nav:
   - CMU_DeepVision项目记录:
     - 线上课程: CMU_prelearning.md
     - pytorch入门: pytorch.md
-    - CV自学笔记: CMU_DeepVision.md
+    - Lec1-Transformers and RAG: CMU_DeepVision_0807.md
+    - Lec2-Ray Tracing: CMU_DeepVision_0807_1.md
 
 repo_url: https://github.com/Tsuki0512/Tsuki0512.github.io
 repo_name: Wyr's Notes
