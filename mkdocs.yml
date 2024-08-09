@@ -1,5 +1,5 @@
 site_name: wyr's notes #网站名字
-site_url:  #你的网址
+site_url: https://github.com/Tsuki0512/Tsuki0512.github.io.git  #你的网址
 site_author: wyr #你的名字
 theme:
   name: material #主题
