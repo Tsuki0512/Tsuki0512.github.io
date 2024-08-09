@@ -81,9 +81,13 @@ query related information in the prepared data
 
 ![image-20240808004927224](./markdown-img/CMU_DeepVision_0807.assets/image-20240808004927224.png)
 
+在retrieving的过程中，我们需要先将question embedded into vector
+
 ### Techniques
 
 - embeddings: encoder, e.g. sentence transformers (frequently used default)
+
+  ![image-20240808233047567](./markdown-img/CMU_DeepVision_0807.assets/image-20240808233047567.png)
 
 - cosine similarity:
 
@@ -100,6 +104,16 @@ query related information in the prepared data
 why we need?
 
 - Recall in RAG - provide store and a faster query
+
+### HNSW algorithm
+
+#### Probability Skip Lists
+
+
+
+#### Navigable Small World Graphs
+
+
 
 ## 4 API - Application Programming Interface
 

@@ -1,0 +1,7 @@
+.md-typeset .admonition.purple-box {
+    border-color: #6b1edf; /* 深紫色 */
+    background-color: #ffffff; /* 浅紫色 */
+}
+.md-typeset .admonition.purple-box > .admonition-title {
+    background-color: #ece5f5; /* 浅紫色的背景 */
+}
