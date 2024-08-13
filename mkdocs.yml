@@ -1,5 +1,5 @@
 site_name: wyr's notes #网站名字
-site_url: https://github.com/Tsuki0512/Tsuki0512.github.io.git  #你的网址
+site_url:  #你的网址
 site_author: wyr #你的名字
 theme:
   name: material #主题
@@ -47,11 +47,14 @@ nav:
     - 专业必修课: 专业必修课心得.md
     - 专业选修课: 专业选修课心得.md
     - 一些碎碎念: 碎碎念.md
-  - CMU_DeepVision项目记录:
+  - CMU_DeepVision项目记录: 
+    - 概述: CMU_index.md
     - 线上课程: CMU_prelearning.md
     - pytorch入门: pytorch.md
-    - Lec1-Transformers and RAG: CMU_DeepVision_0807.md
-    - Lec2-Ray Tracing: CMU_DeepVision_0807_1.md
+    - Lec1 - Transformers and RAG: CMU_DeepVision_0807.md
+    - Lec2 - Ray Tracing: CMU_DeepVision_0807_1.md
+    - Lec3 - 3D Vision: CMU_DeepVision_0809.md
+    - transformers: transformers.md
 
 repo_url: https://github.com/Tsuki0512/Tsuki0512.github.io
 repo_name: Wyr's Notes
