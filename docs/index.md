@@ -6,6 +6,19 @@
 
 <p style="font-size: 25px;">希望对看到这里的你有帮助~也欢迎大家一起交流！</p>
 
+!!! blue-box ""
+    <div style="display: flex; align-items: center; gap: 20px;margin-bottom: 20px; ">
+        <!--copy说明：要把这个组件copy到别的网站的时候记得把assets文件夹下面的stylesheets.css一起copy过去，并且在mkdocs.yml里面加上
+        extra_css:
+          - assets/stylesheets.css-->
+        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-left: 20px;">
+            <img src="assets/friends/cssu.png" alt="Alt text" style="width: 100%; height: auto; display: block;">
+        </div>
+        <a href="https://zjucssu.github.io/home/" title="xx" target="_blank" style="text-decoration: none; color: black; display: block; padding: 10px; background-color: '#dbe4f5'; border-radius: 8px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#f2f9fe'" onmouseout="this.style.backgroundColor='#dbe4f5'"; >
+            <div style="margin-bottom: 4px; font-size: 16px;">欢迎光临CSSU官方网站！内含计算机学院的日常通知、资源汇总以及权益服务渠道！</div>
+        </a>
+    </div>
+
 !!! purple-box "朋友们！"
     <div style="display: flex; align-items: center; gap: 20px;margin-bottom: 20px; ">
     <!--修改：图片链接、友链、文字说明、备注-->
