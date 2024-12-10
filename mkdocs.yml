@@ -7,8 +7,8 @@ theme:
     primary: deep purple
     accent: purple
   font:
-    text: LXGW WenKai TC
-    # text: PT Sans Caption
+    #text: LXGW WenKai TC
+    text: PT Sans Caption
   language: zh
   favicon: assets/hzhf.jpg
   logo: assets/hzhf.jpg
@@ -16,11 +16,18 @@ theme:
 markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.highlight:
+      linenums: true
   - markdown.extensions.extra
   - toc:
       permalink: true
   - pymdownx.superfences
   - admonition
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.details
 
 nav:
   - Home: index.md
@@ -35,6 +42,17 @@ nav:
     - 数据库系统: 
       - cheatingsheet: 数据库系统.md
       - minisql分析.md
+    - 计算机体系结构（学习中）:
+      - 概述: 2024_fall/CA/index.md
+      - 计算机设计基础: 2024_fall/CA/CA1.md
+      - 流水线: 2024_fall/CA/CA2.md
+      - 内存层次: 2024_fall/CA/CA3.md
+      - 指令级并行: 2024_fall/CA/CA4.md
+    - 操作系统（学习中）:
+      - 期末复习: 2024_fall/OS/final_review.md
+    - 计算理论（学习中）:
+      - 2024_fall/计算理论/Lec1.md
+      - 2024_fall/计算理论/Lec2.md
     - 数理基础课程资源汇总:
       - 离散数学及其应用: 离散数学.md
       - 微积分（甲）: 微积分.md
@@ -55,9 +73,15 @@ nav:
     - Lec2 - Ray Tracing: CMU_DeepVision_0807_1.md
     - Lec3 - 3D Vision: CMU_DeepVision_0809.md
     - Lec4 - Deep Learning Basics and Adversarial: CMU_DeepVision_0816.md
-    - transformers: transformers.md
 
 repo_url: https://github.com/Tsuki0512/Tsuki0512.github.io
 repo_name: Wyr's Notes
 extra_css:
-  - assets/stylesheets.css
+- assets/stylesheets.css
+extra_javascript:
+- js/baidu-tongji.js
+- https://gcore.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js
+- js/katex.js
+- https://polyfill.io/v3/polyfill.min.js?features=es6
+- https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js
+- https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

@@ -6,6 +6,10 @@
 
 <p style="font-size: 25px;">希望对看到这里的你有帮助~也欢迎大家一起交流！</p>
 
+!!! abstract "推荐阅读"
+    * [高级数据结构与算法分析期末整理](ADS_复习整理.md)
+    * [图像信息处理历年卷整理](dip历年卷整理.md)
+
 !!! blue-box ""
     <div style="display: flex; align-items: center; gap: 20px;margin-bottom: 20px; ">
         <!--copy说明：要把这个组件copy到别的网站的时候记得把assets文件夹下面的stylesheets.css一起copy过去，并且在mkdocs.yml里面加上
@@ -27,9 +31,9 @@
         </div>
         <a href="https://hzeroyuke.github.io/my_blog/" title="xx" target="_blank" style="text-decoration: none; color: black; display: block; padding: 10px; background-color: white; border-radius: 8px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#E6E6FA'" onmouseout="this.style.backgroundColor='white'">
             <div style="margin-bottom: 4px; font-size: 16px;">华零的blog</div>
-            <div style="font-size: 12px; color: gray;">\ykgg/\ykgg/\ykgg/</div>
+            <div style="font-size: 12px; color: gray;">相信我们的未来，<br>那是有花、有星星、有我们的日子</div>
         </a>
-        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-left: 100px;">
+        <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-left: 35px;">
             <img src="assets/friends/lxjj.jpg" alt="Alt text" style="width: 100%; height: auto; display: block;">
         </div>
         <a href="https://collapsar11.github.io/" title="xx" target="_blank" style="text-decoration: none; color: black; display: block; padding: 10px; background-color: white; border-radius: 8px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='#E0E8FF'" onmouseout="this.style.backgroundColor='white'">
@@ -46,7 +50,6 @@
             <div style="margin-bottom: 4px; font-size: 16px;">memset0</div>
             <div style="font-size: 12px; color: gray;">很牛的学弟</div>
         </a>
-        <!-- 等一个完工
         <div style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-left: 141px;">
             <img src="assets/friends/zephyr2023.png" alt="Alt text" style="width: 100%; height: auto; display: block;">
         </div>
@@ -54,17 +57,4 @@
             <div style="margin-bottom: 4px; font-size: 16px;">Zephyr2023's NoteBook</div>
             <div style="font-size: 12px; color: gray;">\shdd/\shdd/\shdd/</div>
         </a>
-        -->
     </div>
-
-还没想好放什么，要不给大家欣赏一下我的老公们吧
-
-![27eb967cc09cc740c62379e9d57344b](./markdown-img/index.assets/27eb967cc09cc740c62379e9d57344b.jpg)
-
-![9a0f2ec06557eae5620a4230927f894](./markdown-img/index.assets/9a0f2ec06557eae5620a4230927f894.jpg)
-
-![55e6955a85f5c2b212bb7b30d0e5d57](./markdown-img/index.assets/55e6955a85f5c2b212bb7b30d0e5d57.jpg)
-
-![d22f0b6925758fd06f91e1b4273fc34](./markdown-img/index.assets/d22f0b6925758fd06f91e1b4273fc34.jpg)
-
-![d687d6f76f74a180a5283ed7fb3c3fd](./markdown-img/index.assets/d687d6f76f74a180a5283ed7fb3c3fd.jpg)
