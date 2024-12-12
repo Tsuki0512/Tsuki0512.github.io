@@ -5,50 +5,56 @@ counter: True
 # DLP and TLP
 *对应教材Ch4, Ch5*
 
+## 0 Introduction
+
 ![](https://cdn.hobbitqia.cc/20231215193832.png)
 SISD - 单指令流单数据流
-SIMD - 单指令流多数据流（比如向量一次传递多种数据）
-MIMD - 多指令流多数据流
-## SIMD: vector processor
+SIMD - 单指令流多数据流（比如向量一次传递多种数据)
 
 * SIMD architectures can exploit significant data-level parallelism
-    * Matrix-oriented scientific computing
-    * Media-oriented image and sound processors
+  * Matrix-oriented scientific computing
+  * Media-oriented image and sound processors
 
 * SIMD is more energy efficient than MIMD
 * SIMD allows programmer to continue to think sequentially
 
-### Vector Processor & Scalar Processor
-是处理的数据类型的分类，由不同的处理器处理不同的数据类型，例如向量数据的运算使用向量机处理。
-* A pipeline processor, in which the vector data representation and the corresponding vector instructions are set, is called the **vector processor**.
-* A pipeline processor that does not have vector data representation and corresponding vector instructions is called a **scalar processor**.
+MIMD - 多指令流多数据流
+
+## 1 SIMD: vector processor
+
+### 1.1 Vector Processor处理模式
+是处理的数据类型的分类，由不同的处理器处理不同的数据类型：
+* **vector processor** - 流水线处理器，用向量表示和处理数据
+* **scalar processor**  - 流水线处理器，不用向量表示和处理数据
 
 通常有三种处理模式：
 
-* Horizontal processing method
-    * Vector calculations are performed horizontally from left to right in a row.
+1. Horizontal processing method
 
-        横向计算，从左到右，逐个计算出后再进行下一行。对于混合运算，一直在做功能切换。
+   * Vector calculations are performed horizontally from left to right in a row.
 
-        <img src="./markdown-img/CA5.assets/image-20241128110904023.png" alt="image-20241128110904023" style="zoom:50%;" />
-    
-    * Problems with horizontal processing:
-        * When calculating each component, *RAW* correlation occurs, and the *pipeline efficiency is low*.
-        * If a static multi-functional pipeline is used, the pipeline must be switched frequently; the throughput  of the pipeline is lower than that of sequential serial execution.
+       横向计算，从左到右，逐个计算出后再进行下一行。对于混合运算，一直在做功能切换。
 
-            如果是静态的多功能流水线，我们每次都要排空才能进行下一次运算，这样的效率很低。
+       ![image-20241128110904023](./markdown-img/CA5.assets/image-20241128110904023.png)
 
-        * The horizontal processing method is not suitable for vector processors.
-    
-* Vertical processing method - 纵向计算
 
-    <img src="./markdown-img/CA5.assets/image-20241128110927332.png" alt="image-20241128110927332" style="zoom:30%;" />
+   * Problems with horizontal processing:
+       * When calculating each component, *RAW* correlation occurs, and the *pipeline efficiency is low*.
+       * If a static multi-functional pipeline is used, the pipeline must be switched frequently; the throughput  of the pipeline is lower than that of sequential serial execution.
 
-    The vector calculation is performed vertically from top to bottom in a column manner.
+           如果是静态的多功能流水线，我们每次都要排空才能进行下一次运算，这样的效率很低。
 
-    要等加法全部都做完才能做乘法。
+       * The horizontal processing method is not suitable for vector processors.
 
-* Horizontal and vertical processing method(group processing method) - 分组计算，组内纵向，组间横向
+2. Vertical processing method - 纵向计算
+
+![image-20241128110927332](./markdown-img/CA5.assets/image-20241128110927332.png)
+
+​	The vector calculation is performed vertically from top to bottom in a column manner.
+
+​	要等加法全部都做完才能做乘法。
+
+3. Horizontal and vertical processing method(group processing method) - 分组计算，组内纵向，组间横向
 
 !!! Example
     D = A $\times$ (B + C) A, B, C, D ── vector of length N
@@ -88,7 +94,9 @@ Requirements for processor structure: **memory-memory structure**.
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20231215195250.png" width=60%></div>
 
-### Vector Processor Example - Cray-1
+### 1.2 Vector Processor Example - Cray-1
+
+#### 1.2.1 基本架构
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20231215195351.png" width=70%></div>
 
@@ -134,7 +142,7 @@ Each vector register Vi has a separate bus connected to 6 vector functional unit
 
     如果我们只有一个乘法部件，就会有结构冲突。我们只能等前一条指令全部完成（最后一个元素做完才可以），才能开始下一条指令。
 
-#### Instruction Types of CRAY-1
+#### 1.2.2 Instruction Types of CRAY-1
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20231215200227.png" width=70%></div>
 
@@ -145,7 +153,7 @@ Each vector register Vi has a separate bus connected to 6 vector functional unit
 
 向量加法需要 6 拍；乘法需要 7 拍；读写需要 6 拍。
 
-#### Improve the Performance of Vector Processor
+#### 1.2.3 Improve the Performance of Vector Processor
 
 * Set up multiple functional units and make them work in parallel. - 增加功能部件采取并行机制
 * Use **link technology** to speed up the execution of a string of vector instructions. - 链接技术
@@ -193,11 +201,13 @@ Link feature: It has two related instructions that are written first and then re
     
             我们只需要知道 V4 的第一个结果多久可以出来：8+1+7+1=9 拍，随后还有 (N-1) 条指令，因此总共需要的拍数为 max{(1+6+1), (1+6+1)} + (1+7+1)+N-1 = N+16.
 
-### RV64V
+### 1.3 现代向量处理机模型与技术
+
+#### 1.3.1 RV64V
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20231215204125.png" width=70%></div>
 
-* Loosely based on Cray-1
+* 以Cray-1为基础架构拓展出来的现代架构
 * 32 62-bit vector registers
     * Register file has 16 read ports and 8 write ports
 * Vector functional units
@@ -212,13 +222,21 @@ Link feature: It has two related instructions that are written first and then re
 
 !!! Example "DAXPY (Double Precision a*X plus Y)"
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215204216.png" width=70%></div>
-    
-<!-- ### Multiple Lanes: Beyond One Element per Clock Cycle
 
-每个时钟周期可以处理多个元素。
-<div align = center><img src="https://cdn.hobbitqia.cc/20231215204443.png" width=70%></div> -->
+因为循环之间没有迭代相关（和跨迭代循环的数据相关），所以可以转化为向量运算，大大减少了指令条数。
 
-## SIMD: array processor
+#### 1.3.2 Multiple Lanes: Beyond One Element per Clock Cycle
+
+多通道：每个时钟周期可以处理多个元素。
+<div align = center><img src="https://cdn.hobbitqia.cc/20231215204443.png" width=70%></div>
+
+#### 1.3.3 Gather-scatter: 使用向量结构处理矩阵运算
+
+![image-20241212131820601](./markdown-img/CA5.assets/image-20241212131820601.png)
+
+## 2 SIMD: array processor
+
+多个处理器共同协作一个任务，必须有信息交流，需要组织处理器和内存的阵列。
 
 N processing elements $PE_0$ to $PE_{N-1}$ are repeatedly set.
 
@@ -226,27 +244,29 @@ N processing elements $PE_0$ to $PE_{N-1}$ are repeatedly set.
 
 !!! Example "ILLIAC IV"
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215205010.png" width=70%></div>
-    
-According to the composition of the memory in the system, the **array processor** can be divided into two basic structures:
+
+根据内存组织形式的分类：
 
 * Distributed memory
 * Centralized shared memory
 
-### Distributed memory
+### 2.1 Distributed memory - 分布式
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20231215205259.png" width=70%></div>
 
 PE 代表处理器，PEN 是其对应的内存，ICN 是一个内部的互联网络。
 
-### Centralized shared memory
+local的内存访问会快一点，访问其他的内存会慢一点。
+
+### 2.2 Centralized shared memory - 集中共享式
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20231215205336.png" width=70%></div>
 
-网络之间会通过拓扑结构设计谁和谁联通。
+网络之间会通过拓扑结构设计谁和谁联通。处理器对不同的内存没有特权之分。
 
-### Parallel computer design
+### 2.3 Parallel computer design
 
-The communication architecture of the parallel computer is the core of the system.
+cpu之间的交流体系是parallel computer的关键。
 
 如果我们想让任何两个处理器都互相连接，如果都是直连，那么需要 $C_n^2 $ 个连接。
 
@@ -260,7 +280,7 @@ The communication architecture of the parallel computer is the core of the syste
 * **Switch node**: It is the information exchange and control station of the interconnected network. It is a device with multiple input ports and multiple output ports which is able to perform data buffer storage and path selection.
 
 !!! Note "Some key points"
-    * Topology of interconnection network
+    * Topology of interconnection network - 网络的拓扑结构
         * Static topology
 
             静态网络：网络设定好后节点和边的连接方式就确定下来。
@@ -269,33 +289,33 @@ The communication architecture of the parallel computer is the core of the syste
     
             动态网络：网络由很多开关组成，网络的连接方式会变化，如交叉开关我们拨动之后两个点的连接改变。
     
-    * Timing mode of interconnection network
+    * Timing mode of interconnection network - 时序
         * Synchronization system: Use a unified clock. Such as SIMD array processor
         * Asynchronous system: No uniform clock. Each processor in the system works independently
-    * Exchange method of interconnection network
+    * Exchange method of interconnection network - 开关状态
         * Circuit switching
         * Packet switching
-    * Control Strategy of interconnection network
+    * Control Strategy of interconnection network - 控制方式
         * Centralized control mode: have a global controller
         * Distributed control mode: no global controller
 
-### Goal of interconnection network
-
 * **Single-stage interconnection network**: There are only a limited number of connections at the only level to realize information transmission between any two processing units.
 
-    单级网络，一个 PE 和另一个 PE 连在一起。
+    单级网络，一个 PE 和另一个 PE 连在一起。最具体的连接方式、最基本的单元。
 
 * **Multi-stage interconnection network**: It is composed of multiple single-level networks in series to realize the connection between any two processing units.
 
-    多级网络。
+    多级网络。多个单级网络通过某种形式连接。
 
-N 个入端和 N 个出端会建立一个映射关系 $j \leftrightarrow f(j)$。
+互联函数：N 个入端和 N 个出端会建立一个映射关系 $j \leftrightarrow f(j)$。用二进制表示。
 
-### Single-stage interconnection network
+### 2.4 Single-stage interconnection network
 
-#### Cube
+几个常用的单级的互联网络
 
-假设有 N 个入端和出端，表示为 $P_{n-1}\ldots P_1P_0$。
+#### 1. Cube
+
+假设有 N 个入端和出端，表示为 $P_{n-1}\ldots P_1P_0$。（用$n$位二进制表示，$n = log_2N$）
 
 这里有 n 个不同的互联函数：（对第 i 位取反）
 
@@ -308,14 +328,13 @@ $$
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215211123.png" width=70%></div>
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215211141.png" width=70%></div>
 
-<div align = center><img src="https://cdn.hobbitqia.cc/20231215213606.png" width=70%></div>
+<div align = center><img src="https://cdn.hobbitqia.cc/20231215213606.png" width=60%></div>
 
-3D Cube 里，任意两个点最远需要 3 步。对于 N 维的 Cube，任意两个点最远需要 $\log_2(N)$ 步。
+3D Cube 里，任意两个点最远需要 3 步。对于 N 维的 Cube（超立方体网络），任意两个点最远需要 $\log_2(N)$ 步。
 
-#### PM2I
+#### 2. PM2I
 
 **PM2I (Plus Minus 2i)** single-stage network
-
 $$
 PM2_{+i}(j)=(j+2^i)\mod N, PM2_{-i}(j)=(j-2^i)\mod N
 $$
@@ -326,9 +345,11 @@ $$
     Example: N = 8
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215214203.png" width=70%></div>
 
-    任意两点最短的互联距离是 2。（0 可以一步到 1、2、4、6、7，再过一步可以到 3、5）
+    任意两点最短的互联距离是 2。（0 可以一步到 1、2、4、6、7，再过一步可以到 3、5， 而 0 和任意一个节点是等价的）
 
-#### Shuffle exchange network
+#### 3. Shuffle exchange network
+
+混洗交换网络
 
 Composed of two parts: **Shuffle** + **Exchange**
 
@@ -340,7 +361,14 @@ $$
 
 !!! Example 
     可以看到这里 000 和 111 并没有与其他点连接，因此我们需要有更多的操作。
+
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215215302.png" width=70%></div>
+
+两次混洗：
+
+![image-20241212110235394](./markdown-img/CA5.assets/image-20241212110235394.png)
+
+第三次混洗变回原来的样子。
 
 
 可以看到经过 3 次 shuffle 后其他点都回到了原来的位置，但是 000 和 111 还是没有连接。因此我们在此的基础上加上 exchange 的连线（红色是通过 $cube_0$ 实现的）。
@@ -348,7 +376,9 @@ $$
 
 在这里任意两个节点相连最多需要 5 步，3 exchanges + 2 shuffles.
 
-The maximum distance of shuffle exchange network: (from the nodes numbered all “0” to all “1”) n exchanges and n-1 shuffles, maximum distance: 2n-1
+函数简单，可以适用于n足够大的情况。
+
+The maximum distance of shuffle exchange network: (from the nodes numbered all “0” to all “1”) **n** exchanges and **n-1** shuffles, maximum distance: **2n-1** （$n = log_2N$）
 
 中间节点的距离较短，效率高，除了从全 0 到全 1 的距离远。
 
@@ -361,6 +391,8 @@ The maximum distance of shuffle exchange network: (from the nodes numbered all �
 
 * Circular array
 
+    任意一点断掉是不影响网络可用性的。
+
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215220149.png" width=20%></div>
 
     可以在点上加一些弦。
@@ -371,7 +403,7 @@ The maximum distance of shuffle exchange network: (from the nodes numbered all �
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215220255.png" width=20%></div>
 
     可以拓展为带环的树（Tree with loop）、Binary fat tree
-    <div align = center><img src="https://cdn.hobbitqia.cc/20231215220325.png" width=20%></div>
+    <div align = center><img src="https://cdn.hobbitqia.cc/20231215220325.png" width=40%></div>
 
 * Star array
 
@@ -380,7 +412,7 @@ The maximum distance of shuffle exchange network: (from the nodes numbered all �
 
 * Grid
 
-    在 GPU 中广泛使用。
+    格网络，在 GPU 中广泛使用。可以把蓝色的点视为开关控制。
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215220416.png" width=20%></div>
 
     可以拓展为 2D torus
@@ -389,7 +421,7 @@ The maximum distance of shuffle exchange network: (from the nodes numbered all �
 
 * Hypercube
 
-    <div align = center><img src="https://cdn.hobbitqia.cc/20231215220544.png" width=20%></div>
+    <div align = center><img src="https://cdn.hobbitqia.cc/20231215220544.png" width=50%></div>
 
     Cube 也可以加上环（Cube with loop）
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215220615.png" width=20%></div>
@@ -398,9 +430,14 @@ The maximum distance of shuffle exchange network: (from the nodes numbered all �
 
 注意到这些都是静态网络。
 
-### Multi-stage interconnection network
+### 2.5 Multi-stage interconnection network - 多级网络不考
+
+// to be continued...
+<!--
 
 通过交叉开关可以实现动态的网络。（根据传过来的信号决定开关是开还是关）
+
+![image-20241212111512207](./markdown-img/CA5.assets/image-20241212111512207.png)
 
 开关也有多种控制方式，可以每个开关都有自己的控制器，可以有一个全局的控制，也可以分级开关，每一级是一样的。
 
@@ -439,9 +476,9 @@ The statuses of switching unit:
 那么 N 个输入，我们需要 $n=\log_2N$ 级，每一级需要 $N/2$ 的交叉开关。
 
 !!! Example "Three-stage cube interconnection network"
-    下面图是一个静态的拓扑结构，中间的布线是三级 cube 网络静态拓扑图，但是开关是可以变化的，因此变成动态了。本身的连线是静态的。
+下面图是一个静态的拓扑结构，中间的布线是三级 cube 网络静态拓扑图，但是开关是可以变化的，因此变成动态了。由开关状态决定了具体是怎么连线的，本身的连线是静态的。
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215222827.png" width=70%></div>
-    
+
     我们把 012 的控制信号进行排列组合，可以得到 8 种不同的控制信号，会得到不同的网络。  
     这里我们改变三级开关的状态（0 表示 connect，1 表示 exchange），最左侧表示入端，表格中间是对应控制信号下的网络出端。
     <div align = center><img src="https://cdn.hobbitqia.cc/20231215223509.png" width=70%></div>
@@ -496,7 +533,9 @@ Multi-level shuffle exchange network is also called **Omega network**.
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20231216004530.png" width=70%></div>
 
-## DLP in GPU
+-->
+
+## 3 DLP in GPU
 
 * *Heterogeneous* execution model
     * CPU is the host, GPU is the device

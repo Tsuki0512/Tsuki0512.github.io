@@ -69,12 +69,12 @@
 
 - 内核态虚拟内存 - 元数据（进程控制块PCB）
 
-      - ![image-20241127232049530](./markdown-img/final_review.assets/image-20241127232049530.png) 
+  - ![image-20241127232049530](./markdown-img/final_review.assets/image-20241127232049530.png) 
 
 - 用户态虚拟内存 - 实际需要的数据资源
 
     ![image-20241209211633935](./markdown-img/final_review.assets/image-20241209211633935.png)
-    
+
 - 静态部分
     - text section - 代码
     - data section - 进程全局变量、静态变量
@@ -153,4 +153,291 @@
 
 ## 2 同步
 
+### 2.1 同步工具
+
+#### 2.1.1 相关定义
+
+- race condition：两个进程同时访问一个资源，并且需要对资源作出修改（这个操作在汇编级别不是原子的）的情况，如果不加访问限制则会导致使用过时数据从而写入错误结果。
+
+- 临界资源：只能被至多一个用户占有的资源
+
+- critical section（临界区段）：访问临界资源的代码段
+
+  ```
+  ┌─────────────────────┐
+  │  Entry Section      │ <-- 判断能否进入临界区（不行则等待）
+  ├─────────────────────┤
+  │  Critical Section   │ <-- 获取、操作临界资源
+  ├─────────────────────┤
+  │  Exit Section       │ <-- 释放临界资源
+  ├─────────────────────┤
+  │  Remainder Section  │ <-- other codes
+  └─────────────────────┘
+  ```
+
+- 临界区问题：如何保证最多只有一个用户在执行临界区段的代码
+
+- 解决方案要求：
+
+  1. 临界互斥
+  2. 选择时间（选择下一个进入临界区的进程）有限
+  3. 等待时间有限
+
+#### 2.1.2 同步算法
+
+*内核态的同步问题：对于单处理器只需要在中断发生后禁止中断即可；对于多处理器我们通过非抢占式内核实现内核态的进程数量唯一。接下来是一些更普适的解法。*
+
+---
+
+##### 2.1.2.1 Peterson's Algorithm
+
+限制：参与竞争的进程只能有两个
+
+```c
+// `i` is 0 or 1, indicating current pid, while `j` is another pid.
+process(i) {
+    j = 1 - i;
+    READY[i] = true;                    // ┐
+    TURN = j;                           // │
+    while (READY[j] && TURN == j) {}    // ├ entry section
+        // i.e. wait until:             // │
+        //  (1) j exits,                // │
+        //  (2) j is slower, so it      // │
+        //      should run now.         // ┘
+    /* operate critical resources */    // - critical section
+    READY[i] = false;                   // - exit section
+    /* other things */                  // - remainder section
+}
+```
+
+可以通过对各种情况的枚举完成对解决方案三条要求的证明。
+
+但其实这个方法不适用于现代处理器，因为采用的是乱序流水线，`READY[i] = true`和`TURN = j`这两条指令没有严格的执行顺序。
+
+##### 2.1.2.2 Memory Barriers
+
+加入`memory_barrier()`主动禁止指令重排：
+
+```c
+// `i` is 0 or 1, indicating current pid, while `j` is another pid.
+process(i) {
+    j = 1 - i;
+    READY[i] = true;                    // ┐
+    memory_barrier();                   // │
+    TURN = j;                           // │
+    while (READY[j] && TURN == j) {}    // ├ entry section
+        // i.e. wait until:             // │
+        //  (1) j exits,                // │
+        //  (2) j is slower, so it      // │
+        //      should run now.         // ┘
+    /* operate critical resources */    // - critical section
+    READY[i] = false;                   // - exit section
+    /* other things */                  // - remainder section
+}
+```
+
+这里还涉及到两个memory model的定义：
+
+1. 强有序(strongly ordered)：进程对内存做的修改立刻对其它处理器可见；
+2. 弱有序(weakly ordered)：进程对内存做的修改不立刻对其它处理器可见；
+
+---
+
+##### 2.1.2.3 Hardware Instructions
+
+我的理解是把一些操作在硬件层面包装成原子操作。
+
+**`test_and_set()`**：
+
+```c
+// 目标设true并返回旧值
+<atomic> test_and_set(bool * target) {
+    bool ret = *target;
+    *target = true;
+    return ret;
+}
+
+// 使用test_and_set解决临界问题
+process(i) {
+    while ( test_and_set(&LOCK) ) {}    // - entry section
+    /* operate critical resources */    // - critical section
+    LOCK = false;                       // - exit section
+    /* other things */                  // - remainder section
+}
+```
+
+为了实现“有限等待时间”的需求，我们需要采取手动分配锁的调度方式：
+
+```c
+// `i` is process id in [0, n), where `n` is the count of related process. 
+process(i) {
+    WAITING[i] = true;                                  // ┐
+    while ( WAITING[i] && test_and_set(&LOCK) ) {}      // ├ entry sec.
+                                                        // │
+    WAITING[i] = false;                                 // ┘
+
+    /* operate critical resources */                    // - critical sec.
+
+    // i.e. find next waiting process j                 // ┐
+    j = (i + 1) % n;                                    // │
+    while (i != j && !WAITING[j]) {                     // ├ exit sec.
+        j = (j + 1) % n;                                // │
+    }                                                   // │
+    // release j's LOCK or release whole LOCK           // │
+    if (i == j)     LOCK = false;                       // │
+    else            WAITING[j] = false;                 // ┘
+
+    /* other things */                                  // - remainder sec.
+}
+```
+
+由释放锁的进程决定下一个进入临界区的进程，采用从$i + 1$开始的遍历形式保证选择顺序使得不会饥饿。
+
+**`compare_and_swap()`**：
+
+```c
+<atomic> compare_and_swap(int * target, int expected, int new_val) {
+    int ret = *target;
+    // *target = (*target == expected) ? new_val : *target;
+    if (*target == expected) {
+        *target = new_val;
+    }
+    return ret;
+}
+```
+
+和`test_and_set()`功能类似但是更加普适、可拓展性好。
+
+通过这个原子操作，我们可以构造**Atomic Variables**（原子变量）：
+
+```c
+increment(atomic_int * v) {
+    int tmp;
+    do {
+        tmp = *v;
+    } while ( tmp != compare_and_swap(v, tmp, tmp+1) );
+}
+```
+
+此时我们直接使用了封装好的原子操作实现了变量修改的原子性，不需要涉及临界区的讨论。
+
+##### 2.1.2.4 Mutex Locks - 互斥锁
+
+是对2.1.2.3的硬件层面原子操作在软件层面的封装：
+
+```c
+// `available` means whether the `LOCK` is free, or whether the related 
+// resources is available
+acquire() {
+    while ( !compare_and_swap(&available, true, false) ) {}
+}
+release() {
+    available = true;
+}
+```
+
+这里也引入了两个概念：
+
+- 忙等待：在`entry`的等待阶段依然占用CPU资源（使用`while`）
+- 自旋锁(spinlock)：使用忙等待的互斥锁
+
+可以通过系统调用避免忙等待，但是要权衡等待浪费的cpu资源和调度开销。
+
+---
+
+##### 2.1.2.5 Semaphores - 信号量
+
+提供的两个标准化原子操作接口：
+
+```c
+<atomic> wait(reference S) {
+    while (S <= 0) {} // 忙等待，表示资源有限
+    S--;
+}
+<atomic> signal(reference S) {
+    S++;
+}
+```
+
+- counting semaphore - 计数信号量
+- binary semaphore - 二值信号量：$0 \le S \le 1$，表示资源只有一个
+
+应用：
+
+1. 程序间通信（或手动串行）
+
+   ```c
+   semaphore S = 0;
+   P0() {
+       /* Section A */
+       signal(S);
+   }
+   P1() {
+       wait(S);
+       /* Section B */
+   }
+   ```
+2. 互斥
+
+   ```c
+   // `i` is process id and S is the semaphores
+   process(i) {
+       wait(S);    // i.e. release the 'LOCK'
+       /* critical section */
+       signal(S);  // only one process can pass this line at once
+   }
+   ```
+
+优化：
+
+避免忙等待：
+
+```c
+struct semaphore {
+    value;
+    waiting_list;
+};
+
+<atomic> wait(reference S) {
+    S->value--;
+    if (S->value < 0) {
+        S->waiting_list.push(current process);
+        sleep();
+    }
+}
+
+<atomic> signal(reference S) {
+    S->value++;
+    if (S->value <= 0) {
+        p = S->waiting_list.pop();
+        wakeup(p);
+    }
+}
+```
+
+// --- TODO ---
+
+### 2.2 同步问题例子
+
+#### 2.2.1 生产者消费者问题 - The Bounded-Buffer Problem
+
+#### 2.2.2 读者写者问题 - The Readers-Writers Problem
+
+#### 2.2.3 哲学家就餐问题 - The Dining Philosophers Problem
+
+### 2.3 死锁问题
+
 ## 3 内存
+
+
+
+## 4 输入/输出
+
+
+
+## 5 存储
+
+
+
+## 6 文件系统
+

@@ -6,9 +6,12 @@ theme:
   palette:
     primary: deep purple
     accent: purple
-  font:
+  #font:
     #text: LXGW WenKai TC
-    text: PT Sans Caption
+    #text: PT Sans Caption
+  font:
+    text: LXGW WenKai Screen GB Screen # Share Tech
+    code: JetBrains Mono
   language: zh
   favicon: assets/hzhf.jpg
   logo: assets/hzhf.jpg
@@ -48,6 +51,7 @@ nav:
       - 流水线: 2024_fall/CA/CA2.md
       - 内存层次: 2024_fall/CA/CA3.md
       - 指令级并行: 2024_fall/CA/CA4.md
+      - DLP和TLP: 2024_fall/CA/CA5.md
     - 操作系统（学习中）:
       - 期末复习: 2024_fall/OS/final_review.md
     - 计算理论（学习中）:
@@ -78,6 +82,8 @@ repo_url: https://github.com/Tsuki0512/Tsuki0512.github.io
 repo_name: Wyr's Notes
 extra_css:
 - assets/stylesheets.css
+- https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css
+- https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css
 extra_javascript:
 - js/baidu-tongji.js
 - https://gcore.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js
