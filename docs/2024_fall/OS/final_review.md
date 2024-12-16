@@ -608,6 +608,8 @@ reader() {
     2. 页第一次被换出的时候page in
     3. 文件系统中的页保留副本，被替换的时候直接覆盖不需要写回（？没太懂
 
+*和交换技术不同，还有一种内存压缩的方式，即把frame放回外存并利用内部碎片，将其merge（没太懂。刷题的时候再看看*
+
 #### 3.3.2 按需换页
 
 结合我们设计的页表和交换技术的思想，我们按需换页的流程如下：
@@ -632,9 +634,96 @@ reader() {
     - major/hard page fault - 缺了的页不在内存中
     - minor/soft page fault - 缺了的页在内存中（共享页、刚被释放还没flush）
 
-// ----- todo ----- 太好了 感觉快完结了（不是 至少过半了（嗯
+### 3.4 物理帧管理
+
+- 可用帧列表free-frame-list - 用来记录空闲帧
+    - free-frame buffer pool - 保证空闲帧数量大于等于一个数，小于这个数就开始置换，可以保证进程不需要等待置换 *置换范围为global*
+    - reclaim pages - 如果空闲帧数量低于下界则置换直到空闲帧数量大于上界 - 由内核例程**收割者（reapers）**完成
+    - OOM(out-of-memory) - 特殊情况导致空闲帧数量特别少，OOM killer杀死OOM score（和进程使用内存百分比正相关）最高的进程
+
+#### 3.4.1 分配策略
+
+- 分配界限
+     - 上界：空闲帧总数
+     - 下界：每一条指令执行所需帧最大值
+- 分配算法
+    - equal allocation - 平均分配
+    - proportional allocation - 按照进程大小加权分配
+        - 可以在此基础上综合考虑进程优先级
+
+#### 3.4.2 置换策略
+
+牺牲帧（victim frame）：被页置换选中的帧，选中后需要判断`dirty`位是否为`1`，如果为`1`则写回后备存储。写回后更新相关元信息并返回该帧作为空闲帧。
+
+1. OPT - 理论最优建模：在未来最久的时间内不会被访问到的页
+2. FIFO - 维护一个FIFO队列即可实现，但是对opt拟合不好
+3. LRU - 栈算法实现：计数器/链表序列，对opt拟合好但是开销大
+4. LRU Approx - 基于优化LRU开销的想法，提出的一些类LRU算法
+    - Additional-Reference-Bits Algorithm - 维护一个bits vector，在每个时钟中断的时候右移vector并在高位补上一个时间片内的reference bit（被使用过置`1`，否则置`0`）；算法的LRU就对应最小vector
+    - Second-Chance Algorithm - 循环遍历frame，检查reference bit，如果为`0`则替换，为`1`则置`0`
+    - Enhanced Second-Chance Algorithm / NRU - 再上一个算法的基础上纳入dirty bit，考虑`(reference, dirty)`，按照$(0,0)\to(0,1)\to(1,0)\to(1,1)$的替换优先级循环遍历查找
+5. 基于计数的替换 - counter表示被使用的次数
+    - LFU - 选择counter最小的frame作为victim frame
+    - MFU - 选择counter最大的frame作为victim frame
+
+置换范围：
+
+- local - 置换只发生在当前进程的帧中
+- global - scope的所有帧（受frame下界约束）
+    - priority replacement - 只允许高优先级的进程替换低优先级的frame
+
+### 3.5 抖动 - thrashing
+
+抖动定义：几乎所有frames都在被使用，几乎每次置换都会有一次page fault
+
+解决方法：
+
+1. priority replacement  algorithm - 本质还是循环抢占，规定抢占方向（？）就可以避免这个问题
+2. working set
+    - 判定是否会thrashing：将每一个进程在一个$\Delta$时间窗口内用到过的frame建模为工作集$WS_i$，判断工作集之和和可用frame总量，如果大于则会thrashing
+    - 解决thrashing：挂起部分进程
+3. PFF - 缺页频率：与可用帧数量大致负相关，设定上下界进行负反馈控制
+
+### 3.6 内核内存
+
+避免内存碎片、保障连续性。
+
+1. Buddy系统 - 通过二分的方式找到合适的内存，并在需要的时候可用合并回更大的内存
+2. Slab分配 - 预先了解到内核常见数据结构大小 $\to$ 将对应大小的内存块注册到cache $\to$ 需要的时候分配对应大小的内存
 
 ## 4 输入/输出
+
+### 4.1 定义
+
+- 总线bus - 硬件与协议的统一，连接各个硬件传输数据
+- 端口port - 设备与总线连接点
+- 控制器controller - 控制硬件的设备组成
+
+### 4.2 I/O方式
+
+#### 4.2.1 轮询polling
+
+CPU不断向controller查询状态直至可以完成I/O
+
+#### 4.2.2 中断Interrupt
+
+CPU提出I/O请求 $\to$ 调走进程 $\to$ I/O设备处理 $\to$ 向CPU发送中断，CPU对该进程做处理
+
+#### 4.2.3 DMA
+
+内存和I/O设备直接交互，CPU向DMA controller发送命令 $\to$ DMA处理完成后controller向CPU发送中断
+
+### 4.3 I/O接口
+
+各设备区别：
+
+![image-20241216150941187](./markdown-img/final_review.assets/image-20241216150941187.png)
+
+利用driver和controller屏蔽不同设备区别：
+
+![image-20241216150958517](./markdown-img/final_review.assets/image-20241216150958517.png)
+
+// ----- todo ----- 争取明天完结！
 
 ## 5 存储
 
