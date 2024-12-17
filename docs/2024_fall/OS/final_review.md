@@ -723,8 +723,89 @@ CPU提出I/O请求 $\to$ 调走进程 $\to$ I/O设备处理 $\to$ 向CPU发送�
 
 ![image-20241216150958517](./markdown-img/final_review.assets/image-20241216150958517.png)
 
-// ----- todo ----- 争取明天完结！
-
 ## 5 存储
 
+### 5.1 硬盘 - HDD
+
+属于易失性内存。
+
+#### 5.1.1 I/O流程及开销计算
+
+1. 磁头r/w heads$\to$柱面cylinders$\to$磁道tracks - 寻道时间seek time
+2. 磁头$\to$扇区sectors - 旋转时延rotational latency - 平均旋转时延$\frac{1}{2} · \frac{1}{rpm} · 60s$
+    - 和寻道时间相加是average access time（开销大头，距离越远开销越大）
+3. 数据传输 - 传输时间transfer time = $\frac{\text{data to transfer}}{\text{transfer rate}}$
+
+此外计算average I/O time的时候还要加上控制器开销controller overhead
+
+而评估I/O性能的指标为disk bandwidth = $\frac{\text{传输数据量}}{{请求开始到传输完成的时间间隔}}$
+
+#### 5.1.2 调度算法
+
+默认会选择SSTF，I/O较为频繁的时候用LOOK或者C-LOOK
+
+##### 5.1.2.1 FCFS
+
+没有优化。
+
+##### 5.1.2.2 SSTF
+
+- 低平均响应时间、高吞吐量
+- **不是理论最优**、方差大、饥饿问题、seek time计算开销
+
+##### 5.1.2.3 SCAN
+
+![image-20241217163753307](./markdown-img/final_review.assets/image-20241217163753307.png)
+
+- 低平均响应时间、低方差、高吞吐量
+- 部分磁头刚刚经过的地方的请求要等待的时间更长
+
+##### 5.1.2.4 LOOK
+
+在SCAN的基础上走到最靠近边界的请求对应的LBA就提前掉头 - 减少不必要的SCAN
+
+##### 5.1.2.5 C-SCAN
+
+在SCAN的基础上到达边界的时候径直返回另一端
+
+![image-20241217164618853](./markdown-img/final_review.assets/image-20241217164618853.png)
+
+- 等待时间比SCAN更均匀
+
+##### 5.1.2.6 C-LOOK
+
+在C-SCAN的基础上走到最靠近边界的请求对应的LBA就提前掉头 - 减少不必要的C-SCAN
+
+[一道不错的例题](https://note.isshikih.top/cour_note/D3QD_OperatingSystem/Unit5/#c-scan--c-look)
+
+### 5.2 非易失性内存 - NVM
+
+例如固态硬盘SSD
+
+1. 没有寻道时间和旋转时延，比HDD更可靠快速小巧功耗低，价格更贵
+    - 瓶颈在总线传输速率 - 会直接连接到系统总线
+2. 以page粒度读写，必须先擦后写
+3. 由若干die组成，支持并行
+4. 擦除操作导致存在寿命
+
+### 5.3 存储介质管理技术
+
+#### 5.3.1 初始化流程
+
+1. 低级格式化 - 实现自身结构化管理
+    - 分扇区、创建映射和闪存转换层
+    - 为扇区或页维护数据结构信息，将数据包装为 header + data + tail 的形式（元数据）
+        - *“由于扇区数量与 header & tail 占用的空间正相关，所以扇区越大一般意味着用户可用空间越大。”没懂。*
+    - 将坏块映射到不可见的备用分区
+2. 记录操作系统所需数据结构
+    - 分区partitioning - 将存储空间划分为一个个单独的logical disk
+    - 卷创建与卷管理volume creating & management - 划定文件系统覆盖的范围
+    - 逻辑格式化logical formatting - 在卷上创建和初始化文件系统
+
+#### 5.3.2 RAID - 独立磁盘冗余阵列
+
+使用冗余的方法解决硬盘的不可靠问题（具体可以看数据库笔记）。
+
 ## 6 文件系统
+
+// todo（这下明天应该真的能完结了（嗯）
