@@ -538,12 +538,11 @@ Multi-level shuffle exchange network is also called **Omega network**.
 ## 3 DLP in GPU
 
 * *Heterogeneous* execution model
-    * CPU is the host, GPU is the device
-
+  
 * Unify all forms of GPU parallelism as **CUDA thread**
-* Programming model is “**Single Instruction Multiple Thread**”
+* Programming model is “**Single Instruction Multiple Thread**” - 单指令流多线程，从流水线的假并行到了真的并行
 
-**GPUs are really just multithreaded SIMD Processors**.
+**GPUs are really just multithreaded SIMD Processors**. - 多线程的SIMD，仍然归属福林分类法之一
 
 ### Programming the GPU: CUDA
 
@@ -552,10 +551,14 @@ Multi-level shuffle exchange network is also called **Omega network**.
 !!! Example
     <div align = center><img src="https://cdn.hobbitqia.cc/20231216005033.png" width=70%></div>
 
+前提条件：没有跨循环的相关，可以转换为向量（并行）处理；
+
+每一个循环迭代会转换为一个独立的线程。
+
 ### Grid, Thread Blocks and Threads
 
-* A **thread** is associated with each data element
-* Threads are organized into **blocks**
+* A **thread** is associated with each data element - 软件的程序员定义的
+* Threads are organized into **blocks** - 硬件manage的
 * Blocks are organized into a **grid**
 
 GPU hardware handles thread management, not applications or OS.
@@ -569,6 +572,10 @@ GPU hardware handles thread management, not applications or OS.
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20231216005138.png" width=70%></div>
 <div align = center><img src="https://cdn.hobbitqia.cc/20231216005355.png" width=70%></div>
+
+相比单纯的向量处理阵列（左），GPU（右）多了使用**硬件实现**的线程调度机制，更快速和稳定（成本也高）：
+
+![image-20241219103203631](./markdown-img/CA5.assets/image-20241219103203631.png)
 
 ## Loop-Level Parallelism (LLP)
 
@@ -594,21 +601,31 @@ Focuses on determining whether data accesses in later iterations are dependent o
         B[i+1] = C[i] + D[i]; /* S2 */
     }
     ```
-    交换 S1 S2，随后把第一次和最后一次运算提出去，可以改为下面这样，就可以并行。
+​    交换 S1 S2，随后把第一次和最后一次运算提出去，可以改为下面这样，就可以并行。
     ``` C
     A[0] = A[0] + B[0];
     for (i=0; i<99; i=i+1) {
         B[i+1] = C[i] + D[i]; /* S2 */
-        A[i] = A[i] + B[i]; /* S1 */
+        A[i+1] = A[i+1] + B[i+1]; /* S1 */
     }
     B[100] = C[99] + D[99];
     ```
+
+![image-20241219103621347](./markdown-img/CA5.assets/image-20241219103621347.png)
+
+绿色：名相关
+
+橙色：数据传递
+
+蓝色：输出相关
 
 ## MIMD: Tread-level Parallelism
 
 线程级的并行，称为 TLP，是由软件系统来确认的。
 
 The threads consist of hundreds to millions of instructions that may be executed in parallel.
+
+粒度从单条指令变成了线程。
 
 我们的发展从 ILP，到 TLP，再到 MIMD。
 
@@ -618,11 +635,11 @@ Multi-processor system 可以分为两大类：
 
     系统中只有唯一的地址空间，所有进程共享。
     
-    并不代表只有一个物理上的内存，实际上可以通过一块物理共享的内存实现，也可以通过分布式的内存实现。
+    并不代表只有一个物理上的内存，实际上可以通过一块**物理共享**的内存实现，也可以通过分布式的内存实现。
 
 * based on message passing
 
-    每个处理器都有自己的地址空间，通过消息传递来通信、传送数据。
+    每个处理器都有自己的地址空间（有自己的权限管理），通过**消息传递**来通信、传送数据。
 
 ### Shared Memory System
 
@@ -630,9 +647,9 @@ Multi-processor system 可以分为两大类：
 
 可以把共享内存划分为若干块，他们共同构成一个拼图（即统一的地址空间）。
 
-有一个统一的操作系统，负责管理所有的信息、内存，给不同的进程使用内存。
+有一个**统一的操作系统**（操作系统唯一），负责管理所有的信息、内存，给不同的进程使用内存。
 
-If in a system, each CPU has equal access to all memory modules and input/output devices, and these CPUs are interchangeable in the operating system, then the system is a symmetric multiprocessor system **SMP (Symmetric Multi- processor)**.
+If in a system, each CPU has equal access to all memory modules and input/output devices, and these CPUs are interchangeable in the operating system, then the system is a symmetric multiprocessor system **SMP (Symmetric Multi-processor)**.
 
 ### Message Passing System
 
@@ -640,7 +657,7 @@ If in a system, each CPU has equal access to all memory modules and input/output
 
 每一个进程都有自己的内存，通过 ICN 来传递信息，可以共同完成任务。
 
-一般每个进程有自己的 OS，但是组合在一起形成一个大的系统。
+一般每个进程**有自己的 OS**，但是组合在一起形成一个大的系统。
 
 Communication in the system is achieved by using an **interconnection network** to pass messages.
 
@@ -662,7 +679,7 @@ Communication in the system is achieved by using an **interconnection network** 
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20240110203036.png" width=50%></div>
 
-所有的物理存储器，由所有的进程一起使用，均匀共享，即没有进程对某个存储器有特殊的访问权限，访问的时间相同，即不存在谁离谁更近的问题。
+所有的物理存储器，由所有的进程一起使用，**均匀共享**，即没有进程对某个存储器有特殊的访问权限，访问的时间相同，即不存在谁离谁更近的问题。
 
 进程可以有自己的拓展，比如 cache、IO、local memory。
 
@@ -675,20 +692,22 @@ Communication in the system is achieved by using an **interconnection network** 
 ??? Example
     <div align = center><img src="https://cdn.hobbitqia.cc/20240110203433.png" width=60%></div>
 
+每个CPU也可以有自己的私有内存和cache
+
 #### NUMA
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20240110203501.png" width=50%></div>
 
-对某个进程都自己的 local memory，由 ICN 连起来。被共享的存储器是不均匀的。访问自己的 local memory 最快，访问别人的慢。
+对某个进程都自己的 local memory，由 ICN 连起来。被共享的存储器是不均匀的。访问自己的 **local memory 最快**，访问别人的慢。
 
 进程也可以有自己的拓展。
 
 NUMA 有两种拓展，
 
-* NC-NUMA: Non Cache NUMA
-* CC-NUMA: Coherent Cache NUMA
+* NC-NUMA: Non Cache NUMA 没cache
+* CC-NUMA: Coherent Cache NUMA 有cache
 
-    有自己的 cache 和目录，存在 cache 一致性的问题。当有一个数据改了，如何保证其他 cache 里的数据的正确性。
+    有自己的 cache 和目录，存在 cache 一致性的问题。当有一个数据改了，如何保证其他 cache 里的数据的正确性。多个cache从表现上不存在内存的不统一，好像只有一个cache一样。
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20240110204714.png" width=55%></div>
 
@@ -719,9 +738,15 @@ COMA 是 NUMA 模型的特例，每个进程之间不存在层次关系，可以
 
 ### Cache Coherence
 
+![image-20241219121230683](./markdown-img/CA5.assets/image-20241219121230683.png)
+
+#### Memory Consistency VS Cache Coherence
+
+在Memory Consistency中，对一组先写后读的指令先读后写是错误的，需要保证指令执行的顺序性。Need Memory Consistency Model
+
 In modern parallel computers, processors often have Cache. One memory data may have multiple copies in the entire system. This leads to the Cache coherence problem.  
 
-可能有多个 cache，都放有内存拷贝的数据，可能不一致。我们一般通过一个协议来约定。
+可能有多个 cache，都放有内存拷贝的数据，可能不一致。我们一般通过一个协议来约定。Need Cache Coherence Protocol
 
 * Bus snooping protocol
 * Directory based protocol
@@ -736,7 +761,30 @@ In modern parallel computers, processors often have Cache. One memory data may h
 
     写一个值时，要把写的值返回（通过读指令），什么时候返回。
 
-<!-- #### Snoopy Coherence Protocols
+#### Coherence的保障
+
+- A Write-Through cache with No-Write Allocation
+
+  ![image-20241219112245687](./markdown-img/CA5.assets/image-20241219112245687.png)
+
+- A Write-Back cache with Write Allocation
+
+  ![image-20241219112318855](./markdown-img/CA5.assets/image-20241219112318855.png)
+
+对于一致性协议，主要分为两大类：
+
+1. 总线监听协议 - Snoopy coherence protocols - For UMA
+2. 共享目录协议 - Directory protocol - For NUMA
+
+使用有限状态机管理cache的状态，例如什么时候被更新，加入保持一致性的状态转化
+
+MSI protocol：
+
+- Invalid
+- Shared
+- Modified
+
+#### Snoopy Coherence Protocols
 
 For UMA, the cache coherence problem is solved by the **snoopy protocol**.
 
@@ -744,7 +792,7 @@ For UMA, the cache coherence problem is solved by the **snoopy protocol**.
 
 * Write-through Cache Coherency Protocol
 
-    https://cdn.hobbitqia.cc/20240110211248.png
+    ![image-20241219114652248](./markdown-img/CA5.assets/image-20241219114652248.png)
 
 Write Invalidation Protocol
 
@@ -759,7 +807,7 @@ Write Invalidation Protocol
 
     indicates that the block has been updated in the private cache; implies that the block is exclusive.
 
-https://cdn.hobbitqia.cc/20240110211602.png
+![image-20241219114613784](./markdown-img/CA5.assets/image-20241219114613784.png)
 
 MSI 可以拓展为 MESI，多一个 exclusive。将其与 modified 区别开。
 exclusive: indicates when a cache block is resident only in a single cache but is clean.
@@ -777,7 +825,7 @@ MESI
 
 * Invalid: The data contained in the cache item is invalid.
 
-    这个 CPU 里的缓存数据已经无效了（即在其他 CPU 里被改过了，而且还没有共享）
+    这个 CPU 里的缓存数据已经无效了（即在其他 CPU 里被改过了，而且还没有共享），CPU读数据的时候，没法读。
 
 * Shared: This row of data exists in multiple cache items, and the data in the memory is the latest.
 
@@ -785,16 +833,34 @@ MESI
 
 * Exclusive: No other cache items include this row of data, and the data in memory is the latest.
 
-    只有在自己的 CPU 里缓存，但是没有被修改，与内存一致。（因此其他 CPU 要读就可以改为 shared）
+    只有在自己的 CPU 里缓存，但是没有被修改，与内存一致。（因此其他 CPU 要读就可以改为 shared）--- 此CPU是唯一有效版本。
 
 * Modified: The data of the item is valid, but the data in the memory is invalid, and there is no copy of the data in other cache items.
 
     被修改了。处于这个状态的数据只有在自己的 CPU 里才有缓存，这个时候还没有更新到内存里。
 
-https://cdn.hobbitqia.cc/20240110212328.png
+![image-20241219114855709](./markdown-img/CA5.assets/image-20241219114855709.png)
 
 !!! Example
     假设有两个 CPU。本地发一个 local write 的请求，如果发现所有 cache 中都没有这个地址（初始是 invalid），A 要写，对应 cache line 的状态就会变为 modified。CPU B 来读，发出 remote read，就变为了 shared（A 和 B 的 cache line 都是 share 的）。
     
 
-    如果 A 想写，B 也想，同时 A 先发起写，那么 A 中的 cache line 就变为 invalid。（只要有别人在我后面写，就变为无效） -->
+    如果 A 想写，B 也想，同时 A 先发起写，那么 A 中的 cache line 就变为 invalid。（只要有别人在我后面写，就变为无效） 
+
+False sharing
+
+本身两个线程之间的变量没有关系，但是在同一个cacheline里面，会导致cache的状态频繁切换，性能降低：
+
+![image-20241219120044340](./markdown-img/CA5.assets/image-20241219120044340.png) ![image-20241219120059941](./markdown-img/CA5.assets/image-20241219120059941.png)
+
+解决方式：
+
+通过内存填充把两个变量分别放到两个cache：
+
+![image-20241219120137785](./markdown-img/CA5.assets/image-20241219120137785.png)
+
+Memory Consistency
+
+宽松一致性模型 Relaxed Consistency Models
+
+读写允许乱序，需要同步信息（保证程序正确性）

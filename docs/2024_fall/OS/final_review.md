@@ -181,9 +181,9 @@
 
 - 解决方案要求：
 
-  1. 临界互斥
-  2. 选择时间（选择下一个进入临界区的进程）有限
-  3. 等待时间有限
+    1. 临界互斥
+    2. 选择时间（选择下一个进入临界区的进程）有限
+    3. 等待时间有限
 
 #### 2.1.2 同步算法
 
@@ -808,4 +808,126 @@ CPU提出I/O请求 $\to$ 调走进程 $\to$ I/O设备处理 $\to$ 向CPU发送�
 
 ## 6 文件系统
 
-// todo（这下明天应该真的能完结了（嗯）
+### 6.1 文件系统
+
+- 文件系统FS：数据存储形式的逻辑视图
+    - 文件系统挂载mount - 把一个文件系统的根目录挂载到另一个文件系统的mount point（某个目录）使得其可以访问被挂载的文件系统
+    - 分层设计：
+        - application programs
+        - logical file system - 维护目录信息（不包括内容）
+        - file-organization module - 实现文件逻辑地址到物理地址的映射，管理空闲空间
+        - basic file system - 参与I/O调度，管理内存缓冲区和cache
+        - I/O control - 与具体设备交互的接口
+        - devices
+    - 数据结构：
+        - 硬盘数据结构
+            - boot control block (per volume)
+            - volume control block (per volume)
+            - directory structure (per FS)
+            - file control block (per FS)
+        - 内存数据结构
+            - mount table
+            - directory cache
+            - system-wide open-file table
+            - per-process open-file table
+            - buffers
+- 虚拟文件系统VFS
+    - 封装具体文件操作以支持不同文件系统
+    - 为文件系统提供唯一标识文件的数字提示符
+- 性能与安全：页缓冲、恢复、日志系统
+- 典型文件系统（todo：参考笔记不全，待刷王道完善）
+    - ext
+    - FAT
+    - NTFS
+
+### 6.2 目录
+
+- 目录：文件进行结构化组织和管理的方式，实现filename到FCB的映射（目录项：filename和指向FCB/Inode的指针）
+    - 单级目录 - 文件名必须唯一，按文件名索引
+        - 多级目录不同目录下文件名可以相同
+    - 二级目录 - 主文件目录MFD下为每个用户分配一个用户文件目录UFD，按文件路径索引
+    - 树形目录 - 叶子节点是非目录节点，非叶子节点是目录节点，按文件路径索引
+    - 无环图目录 - 在树形目录基础上允许链接关系
+        - 软链接soft link/符号链接symbolic link - 特殊的文件，指向文件的指针，删除文件不会删链接而是使得链接失效
+        - 硬链接hard link - 目录表项，复制所有元信息；需要维护一致性，删除使用reference counter维护；无法跨越文件系统
+    - 通用图目录 - 在无环图目录基础上允许存在环，通过算法避免问题
+- 实现方法：
+    - 线性检索法
+    - 哈希表法
+
+### 6.3 文件
+
+- 文件：数据在硬件存储的抽象
+
+- 文件控制块FCB：维护被打开文件具体信息（权限、操作日期、ACL、大小、所在地址）
+    - UFS中指的是一个inode；NTFS中在master file table中被维护
+
+- 文件属性：也被称为元数据，不同系统下包括不同的文件属性，例如`name`、`identifier`、`type`、`location`、`size`、`protection`、`timestamp`和`user identification`等
+- 文件操作：
+    - `create` - 文件系统中为文件分配空间、创建FCB + 目录中创建对应条目、更新父目录信息
+    - `open`/`close`
+        - 对文件的操作通过打开文件后获得的句柄handle完成
+        - 打开文件表open-file table：保存被打开文件的信息（句柄、位置、访问权限）
+            - 当前文件被打开次数open-file count - 在`delete`的时候如果`-1`后为`0`则释放空间
+            - 系统调用`open()`的时候先在这里找（找到说明其他进程正在使用，付出额外一些开销即可使用），找不到再去目录结构找
+    - `read`/`write`
+        - 当前操作位置current-file-position pointer
+        - `repositioning`/`seek` - 把pointer重新定位到给定值
+    - `truncate` - 清空文件内容，保留文件属性
+    - `locking`
+- 权限保护：访问控制列表ACL（性价比低，表项可能不定长）；访问权限位access permission bits
+- 文件类型：数据；程序。*UNIX系统使用magic number标识*
+- 文件结构：无结构（流式存储）；简单记录结构（以record为单位存储）；复杂结构。
+- 访问方式：
+    - 顺序访问sequential access
+    - 直接访问direct access/相对访问relative access/随机访问random access - 访问任意位置的时间几乎相同
+        - 索引顺序访问indexed sequential-sccess
+
+### 6.4 块分配与块组织
+
+*这块会考计算题。*
+
+**连续contiguous**
+
+每个文件占用一段连续的block，目录记录文件名和起始地址、长度。
+
+- 文件变小 - 产生外部碎片
+    - 解决方式 - compacts，先迁移再存放消除空隙，但是开销大
+- 文件变大 - 可能需要迁移文件
+    - 解决方式 - extent，分配新的空间链接到原始空间后面
+
+**链接linked**
+
+目录记录文件名、起始地址和结束地址，每个block记录指向下一个block的指针（valid block size需要减去指针的长度）。
+
+- 无法随机访问
+- 指针需要额外存储空间
+    - 使用多个连续块为一个链节的**簇cluster**减少指针的额外开销
+
+**索引indexed**
+
+目录记录文件名和index block，index block中顺序存放指向文件所有block的指针。
+
+当一个index block不够的时候我们的解决方案：
+
+1. 链接索引
+2. 多级索引
+3. **各多级索引混合模式** - 容易出计算题，要理解
+
+### 6.5 空闲空间管理
+
+- **位图bitmap**
+
+    - 用一个bit`0/1`标识该block是否空闲。
+
+    - 容易得到连续空间，bit和block相邻关系一致。
+
+- **链表** - 将空闲的block连起来
+- **分组** - n个空闲块地址存放第0个空闲块中，在第n个空闲块存储后n个空闲块的地址
+- **计数** - 维护每个连续内存段起始地址和长度（块数）
+
+---
+
+嘿嘿第一轮完结撒花！不过预计还有很多需要补充的，后续刷王道会慢慢update上去！
+
+2024.12.19
