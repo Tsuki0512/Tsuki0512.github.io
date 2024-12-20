@@ -90,6 +90,9 @@ The improvement of computer architecture
 * The development of memory organization structure
 * Two directions of instruction set development
     * CISC / RISC 
+    * ![image-20241220212805238](./markdown-img/CA1.assets/image-20241220212805238.png)
+    * **CISC** 的设计理念更侧重于减少程序的指令数量，单条指令功能复杂，适合某些需要复杂计算的应用。
+    * **RISC** 则通过简化指令集，优化硬件设计，使得处理器能够更高效地执行指令，适合需要高频率、高效并行计算的应用。
 * Parallel processing technology  
 不同层次、粒度的并行
 
