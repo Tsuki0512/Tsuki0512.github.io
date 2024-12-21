@@ -75,4 +75,108 @@
 
 ## 2 流水线
 
-// todo
+### 2.0 流水线概述
+
+![image-20241221204727974](./markdown-img/final_review.assets/image-20241221204727974.png)
+
+体系结构的流水线部分主要分为以下知识点：
+
+1. 指令执行方式：串行、有重叠、两次重叠、流水线...
+2. 流水线的分类：单功能/多功能（静态/动态）、不同粒度、线性/非线性、顺序/乱序、标量/向量处理器...
+    - 这块不额外理了，看到上述概念要清楚地知道区别，不清楚的可以查看[课堂笔记](https://tsuki0512.github.io/2024_fall/CA/CA2/#classes-of-pipelining)
+3. 流水线性能评估：吞吐量、加速比、效率...
+4. 影响流水线性能的因素：流水线的设计、指令类型、指令相关性及其处理
+    - 冲突类型：![image-20241221204437739](./markdown-img/final_review.assets/image-20241221204437739.png)
+5. 动态分支预测：BHT、BTB
+6. 流水线非线性规划问题
+
+### 2.1 流水线的overlapping设计
+
+实现流水线的本质是通过overlap。将指令进行分段后可以让每一段使用不同的部件，并行执行。
+
+- 每段时间如果不一致会引起：
+    - 前面的阶段较长 - 资源浪费
+    - 后面的阶段较长 - 部件冲突
+- 分成三段后的时间计算：
+    - 串行 - $3n\Delta t$
+    - Single overlap - $(2n+1)\Delta t$
+    - Twice overlap - $(n+2)\Delta t$
+    - trade-off是硬件更复杂了
+    - 流水线被分为几段称为流水线的深度
+- 实现重叠的具体方式：
+    - I Mem和D Mem区分避免结构冲突
+    - 使用buffer缩短IF阶段时间使其和ID阶段合并
+    - 也可以使用buffer平滑每段时间的差异：使得两个流水线阶段不需要直接连接，可以有空隙，流水线执行时间完全取决于EX段
+
+### 2.2 流水线性能评估
+
+#### 2.2.1 吞吐率Throughput
+
+定义是$\frac{指令数量}{执行时间}$，没有量纲。
+
+我们把最长的流水线段称为瓶颈段（时间为$\Delta t$），可以看到（推导出）$TP_{max} = \frac{1}{\Delta t}$
+
+针对瓶颈段的优化方式有：
+
+- subdivision - 给瓶颈段分段执行
+- repetition - 在瓶颈段多使用几个部件并行执行
+
+#### 2.2.2 加速比Speedup
+
+$S_p = \dfrac{n\times m \times \Delta t_0}{(m+n-1)\times \Delta t_0} = \dfrac{n \times m}{m+n-1}$，没有量纲。
+
+在$n >> m$的时候加速比约等于段数$m$，但是受数据读取传输损耗影响，段数不能无限大。
+
+#### 2.2.3 效率Efficiency
+
+具象化理解就是流水线时空图里面有颜色的占总长方形之比。单位是百分比。
+
+$\eta = \dfrac{n\times m \times \delta t_0}{m(m+n-1)\delta t_0} = \dfrac{n}{m+n-1}$
+
+在$n >> m$的时候效率约等于$100\%$。
+
+记得看看[这两道例题](https://tsuki0512.github.io/2024_fall/CA/CA2/#pipeline-performance)
+
+### 2.3 流水线冒险
+
+感觉这一块lab1和3写过都差不多清楚了，稍微理个框架吧。细节看[课堂笔记](https://tsuki0512.github.io/2024_fall/CA/CA2/#hazards-of-pipelining)
+
+流水线的冒险可以分为以下几类：
+
+- 结构冒险 - 多条指令征用同一种资源
+    - 解决方式：加bubble、加硬件、分I-cache和D-cache...
+- 数据冒险
+    - Data dependence: RAW
+        - 可以通过调度指令解决
+            - 静态调度：编译器，程序运行前
+            - 动态调度：处理器，程序运行时
+        - Forwarding 和 Stalling - 需要清楚判断条件
+            - EX hazard
+            - MEM hazard (double hazard)
+            - Load-use hazard - 需要额外stall一拍
+    - Name dependence: WAR/WAW
+        - Anti-dependence - 毫不相干的两个操作数使用了同一个寄存器
+        - Output-dependence - 两条指令的结果写到同一个寄存器内
+        - 在顺序流水线重命名寄存器即可解决，乱序流水线可能有冲突冒险
+- 控制冒险 - 采用分支预测减少stall
+    - 静态分支预测
+        - 延时槽
+    - 动态分支预测
+        - BTB - 1 bit、2 bits...
+        - BHT
+    - *这里也会有data hazard，处理思路也是能forward就forward，否则stall*
+
+### 2.4 非线性流水线调度问题
+
+// [todo](https://tsuki0512.github.io/2024_fall/CA/CA2/#schedule-of-nonlinear-pipelining)
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>

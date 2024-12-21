@@ -53,22 +53,26 @@ Three modes of execution
 
 * Twice    
   好处：时间缩短 2/3，但需要更复杂的硬件，而且需要单独的 FETCH DECODE EXE 部件。
+  
     <div align = center><img src="https://cdn.hobbitqia.cc/20230928231838.png" width=60%></div>
 
 如何实现重叠？
 - Instruction Memory和Data Memory区分开避免Conflict in access memory
+
 - buffer（以空间换时间）
-Adding instruction buffer between memory and instruction decode unit.  
-添加 buffer 之后，IF 阶段时间变得很短，此时可以和 ID 阶段**合并**（把二次重叠变为了**一次重叠**，时间较顺序执行缩短了一半且硬件代价小）。
+  Adding instruction buffer between memory and instruction decode unit.  
+
+  添加 buffer 之后，IF 阶段时间变得很短，此时可以和 ID 阶段**合并**（把二次重叠变为了**一次重叠**，时间较顺序执行缩短了一半且硬件代价小）。
 
 但如果合并后 IFID 和 EX 阶段时间不一致，也会有执行部件的浪费。  
+
 如何平滑速度的差异？- buffer
 
 Common features: They work by FIFO, and are composed of a group of several storage units that can be accessed quickly and related control logic.
 <div align = center><img src="https://cdn.hobbitqia.cc/20230928232451.png" width=60%></div>
 <div align = center><img src="https://cdn.hobbitqia.cc/20230928232708.png" width=60%></div>
 
-可以看到，添加 buffer 之后，ID 阶段不用等待 EX 阶段技术才能进行下一条的译码，因为 ID 阶段的结果已经存放在 buffer 中了。即执行阶段的操作数不直接来自于 ID 阶段，而是从buffer里面取。这样之后 EX 阶段就连起来了，处理器的资源利用率大大提高。
+可以看到，添加 buffer 之后，ID 阶段不用等待 EX 阶段结束才能进行下一条的译码，因为 ID 阶段的结果已经存放在 buffer 中了。即执行阶段的操作数不直接来自于 ID 阶段，而是从buffer里面取。这样之后 EX 阶段就连起来了，处理器的资源利用率大大提高。
 
 流水线被分为几段被称为流水线的深度。
 
@@ -165,7 +169,7 @@ Suppose the time of segments are different in pipelining, then the longest segme
 
 是一个比值，没有量纲，表示加速比。
 
-$S_p = \dfrac{n\times m \times \delta t_0}{m(m+n-1)\delta t_0} = \dfrac{n}{m+n-1}$
+$S_p = \dfrac{n\times m \times \Delta t_0}{(m+n-1)\times \Delta t_0} = \dfrac{n \times m}{m+n-1}$
 
 * if $n>>m, S_p\approx m$，和流水线段数有关，但是读取、传输数据的损耗在m很大的时候也不能忽略不计，因此m不能无限大
 
@@ -212,10 +216,12 @@ Too many stages:
 ## Hazards of Pipelining
 
 - data dependence - 上一条指令的输出是下一条指令的输入
+
 - name dependences
+
    - Anti-dependence - 毫不相干的两个操作数使用了同一个寄存器
    - Output-dependence - 两条指令的结果写到同一个寄存器内
-   
+
    ![image-20240926115400968](./markdown-img/CA2.assets/image-20240926115400968.png)
 
 Hazards
@@ -308,17 +314,15 @@ An instruction depends on completion of data access by a previous instruction.
 
 * EX hazard & MEM hazard - forwarding
 
-  ![aca74df851c66695692159117105626](./markdown-img/CA2.assets/aca74df851c66695692159117105626.png)
+  ![image-20241221214502246](./markdown-img/CA2.assets/image-20241221214502246.png)
 
 * Double hazard - 在MEM hazard的判定条件中加入不发生EX hazard
 
-  ![017712e6fc1679ac58698a8eb74c236](./markdown-img/CA2.assets/017712e6fc1679ac58698a8eb74c236.png)
+  ![image-20241221214520907](./markdown-img/CA2.assets/image-20241221214520907.png)
 
 * Load-use hazard - 除了forwarding之外还需要一个stall
 
-  ![d48261120bf32a2d66881b16d3b176f](./markdown-img/CA2.assets/d48261120bf32a2d66881b16d3b176f.png)
-
-  ![63bc0d53bc06e312bff71e7869dace6](./markdown-img/CA2.assets/63bc0d53bc06e312bff71e7869dace6.png)
+  ![image-20241221214605749](./markdown-img/CA2.assets/image-20241221214605749.png)
 
 ## Control Hazards
 
