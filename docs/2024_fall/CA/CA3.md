@@ -138,9 +138,11 @@ counter: True
 Hit rate is related to the replacement algorithm, the access sequence, the cache block size.
 * 特殊的访问序列：例如thrashing -  一直无法hit，每次都把下一次要访问的替换出去。
 
-  ![image-20241024111515213](./markdown-img/CA3.assets/image-20241024111515213.png)
+  ![image-20241225192842037](./markdown-img/CA3.assets/image-20241225192842037.png)
 
-* block size: ![image-20241024111538372](./markdown-img/CA3.assets/image-20241024111538372.png)
+* block size: 
+
+  ![image-20241225192920530](./markdown-img/CA3.assets/image-20241225192920530.png)
 
 #### Stack replacement algorithm
 
@@ -149,10 +151,12 @@ Hit rate is related to the replacement algorithm, the access sequence, the cache
 
 $B_t(n)$ represents the set of access sequences contained in a cache block of size $n$ at time $t$.
 
-* $B_t(n)$ is the subset of $B_t(n＋1)$.
+* $B_t(n)$ is the subset of $B_t(n+1)$.
 
 **LRU** replacement algorithm **is** a stack replacement algorithm, while **FIFO is not**.  
-FIFO - Belady现象：![image-20241024114600314](./markdown-img/CA3.assets/image-20241024114600314.png)
+FIFO - Belady现象：
+
+![image-20241225193105359](./markdown-img/CA3.assets/image-20241225193105359.png)
 
 For LRU algorithm, the hit ratio always increases with the increase of cache block.
 
@@ -216,17 +220,7 @@ How to improve
 
 例子：
 
-![image-20241024122416078](./markdown-img/CA3.assets/image-20241024122416078.png)
-
-![image-20241024122431202](./markdown-img/CA3.assets/image-20241024122431202.png)
-
-![image-20241024122442963](./markdown-img/CA3.assets/image-20241024122442963.png)
-
-![image-20241024122458243](./markdown-img/CA3.assets/image-20241024122458243.png)
-
-![image-20241024122522331](./markdown-img/CA3.assets/image-20241024122522331.png)
-
-![image-20241024122535429](./markdown-img/CA3.assets/image-20241024122535429.png)
+<img src="./markdown-img/CA3.assets/image-20241225202053821.png" alt="image-20241225202053821" style="zoom:50%;" /><img src="./markdown-img/CA3.assets/image-20241225202106582.png" alt="image-20241225202106582" style="zoom:50%;" />
 
 ## Virtual Memory
 
