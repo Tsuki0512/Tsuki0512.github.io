@@ -1,10 +1,10 @@
 # 体系结构期末复习
 
+开头有很多情报/废话，[正文从这里开始](https://tsuki0512.github.io/2024_fall/CA/final_review/#1)。
+
 开工时间：2024.12.20晚21:00
 
 争取圣诞前拿下！（嗯。对不起，被bs硬控了。跨年前拿下！
-
-*cr老师还没划重点，我先按我觉得是重点的理了（x*
 
 ![image-20241220210535738](./markdown-img/final_review.assets/image-20241220210535738.png)
 
@@ -16,9 +16,47 @@
 
 ![65200f6ec9e9e5760be4e24cfc3736c](./markdown-img/final_review.assets/65200f6ec9e9e5760be4e24cfc3736c.jpg)
 
-重点：监听协议、MESI...
+hsb老师重点：监听协议、MESI...
+
+jxh老师重点：
 
 ![image-20241225182016298](./markdown-img/final_review.assets/image-20241225182016298.png)
+
+cr老师重点：
+
+1. 量化分析：CPU performance，Amdahl's law，Cache performance， 流水线分析
+2. pipeline的大题会出在ILP部分；体系最核心的东西围绕ISA展开，重点是实验的内容，数据通路，控制通路
+3. hazard的各种情况和分类，要能指出具体例子的各种类型hazard
+4. memory hierarchy、了解cache的四个question，性能分析和性能优化哪些方式是通过什么角度做的优化，write strategy每一种是什么样的
+5. TLB的工作原理及各项包含的内容，virtual memory的各种块大小计算
+6. ILP要看题设条件，可能会变每个器件的数量
+7. scoreboard三个表的每一个项的含义，某一个时刻下应该是什么状态（不要和整体的弄混了）
+8. tomasulo's approach每一个时刻的表，ROB，IS段流入一直是顺序的；多流出的情况及其实现（super pipeline - 加硬件实现流水线细分，解决性能分析里面的瓶颈问题，VLIW通过编译调度实现）
+9. DLP and TLP。Flynn分类法的四个类型（SISD - 知道概念；SIMD - 向量计算，Array Processor不考；以Cray-1为例做的各个部分的分析（考试可能会改），向量处理机的优化 - 重点是link，分析能不能link，各种情况，给一段程序分析哪里可以链接可能不止一处，怎么分析clock cycle，RV64V、NVIDIA GPU的向量技术；和循环有关的并行Loop-Level Parallelism，如果是跨迭代相关就没法做向量链接了，如何消除；MISD不用管；MIMD：会考一些概念，对照课本UMA和NUMA的概念，其他的变形不会考；一致性协议一模一样的不会考了，snooping三四五态等等，不用记状态，考试都会给，根据操作要会判断状态的转换的过程）
+
+cr复习ppt和去年的不同：
+
+1. 常规流水线红星星去掉了，估计之前有大题今年没有了，把重点放ILP了
+
+2. ISA去掉了一些内容，保留了设计原则和GPR Classification
+
+3. 冲突类型由蓝星星变成红星星，甚至有两颗：
+
+   ![image-20241226131043863](./markdown-img/final_review.assets/image-20241226131043863.png)
+
+4. AMAT由蓝星星变成皇冠：<img src="./markdown-img/final_review.assets/image-20241226131122064.png" alt="image-20241226131122064" style="zoom:50%;" />
+
+5. 重点来了，这三页是新加的：
+
+   ![image-20241226131233170](./markdown-img/final_review.assets/image-20241226131233170.png)
+
+6. scoreboard和tomasulo本来的蓝星星变成了皇冠，没有加星星的加了蓝星星，感觉会考大题
+
+7. 这页ppt加了很多表：![image-20241226131421870](./markdown-img/final_review.assets/image-20241226131421870.png)
+
+8. 重点又来了！SIMD里面的向量处理机部分全是新加的（从CRAY-1一直到Loop-Level Parallelism）
+
+9. MIMD反而简略了，可能是不考特别难的大题了
 
 ---
 
@@ -58,9 +96,13 @@
 
 ![image-20241220213704250](./markdown-img/final_review.assets/image-20241220213704250.png)
 
+主要公式为：$CPU Time = \frac{\text{Instruction Count} \times \text{CPI}}{\text{Clock Rate}}$
+
 而涉及到系统性能收益的提升，我们有：
 
 1. Amdahl's Law - 单点优化对系统整体性能提升的收益
+
+   对应的设计理念是make common case fast
 
    ![image-20241220213930819](./markdown-img/final_review.assets/image-20241220213930819.png)
 
@@ -72,7 +114,7 @@
 
 ### 1.2 设计理念
 
-*从计组开始老生常谈的八大设计理念（会考吗（我不知道（我今天废话好多*
+*从计组开始老生常谈的八大设计理念（cr复习ppt上有*
 
 ![image-20241220214455762](./markdown-img/final_review.assets/image-20241220214455762.png)
 
@@ -239,12 +281,15 @@ $\eta = \dfrac{n\times m \times \delta t_0}{m(m+n-1)\delta t_0} = \dfrac{n}{m+n-
 
 *注：example1的AMAT计算我觉得HitTime应该用1.1（好像也不对，看了eg3我觉得ideal CPI和hittime也不是一回事情），不知道为什么这里是1，有待确认。*
 
-基于计算的优化方向（具体等划了重点再看吧）：
+*re：默认的HitTime就是1个clock cycle（注意换算成具体时间的时候要×cycle time），但是一般情况下都会给出，HitTime和ideal CPI不是一回事情*
+
+基于AMAT的优化方向：
 
 1. 减少miss penalty
     - multilevel caches、critical word first、read miss before write miss、merging write buffers、victim caches
 2. 减少miss rate
-    - larger block size、larger cache size、higher associativity、way prediction、pseudo-associativity、compiler optimizations
+    - **larger block size、larger cache size、higher associativity、**way prediction、pseudo-associativity、compiler optimizations
+    - *对miss rate、AMAT的影响趋势，不会考技术细节*
 3. 减少hit time
     - small and simple caches、avoiding address translation、pipelined cache access、trace caches
 4. 通过并行减少miss rate和miss penalty
@@ -294,7 +339,7 @@ $\eta = \dfrac{n\times m \times \delta t_0}{m(m+n-1)\delta t_0} = \dfrac{n}{m+n-
 
 - Write Hit
 
-    * **Write Through**：直接写回到内存。
+    * **Write Through**：同时写回内存和cache。
 
       写到内存的时间较长，这个过程需要 **Write Stall**，或者使用 **Write Buffer**（节省stall的时间）。
 
@@ -343,11 +388,13 @@ virtual memory的范围是黄框部分：
 
     - L1是指令cache，L2是数据cache（转换为物理地址之后再去查），两者页大小不一样
 
+    - 这个图的位数计算好像是重点，需要会算
+
       ![image-20241225215642714](./markdown-img/final_review.assets/image-20241225215642714.png)
 
 - 相关的计算：
 
-    - ![image-20241225220247927](./markdown-img/final_review.assets/image-20241225220247927.png)
+    - ![image-20241226203804720](./markdown-img/final_review.assets/image-20241226203804720.png)
 
 ## 4 指令集并行
 
@@ -356,8 +403,201 @@ virtual memory的范围是黄框部分：
 - Scoreboard
 - Tomasulo
 
-// todo
+### 4.1 Scoreboard
 
+执行流程：
+
+1. **IS** - 顺序取指令，检测有无结构冲突（这里注意检查每个部件在设计的时候的个数，每种设计可能都不同）
+2. **RO** - 从这里开始就是乱序了，检测有无数据冲突，读取操作数
+3. EX
+4. WB
+5. *顺序提交，通过ROB实现*
+
+在执行算法的时候，我们需要维护**三个表格**：
+
+#### 4.1.1 Instruction Status
+
+每条指令所在的阶段，具体的判断思路如下：
+
+1. 指令顺序流入，每一拍流入一条指令
+2. 如果判定没有结构冒险，则可以进入IS阶段，否则要等待占用此结构单元的指令WB结束释放该单元后进入IS阶段
+3. 如果判定没有数据冒险，则可以进入RO阶段，否则需要等待对应操作数的指令WB结束后才可以进入RO阶段
+
+例子：
+
+![image-20241226170858673](./markdown-img/final_review.assets/image-20241226170858673.png)
+
+<center>
+    结构冲突：第6条指令等待第4条指令的ALU部件</br>
+    数据冲突：第3、4条指令等待第2条指令的F2；第4、5条指令等待第1条指令的F6
+</center>
+
+![image-20241226170918355](./markdown-img/final_review.assets/image-20241226170918355.png)
+
+<center>
+    "when the FMUL.D is ready to write its result":</br>
+    第3、4条指令：执行时间差异导致SUB执行完了但是MUL还在执行</br>
+此时第6条指令由于第4条指令WB完毕，结构冲突消失，可以IS并且执行下面的步骤</br>
+数据冲突：第5条指令等待第3条指令的F0
+</center>
+
+![image-20241226170933714](./markdown-img/final_review.assets/image-20241226170933714.png)
+
+<center>
+    "when the FDIV.D is ready to write its result":</br>
+    此时第5条指令由于第3条指令WB完毕，数据冲突消失，可以RO并且执行下面的步骤
+</center>
+
+#### 4.1.2 Function Component Status
+
+针对每个计算部件（`ld`、`sd`等指令是`Integer`部件）的状态记录。变量及其含义如下：
+
+- `busy` - 此单元是否有指令正在使用；`op` - 此单元正在执行哪个类型的指令；
+- `Fi` - 目的操作数对应的寄存器；`Fj`、`Fk` - 源操作数对应的寄存器；
+- `Qj`、`Qk` - 源操作数等待的部件
+- `Rj`、`Rk` - 源操作数的状态，个人理解这应该是一个寄存器的“锁”
+    - `yes` - 这个操作数已经准备好了但是还没有读，因为其他操作数还没有ready。*这个时候相当于给这个寄存器加了一个不能写入新数据的锁*
+    - `no` - 我觉得这个字面意思就是没有加写入锁，具体状态需要结合`Qi`、`Qj`是否有等待部件决定：
+        - `Qi / Qj == null` - 操作数已经读取完毕
+        - `Qi / Qj != null` - 正在等待`Q`中所指的部件的执行，操作数还没有ready
+
+例子（分别对应4.1.1的三种情况）：
+
+![image-20241226184845056](./markdown-img/final_review.assets/image-20241226184845056.png)
+
+![image-20241226184704534](./markdown-img/final_review.assets/image-20241226184704534.png)
+
+<center>这里F6在Divide指令下的yes决定了add指令必须等F6被读完（Div的Rk变成no）之后才能WB</center>
+
+![image-20241226184942207](./markdown-img/final_review.assets/image-20241226184942207.png)
+
+#### 4.1.3 Register Status
+
+记录每个寄存器将被什么指令修改。
+
+例子（分别对应4.1.1的三种情况）：
+
+![image-20241226190242144](./markdown-img/final_review.assets/image-20241226190242144.png)
+
+![image-20241226190216399](./markdown-img/final_review.assets/image-20241226190216399.png)
+
+![image-20241226190301319](./markdown-img/final_review.assets/image-20241226190301319.png)
+
+### 4.2 Tomasulo
+
+使用寄存器重命名解决name dependence。
+
+#### 4.2.1 基本的Tomasulo结构
+
+![image-20241227141451276](./markdown-img/final_review.assets/image-20241227141451276.png)
+
+##### 4.2.1.1 执行流程
+
+1. **IS** - 顺序取出队列中的指令放入保留站，如果有结构冲突则等待；进入保留站重命名消除WAR和WAW冒险。
+   - 重命名：如果能读出来数值就直接读，如果需要等待则命名为等待的那个保留站。
+2. **EX** - 等待保留站操作数全部就绪即可执行。
+   - `ld`、`sd`指令多一步有效地址计算，IS之后执行地址计算然后再执行EX。
+3. **WB** - 通过CDB总线将结果写回寄存器，并且通过广播将结果返回所有操作数等待的包含该保留站的保留站。释放保留站和`Qi`。
+
+##### 4.2.1.2 数据表格
+
+1. **Instruction status table**: 和scoreboard差不多，状态变成了IS、EX、WB三个阶段。
+2. **Reservation stations table**: 功能部件状态表
+    - `Busy`和`Op`和scoreboard一样
+    - `Vj`、`Vk` - 记录操作数的具体的值
+    - `Qj`、`Qk` - 记录操作数等待的保留站
+    - `A` - 记录`ld`、`sd`指令的取值/写入地址
+3. **Register status table**: 记录保留站的结果往哪里写。
+
+例如上一组指令的两个时刻，三张表分别如下：
+
+![image-20241227142907965](./markdown-img/final_review.assets/image-20241227142907965.png)
+
+##### 4.2.1.3 例题
+
+![image-20241226212130247](./markdown-img/final_review.assets/image-20241226212130247.png)
+
+![image-20241226212255100](./markdown-img/final_review.assets/image-20241226212255100.png)
+
+注意点：
+
+1. 之前提到的scoreboard里面的F6被div上了锁，DIV读取之后ADD才能WB
+2. IS段顺序流入，产生结构冲突只能等待
+3. tomasulo里面`ld`、`sd`在IS之后EX之前需要额外一拍计算地址
+
+#### 4.2.2 ROB (reorder buffer)
+
+![image-20241227143016595](./markdown-img/final_review.assets/image-20241227143016595.png)
+
+##### 4.2.2.1 执行顺序
+
+为保证指令顺序提交（流出），添加一个ROB部件，并且修改WB状态为WB和commit两个状态：
+
+- **WB** - 通过CDB总线将结果写到ROB，并且通过广播将结果返回所有操作数等待的包含该指令的保留站。释放保留站和`Qi`。
+- **commit** - 确认前面的指令都已经提交后，将ROB的结果写到寄存器里。
+
+##### 4.2.2.2 数据表格
+
+1. **Reservation Station**: 记录保留站的数据，和没有ROB的table差不多，将`Qj`和`Qk`记录的内容变成了ROB内指令的序号，增加了`Dest`列记录写入的ROB的序号。
+2. **Reorder Buffer**: 记录每个序号对应的是否busy及对应指令、状态、写入的目标寄存器和写入的值。
+3. **Register Status**: 记录对应的寄存器将被哪个ROB内的指令修改。
+
+![image-20241227145049394](./markdown-img/final_review.assets/image-20241227145049394.png)
+
+##### 4.2.2.3 例题
+
+在上一道例题的基础上加一个commit状态，即在当前指令的WB结束且之前所有指令均commit之后可以commit：
+
+![image-20241227145210137](./markdown-img/final_review.assets/image-20241227145210137.png)
+
+### 4.3 多流出的流水线
+
+![image-20241226213519954](./markdown-img/final_review.assets/image-20241226213519954.png)
+
+#### 4.3.1 Superscalar
+
+#####  4.3.1.1 静态调度超标量
+
+通过编译器完成。
+
+每个时钟周期流出一个整型指令和一个浮点数指令，并行执行。
+
+![image-20241227150601230](./markdown-img/final_review.assets/image-20241227150601230.png)
+
+如果遇到了分支跳转指令，那么只流出这一条，不能和其他指令一起流出。
+
+分支预测逻辑和普通流水线一致。
+
+##### 4.3.1.2 动态调度超标量
+
+通过硬件完成。
+
+指令顺序进入两个保留站，并行分开处理。
+
+![image-20241227150823540](./markdown-img/final_review.assets/image-20241227150823540.png)
+
+对于没有分支预测的情况，需要等待分支预测结果然后相关指令再进入EX阶段。
+
+#### 4.3.2 Super pipeline
+
+本质是流水线的细分，需要硬件的支持。
+
+![image-20241227145728625](./markdown-img/final_review.assets/image-20241227145728625.png)
+
+#### 4.3.3 VLIW
+
+把比较复杂的阶段拆指令并行，通过编译器完成。
+
+![image-20241227150053557](./markdown-img/final_review.assets/image-20241227150053557.png)
+
+## 5 DLP
+
+*对应考纲第四章 - DLP*
+
+- vector
+- SIMD
+- GPU
+// todo
 <script>
 MathJax = {
   tex: {
