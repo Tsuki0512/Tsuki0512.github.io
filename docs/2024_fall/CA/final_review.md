@@ -597,7 +597,58 @@ virtual memory的范围是黄框部分：
 - vector
 - SIMD
 - GPU
-// todo
+
+情报：
+
+- 以Cray-1为例做的各个部分的分析（考试可能会改）
+- 向量处理机的优化 - 重点是link，分析能不能link，各种情况，给一段程序分析哪里可以链接可能不止一处，怎么分析clock cycle
+- RV64V、NVIDIA GPU的向量技术
+- 和循环有关的并行Loop-Level Parallelism，如果是跨迭代相关就没法做向量链接了，如何消除
+
+### 5.1 SIMD - Vector Processor
+
+SIMD为单指令流多数据流。
+
+#### 5.1.1 向量基本计算方式
+
+- Horizonal processing method 横向计算 - 逐个元素计算拼成结果向量
+- Vertical procession method 纵向计算 - 按照功能逐个操作（加、乘）计算
+- Horizonal and vertical processing method - 一个向量装不下所有数据：分组计算，组内纵向，组间横向
+
+计算过程的硬件架构：
+
+![image-20241228153215083](./markdown-img/final_review.assets/image-20241228153215083.png)
+
+#### 5.1.2 CRAY-1及其分析
+
+基本架构：
+
+![image-20241228153829469](./markdown-img/final_review.assets/image-20241228153829469.png)
+
+##### 5.1.2.1 向量指令相关性及其处理
+
+
+
+##### 5.1.2.2 CRAY-1指令类型
+
+
+
+##### 5.1.2.3 CRAY-1的向量链接技术
+
+
+
+#### 5.1.3 RV64V
+
+
+
+### 5.2 LLP
+
+
+
+## 6 TLP
+
+
+
 <script>
 MathJax = {
   tex: {

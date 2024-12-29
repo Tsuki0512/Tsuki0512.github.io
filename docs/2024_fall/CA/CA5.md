@@ -127,7 +127,7 @@ Each vector register Vi has a separate bus connected to 6 vector functional unit
         $$
         \begin{aligned}
         V0 & \leftarrow V1+V2\\
-        V3& \leftarrow V4\times V0
+        V3& \leftarrow V4\times V1
         \end{aligned}
         $$
 
