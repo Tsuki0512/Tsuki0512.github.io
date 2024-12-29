@@ -2,12 +2,6 @@
 
 开头有很多情报/废话，[正文从这里开始](https://tsuki0512.github.io/2024_fall/CA/final_review/#1)。
 
-开工时间：2024.12.20晚21:00
-
-争取圣诞前拿下！（嗯。对不起，被bs硬控了。跨年前拿下！
-
-![image-20241220210535738](./markdown-img/final_review.assets/image-20241220210535738.png)
-
 ----
 
 *一点期末考情报*
@@ -388,7 +382,7 @@ virtual memory的范围是黄框部分：
 
     - L1是指令cache，L2是数据cache（转换为物理地址之后再去查），两者页大小不一样
 
-    - 这个图的位数计算好像是重点，需要会算
+    - 这个图的位数计算好像是重点，需要会算（但是我还不是很会
 
       ![image-20241225215642714](./markdown-img/final_review.assets/image-20241225215642714.png)
 
@@ -627,27 +621,210 @@ SIMD为单指令流多数据流。
 
 ##### 5.1.2.1 向量指令相关性及其处理
 
+- Vi conflict - 向量寄存器之间的依赖性，需要等待前一条指令的向量的**第一个元素计算完**再开始后续的指令。
 
+    - RAW
+
+      $V0 \leftarrow V1 + V2 $
+
+      $V3 \leftarrow V0\times V4$
+
+    - RAR
+
+      $V0 \leftarrow V1 + V2$
+
+      $V3 \leftarrow V1 \times V4$
+
+- Functional conflict - 部件的结构冲突，必须等待前一条指令**最后一个元素完成**再开始后续的指令。
 
 ##### 5.1.2.2 CRAY-1指令类型
 
+![image-20241229203144456](./markdown-img/final_review.assets/image-20241229203144456.png)
 
+- 向量和向量计算
+- 向量和标量计算
+- 向量读取
+- 向量存储
 
 ##### 5.1.2.3 CRAY-1的向量链接技术
 
+在向量处理机的优化中，我们有以下几种技术：
 
+- 增加功能部件使其并行工作
+- 采用多处理器系统
+- 采取recycling mining technology (?)
+
+上述都依赖于增加部件，在这里我们关注**向量链接技术**。
+
+基本应用场景是：两条指令第一条指令的结果是第二条指令的输入的时候，可以链接向量减少一次读写时间。
+
+*这里的链接条件存疑，我上课记的是：后面的刚好要用到前面的且没有功能部件冲突，且两个操作数在同一拍准备好。后面的减少一次读写时间也存疑，个人理解的链接的本质是两条短指令变成一条长指令。*
+
+在例题计算的时候，没有冲突的指令**并行**，存在RAW的指令**链接**，存在结构冲突的指令**串行**；向量功能内部**流水线执行**。
+
+例子（抄到A4上）：
+
+题目条件：
+
+- 向量加法、读写需要6拍，向量乘法需要7拍；
+- 把数据从寄存器送到功能部件需要1拍，功能部件结果写回寄存器需要1拍，数据从内存送到fetch function unit需要1拍；
+- 计算$D = A \times (B + C)$，vector of length $N$，且$B$和$C$已经被存在$V0$和$V1$中。
+
+解法：
+
+![image-20241229205006268](./markdown-img/final_review.assets/image-20241229205006268.png)
+
+1. 三条指令串行的情况
+
+    经过8拍$V0$的第一个元素到达$V2$，那么再过$(N-1)$拍$V0$的最后一个元素就会到达$V2$。
+
+    因此总共需要$[(1+6+1)+N-1] + [(1+6+1)+N-1] + [(1+7+1)+N-1] = 3N+22$拍。
+
+2. 前两条指令并行、和第三条指令串行的情况
+
+    $max{[(1+6+1)+N-1], [(1+6+1)+N-1]} + [(1+7+1)+N-1] = 2N+15$
+
+3. 采用向量链接技术
+
+    我们只需要知道$V4$的第一个结果多久可以出来：$8+1+7+1=17$拍，随后还有$(N-1)$条指令，因此总共需要的拍数为$max{(1+6+1), (1+6+1)} + (1+7+1)+N-1 = N+16$拍。
 
 #### 5.1.3 RV64V
 
+![image-20241229211207053](./markdown-img/final_review.assets/image-20241229211207053.png)
 
+*这页复习ppt是今年新加的，但是我不知道能怎么考，先抄A4上吧*
+
+标量处理和向量处理的汇编代码区别：
+
+![image-20241229212249685](./markdown-img/final_review.assets/image-20241229212249685.png)
+
+因为循环之间没有迭代相关（和跨迭代循环的数据相关），所以可以转化为向量运算，大大减少了指令条数。
+
+还有一个例子：
+
+![image-20241229212747163](./markdown-img/final_review.assets/image-20241229212747163.png)
+
+#### 5.1.4 NVIDIA GPU
+
+还是属于SIMD的范畴。
+
+内存管理：
+
+![image-20241229213936618](./markdown-img/final_review.assets/image-20241229213936618.png)
+
+- 和向量机的相同之处：
+
+    - 可以很好地处理数据级别的并行问题
+    - Scatter-gather transfers 分散-聚集传输方式
+    - Mask registers
+    - Large register files
+
+- 和向量机的不同之处：
+
+    - 没有标量处理机
+
+    - 采用多线程隐藏内存延迟
+
+    - 拥有多个功能单元，而不像向量处理器那样只有少数几个深度流水线单元
+
+    - 增加了硬件实现的线程调度机制，更快速和稳定
+
+      ![image-20241229213805412](./markdown-img/final_review.assets/image-20241229213805412.png)
 
 ### 5.2 LLP
 
+循环的并行是提升并行性的源泉。但是很多时候的并行需要条件判断。
 
+1. 没有跨迭代相关的情况，直接并行
+
+    ![image-20241229214838829](./markdown-img/final_review.assets/image-20241229214838829.png)
+
+2. 有跨迭代相关但是可以消除
+
+    *个人认为消除跨迭代相关的本质是不让B[i]和B[i+1]出现在一个循环里，把相关性放到同一个循环内*
+
+    本次循环两个指令相关可以使用向量链接技术解决
+
+    ![image-20241229215659222](./markdown-img/final_review.assets/image-20241229215659222.png)
+
+3. 无法消除的跨迭代循环（两条指令都跨迭代相关）
+
+    ![image-20241229215302740](./markdown-img/final_review.assets/image-20241229215302740.png)
+
+相关性的判断与通过重命名解决dependency：
+
+- 数据相关（RAW）：![image-20241229220627960](./markdown-img/final_review.assets/image-20241229220627960.png)
+- 名相关（anti-dependence）：![image-20241229220723808](./markdown-img/final_review.assets/image-20241229220723808.png)
+- 输出相关（output-dependence）：![image-20241229220819052](./markdown-img/final_review.assets/image-20241229220819052.png)
+- 上图的右边展示了重命名消除相关性的方式：数据相关的寄存器名保存一致，其他的相关的寄存器名改成不一致的。（这个例子没有跨迭代相关）
 
 ## 6 TLP
 
+对应考纲第五章 - TLP
 
+- Cache coherence
+
+![image-20241229221138884](./markdown-img/final_review.assets/image-20241229221138884.png)
+
+
+### 6.1 多处理器的内存架构
+
+#### 6.1.1 Shared Memory System
+
+![image-20241229221515158](./markdown-img/final_review.assets/image-20241229221515158.png)
+
+有一个共同的地址空间，有一个统一的操作系统管理内存、给不同进程使用内存。
+
+#### 6.1.2 Message Passing System
+
+![image-20241229225820062](./markdown-img/final_review.assets/image-20241229225820062.png)
+
+每一个进程都要自己的内存，通过ICN（互联网线）传递信息，可以共同完成任务；每一个进程都有自己的OS，可以分层，ICN连其他ICN：
+
+![image-20241229230030150](./markdown-img/final_review.assets/image-20241229230030150.png)
+
+#### 6.1.3 UMA
+
+![image-20241229230223214](./markdown-img/final_review.assets/image-20241229230223214.png)
+
+- 所有的物理存储器，由所有的进程一起使用，**均匀共享**，即没有进程对某个存储器有特殊的访问权限，访问的时间相同，即不存在谁离谁更近的问题。
+- 进程可以有自己的拓展，比如 cache、IO、local memory；每个CPU也可以有自己的私有内存和cache。
+- 因为他的高度共享性，UMA 也叫紧耦合系统。
+- UMA又叫**SMP** - 对称多处理机或者centralized shared-memory multiprocessors。
+
+#### 6.1.4 NUMA
+
+![image-20241229230436013](./markdown-img/final_review.assets/image-20241229230436013.png)
+
+- 对某个进程都自己的 local memory，由 ICN 连起来。
+
+- 被共享的存储器是不均匀的。访问自己的 **local memory 最快**，访问别人的慢。
+
+- 进程也可以有自己的拓展。
+
+- NUMA 有两种拓展：
+
+    - NC-NUMA: Non Cache NUMA 没cache
+
+        ![image-20241229230544954](./markdown-img/final_review.assets/image-20241229230544954.png)
+
+    - CC-NUMA: Coherent Cache NUMA 有cache
+
+        有自己的 cache 和目录，存在 cache 一致性的问题。当有一个数据改了，如何保证其他 cache 里的数据的正确性。多个cache从表现上不存在内存的不统一，好像只有一个cache一样。
+
+        ![image-20241229230559153](./markdown-img/final_review.assets/image-20241229230559153.png)
+
+- NUMA又叫**distributed shared-memory multiprocessor (DSP)**。
+
+<div align = center><img src="https://cdn.hobbitqia.cc/20240110205135.png" width=55%></div>
+
+### 6.2 Cache coherence
+
+在Memory Consistency中，对一组先写后读的指令先读后写是错误的，需要一个model保证指令执行的顺序性。
+
+而对于Cache Coherence而言，我们面对的问题是可能有多个 cache，都放有内存拷贝的数据，可能不一致。我们一般通过一个协议来约定，使得cpu在任意一个cache里面读数据，读出来的一定是最新的数据（即刚被写过的值）。
+
+//todo
 
 <script>
 MathJax = {
