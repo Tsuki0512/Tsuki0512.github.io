@@ -38,7 +38,7 @@ cr复习ppt和去年的不同：
 
    ![image-20241226131043863](./markdown-img/final_review.assets/image-20241226131043863.png)
 
-4. AMAT由蓝星星变成皇冠：![image-20241226131122064](./markdown-img/final_review.assets/image-20241226131122064.png)
+4. AMAT由蓝星星变成皇冠：<img src="./markdown-img/final_review.assets/image-20241226131122064.png" alt="image-20241226131122064" style="zoom:50%;" />
 
 5. 重点来了，这三页是新加的：
 
@@ -852,6 +852,10 @@ SIMD为单指令流多数据流。
 转换逻辑：
 
 ![image-20241230160611040](./markdown-img/final_review.assets/image-20241230160611040.png)
+
+详解：（[来源](https://blog.csdn.net/violet_echo_0908/article/details/78839692)）
+
+![image-20241230163644742](./markdown-img/final_review.assets/image-20241230163644742.png)
 
 **MESI**
 
