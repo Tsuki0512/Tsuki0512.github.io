@@ -38,7 +38,7 @@ cr复习ppt和去年的不同：
 
    ![image-20241226131043863](./markdown-img/final_review.assets/image-20241226131043863.png)
 
-4. AMAT由蓝星星变成皇冠：<img src="./markdown-img/final_review.assets/image-20241226131122064.png" alt="image-20241226131122064" style="zoom:50%;" />
+4. AMAT由蓝星星变成皇冠：![image-20241226131122064](./markdown-img/final_review.assets/image-20241226131122064.png)
 
 5. 重点来了，这三页是新加的：
 
@@ -330,6 +330,8 @@ $\eta = \dfrac{n\times m \times \delta t_0}{m(m+n-1)\delta t_0} = \dfrac{n}{m+n-
 - OPT
 
 #### 3.2.4 Write Strategy
+
+![image-20241230150445943](./markdown-img/final_review.assets/image-20241230150445943.png)
 
 - Write Hit
 
@@ -623,17 +625,17 @@ SIMD为单指令流多数据流。
 
 - Vi conflict - 向量寄存器之间的依赖性，需要等待前一条指令的向量的**第一个元素计算完**再开始后续的指令。
 
-    - RAW
+  - RAW
 
-      $V0 \leftarrow V1 + V2 $
+    $V0 \leftarrow V1 + V2 $
 
-      $V3 \leftarrow V0\times V4$
+    $V3 \leftarrow V0\times V4$
 
-    - RAR
+  - RAR
 
-      $V0 \leftarrow V1 + V2$
+    $V0 \leftarrow V1 + V2$
 
-      $V3 \leftarrow V1 \times V4$
+    $V3 \leftarrow V1 \times V4$
 
 - Functional conflict - 部件的结构冲突，必须等待前一条指令**最后一个元素完成**再开始后续的指令。
 
@@ -676,17 +678,17 @@ SIMD为单指令流多数据流。
 
 1. 三条指令串行的情况
 
-    经过8拍$V0$的第一个元素到达$V2$，那么再过$(N-1)$拍$V0$的最后一个元素就会到达$V2$。
+   经过8拍$V0$的第一个元素到达$V2$，那么再过$(N-1)$拍$V0$的最后一个元素就会到达$V2$。
 
-    因此总共需要$[(1+6+1)+N-1] + [(1+6+1)+N-1] + [(1+7+1)+N-1] = 3N+22$拍。
+   因此总共需要$[(1+6+1)+N-1] + [(1+6+1)+N-1] + [(1+7+1)+N-1] = 3N+22$拍。
 
 2. 前两条指令并行、和第三条指令串行的情况
 
-    $max{[(1+6+1)+N-1], [(1+6+1)+N-1]} + [(1+7+1)+N-1] = 2N+15$
+   $max{[(1+6+1)+N-1], [(1+6+1)+N-1]} + [(1+7+1)+N-1] = 2N+15$
 
 3. 采用向量链接技术
 
-    我们只需要知道$V4$的第一个结果多久可以出来：$8+1+7+1=17$拍，随后还有$(N-1)$条指令，因此总共需要的拍数为$max{(1+6+1), (1+6+1)} + (1+7+1)+N-1 = N+16$拍。
+   我们只需要知道$V4$的第一个结果多久可以出来：$8+1+7+1=17$拍，随后还有$(N-1)$条指令，因此总共需要的拍数为$max{(1+6+1), (1+6+1)} + (1+7+1)+N-1 = N+16$拍。
 
 #### 5.1.3 RV64V
 
@@ -714,22 +716,22 @@ SIMD为单指令流多数据流。
 
 - 和向量机的相同之处：
 
-    - 可以很好地处理数据级别的并行问题
-    - Scatter-gather transfers 分散-聚集传输方式
-    - Mask registers
-    - Large register files
+  - 可以很好地处理数据级别的并行问题
+  - Scatter-gather transfers 分散-聚集传输方式
+  - Mask registers
+  - Large register files
 
 - 和向量机的不同之处：
 
-    - 没有标量处理机
+  - 没有标量处理机
 
-    - 采用多线程隐藏内存延迟
+  - 采用多线程隐藏内存延迟
 
-    - 拥有多个功能单元，而不像向量处理器那样只有少数几个深度流水线单元
+  - 拥有多个功能单元，而不像向量处理器那样只有少数几个深度流水线单元
 
-    - 增加了硬件实现的线程调度机制，更快速和稳定
+  - 增加了硬件实现的线程调度机制，更快速和稳定
 
-      ![image-20241229213805412](./markdown-img/final_review.assets/image-20241229213805412.png)
+    ![image-20241229213805412](./markdown-img/final_review.assets/image-20241229213805412.png)
 
 ### 5.2 LLP
 
@@ -737,19 +739,19 @@ SIMD为单指令流多数据流。
 
 1. 没有跨迭代相关的情况，直接并行
 
-    ![image-20241229214838829](./markdown-img/final_review.assets/image-20241229214838829.png)
+   ![image-20241229214838829](./markdown-img/final_review.assets/image-20241229214838829.png)
 
 2. 有跨迭代相关但是可以消除
 
-    *个人认为消除跨迭代相关的本质是不让B[i]和B[i+1]出现在一个循环里，把相关性放到同一个循环内*
+   *个人认为消除跨迭代相关的本质是不让B[i]和B[i+1]出现在一个循环里，把相关性放到同一个循环内*
 
-    本次循环两个指令相关可以使用向量链接技术解决
+   本次循环两个指令相关可以使用向量链接技术解决
 
-    ![image-20241229215659222](./markdown-img/final_review.assets/image-20241229215659222.png)
+   ![image-20241229215659222](./markdown-img/final_review.assets/image-20241229215659222.png)
 
 3. 无法消除的跨迭代循环（两条指令都跨迭代相关）
 
-    ![image-20241229215302740](./markdown-img/final_review.assets/image-20241229215302740.png)
+   ![image-20241229215302740](./markdown-img/final_review.assets/image-20241229215302740.png)
 
 相关性的判断与通过重命名解决dependency：
 
@@ -765,6 +767,7 @@ SIMD为单指令流多数据流。
 - Cache coherence
 
 ![image-20241229221138884](./markdown-img/final_review.assets/image-20241229221138884.png)
+
 
 
 ### 6.1 多处理器的内存架构
@@ -804,27 +807,147 @@ SIMD为单指令流多数据流。
 
 - NUMA 有两种拓展：
 
-    - NC-NUMA: Non Cache NUMA 没cache
+  - NC-NUMA: Non Cache NUMA 没cache
 
-        ![image-20241229230544954](./markdown-img/final_review.assets/image-20241229230544954.png)
+    ![image-20241229230544954](./markdown-img/final_review.assets/image-20241229230544954.png)
 
-    - CC-NUMA: Coherent Cache NUMA 有cache
+  - CC-NUMA: Coherent Cache NUMA 有cache
 
-        有自己的 cache 和目录，存在 cache 一致性的问题。当有一个数据改了，如何保证其他 cache 里的数据的正确性。多个cache从表现上不存在内存的不统一，好像只有一个cache一样。
+    有自己的 cache 和目录，存在 cache 一致性的问题。当有一个数据改了，如何保证其他 cache 里的数据的正确性。多个cache从表现上不存在内存的不统一，好像只有一个cache一样。
 
-        ![image-20241229230559153](./markdown-img/final_review.assets/image-20241229230559153.png)
+    ![image-20241229230559153](./markdown-img/final_review.assets/image-20241229230559153.png)
 
 - NUMA又叫**distributed shared-memory multiprocessor (DSP)**。
 
 <div align = center><img src="https://cdn.hobbitqia.cc/20240110205135.png" width=55%></div>
 
-### 6.2 Cache coherence
+### 6.2 Cache coherence and memory consistency
+
+状态机不用抄，给协议会分析就可以。
 
 在Memory Consistency中，对一组先写后读的指令先读后写是错误的，需要一个model保证指令执行的顺序性。
 
-而对于Cache Coherence而言，我们面对的问题是可能有多个 cache，都放有内存拷贝的数据，可能不一致。我们一般通过一个协议来约定，使得cpu在任意一个cache里面读数据，读出来的一定是最新的数据（即刚被写过的值）。
+而对于Cache Coherence而言，我们面对的问题是可能有多个 cache，都放有内存拷贝的数据，可能不一致。我们一般通过一个协议来约定，使得cpu在任意一个cache里面读数据，读出来的一定是最新的数据（即刚被写过的值）。最直接的思路就是让包含过期数据的cache失效。
 
-//todo
+#### 6.2.1 Snoopy Coherence Protocol
+
+总线监听协议，适用于UMA(SMP)，所有处理器监听总线，由总线广播失效信息或更新数据。
+
+针对不同的写策略，有不同的协议：
+
+##### 6.2.1.1 Write Through
+
+![image-20241230160454687](./markdown-img/final_review.assets/image-20241230160454687.png)
+
+##### 6.2.1.2 Write back
+
+**MSI**
+
+状态：
+
+- Invalid: 缓存块无效，不能被使用；
+- Shared: 缓存块未被修改，且可能存在于多个缓存中，内存中的数据是最新的；
+- Modified: 缓存行已被修改，且该缓存行是唯一的有效副本，内存中的数据已过时。
+
+转换逻辑：
+
+![image-20241230160611040](./markdown-img/final_review.assets/image-20241230160611040.png)
+
+**MESI**
+
+状态：
+
+- Invalid: 缓存块无效，不能被使用；
+- Shared: 缓存块未被修改，且可能存在于多个缓存中，内存中的数据是最新的；
+- Modified: 缓存行已被修改，且该缓存行是唯一的有效副本，内存中的数据已过时；
+- Exclusive：缓存块未被修改，且是唯一的有效副本，内存中的数据是最新的。
+
+转换逻辑：
+
+![image-20241230160902562](./markdown-img/final_review.assets/image-20241230160902562.png)
+
+例子：
+
+![image-20241230160925708](./markdown-img/final_review.assets/image-20241230160925708.png)
+
+**MOESI**
+
+添加状态：
+
+- Owned: 缓存块已被修改，可以存在于多个缓存中，内存中的数据已过时，但其他缓存可以从拥
+
+  有该缓存行的缓存中读取数据。
+
+##### 6.2.1.3 False Sharing
+
+本身两个线程之间的变量没有关系，但是在同一个cacheline里面，会导致cache的状态频繁切换，性能降低：
+
+1. 多个处理器在同一个缓存块中存储不同的数据。
+2. 一个处理器修改了缓存块中的数据，导致其他处理器的缓存块失效。
+3. 其他处理器必须重新加载缓存块，即使它们访问的数据没有被修改
+
+可通过内存填充，把两个变量分别放到两个 Cache：
+
+![image-20241230161218771](./markdown-img/final_review.assets/image-20241230161218771.png)
+
+#### 6.2.2 Directory Protocol
+
+目录协议，适用于NUMA(DSP)，用分布式目录记录系统中的哪些处理器在缓存中拥有某些存储块的副本，通过目录”点对点“发送失效信息。
+
+就是是把 cache block 的共享信息存放在一个固定的地方，这个地方我们称之为 directory：
+
+```
+| State | Owner | Share List |
+State: Block 的状态
+Share List: 当前拥有该 Cache Block 拷贝的节点列表 
+```
+
+对每个缓存块，维护其状态(MSI Protocol)
+
+- Shared：一个或多个目录拥有这个缓存块，且值是最新的
+- Invalid
+- Modified：正好一个目录拥有这个缓存块，在内存中的值已经过时  
+
+对每个目录，维护其状态：
+
+- Uncached
+- Shared
+- Exclusive
+
+单个缓存块的 state transition diagram 如下：
+
+![image-20241230161738603](./markdown-img/final_review.assets/image-20241230161738603.png)
+
+<center>来自本地处理器的请求显示为黑色，来自主目录的请求显示为灰色。</center>
+
+目录的 state transition diagram 如下：
+
+![image-20241230161813346](./markdown-img/final_review.assets/image-20241230161813346.png)
+
+<center>所有的动作都是灰色的，因为它们都是外部引起的。</center>
+
+和 MSI 的 transition 是类似的
+
+#### 6.2.3 Memory consistency
+
+基本规则：X → Y，操作 X 必须在操作 Y 前完成
+
+顺序一致性 Sequential Consistency
+
+- Accesses on each processor were kept in order
+- Accesses on different processors were arbitrarily interleaved
+- R → W：读操作必须在写操作之前完成。
+- R → R：读操作必须在另一个读操作之前完成。
+- W → R：写操作必须在读操作之前完成。
+- W → W：写操作必须在另一个写操作之前完成。
+
+松散一致性模型 Relaxed Consistency Models
+
+- allow reads and writes to complete out of order, but to use synchronization operations to enforce ordering
+  允许读和写无序完成，但使用同步操作强制排序
+- Relax W → R：允许写操作在读操作之前完成
+- Relax W → W：允许写操作在另一个写操作之前完成
+- Relax R → W and R → R：允许读操作在写操作和另一个读操作之前完成
 
 <script>
 MathJax = {
