@@ -128,6 +128,10 @@ cr复习ppt和去年的不同：
 
 指令集架构设计原则：兼容，通用，高效，安全。
 
+GPR classification:
+
+![image-20250102000341561](./markdown-img/final_review.assets/image-20250102000341561.png)
+
 ## 2 流水线
 
 *对应考纲第三章 - ILP*
@@ -434,8 +438,9 @@ virtual memory的范围是黄框部分：
     "when the FMUL.D is ready to write its result":</br>
     第3、4条指令：执行时间差异导致SUB执行完了但是MUL还在执行</br>
 此时第6条指令由于第4条指令WB完毕，结构冲突消失，可以IS并且执行下面的步骤</br>
-数据冲突：第5条指令等待第3条指令的F0
+数据冲突：第5条指令等待第3条指令的F0，同时阻塞在RO阶段的时候也占有了F6导致第6条指令不能写回
 </center>
+
 
 ![image-20241226170933714](./markdown-img/final_review.assets/image-20241226170933714.png)
 
