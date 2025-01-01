@@ -267,7 +267,7 @@ $\eta = \dfrac{n\times m \times \delta t_0}{m(m+n-1)\delta t_0} = \dfrac{n}{m+n-
 
 -->
 
-![image-20241225221133915](./markdown-img/final_review.assets/image-20241225221133915.png)
+![image-20250101183744051](./markdown-img/final_review.assets/image-20250101183744051.png)
 
 然后几个例题（建议自己做一遍或者抄到A4上）：
 
@@ -382,9 +382,9 @@ virtual memory的范围是黄框部分：
 
 - 由此我们可以结合上述两种优点设计 - multiple page sizes
 
-    - L1是指令cache，L2是数据cache（转换为物理地址之后再去查），两者页大小不一样
+    - 这个就是多级cache的图片，其中L1cache的index行为和TLB的物理虚拟地址转换是并行的，L1找不到再去L2找
 
-    - 这个图的位数计算好像是重点，需要会算（但是我还不是很会
+    - 这个图的位数计算好像是重点，需要会算，L1 cache tag那里应该是28不是43，tag判断一定是基于物理地址的，物理地址以字节为单位
 
       ![image-20241225215642714](./markdown-img/final_review.assets/image-20241225215642714.png)
 
