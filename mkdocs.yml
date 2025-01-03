@@ -45,7 +45,7 @@ nav:
     - 数据库系统: 
       - cheatingsheet: 数据库系统.md
       - minisql分析.md
-    - 计算机体系结构（学习中）:
+    - 计算机体系结构:
       - 概述: 2024_fall/CA/index.md
       - 期末复习: 2024_fall/CA/final_review.md
       - 计算机设计基础: 2024_fall/CA/CA1.md

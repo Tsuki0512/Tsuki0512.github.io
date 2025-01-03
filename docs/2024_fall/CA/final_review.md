@@ -1,5 +1,8 @@
 # 体系结构期末复习
-
+cheating sheet:（单击链接即可下载）
+[CA_cheating_sheet](assets/CheatingSheet_CA_Wyr.pdf)<br>
+注：非线性流水线可以不抄，除了cr老师其他老师好像没讲，其他可能有少许笔误，具体以笔记为准。
+<!--
 开头有很多情报/废话，[正文从这里开始](https://tsuki0512.github.io/2024_fall/CA/final_review/#1)。
 
 ----
@@ -51,7 +54,7 @@ cr复习ppt和去年的不同：
 8. 重点又来了！SIMD里面的向量处理机部分全是新加的（从CRAY-1一直到Loop-Level Parallelism）
 
 9. MIMD反而简略了，可能是不考特别难的大题了
-
+-->
 ---
 
 现在回过头来看chap0的ppt的一些废话：
@@ -96,13 +99,13 @@ cr复习ppt和去年的不同：
 
 1. Amdahl's Law - 单点优化对系统整体性能提升的收益
 
-   对应的设计理念是make common case fast
+    对应的设计理念是make common case fast
 
-   ![image-20241220213930819](./markdown-img/final_review.assets/image-20241220213930819.png)
+    ![image-20241220213930819](./markdown-img/final_review.assets/image-20241220213930819.png)
 
 2. 加速比 - 性能是执行时间的倒数，相关公式如下：
 
-   ![image-20241220214051221](./markdown-img/final_review.assets/image-20241220214051221.png)
+    ![image-20241220214051221](./markdown-img/final_review.assets/image-20241220214051221.png)
 
 *其实我觉得这块掌握基本概念就可以，倒也没必要死记硬背。*
 
@@ -495,9 +498,9 @@ virtual memory的范围是黄框部分：
 ##### 4.2.1.1 执行流程
 
 1. **IS** - 顺序取出队列中的指令放入保留站，如果有结构冲突则等待；进入保留站重命名消除WAR和WAW冒险。
-   - 重命名：如果能读出来数值就直接读，如果需要等待则命名为等待的那个保留站。
+    - 重命名：如果能读出来数值就直接读，如果需要等待则命名为等待的那个保留站。
 2. **EX** - 等待保留站操作数全部就绪即可执行。
-   - `ld`、`sd`指令多一步有效地址计算，IS之后执行地址计算然后再执行EX。
+    - `ld`、`sd`指令多一步有效地址计算，IS之后执行地址计算然后再执行EX。
 3. **WB** - 通过CDB总线将结果写回寄存器，并且通过广播将结果返回所有操作数等待的包含该保留站的保留站。释放保留站和`Qi`。
 
 ##### 4.2.1.2 数据表格
@@ -631,15 +634,11 @@ SIMD为单指令流多数据流。
 - Vi conflict - 向量寄存器之间的依赖性，需要等待前一条指令的向量的**第一个元素计算完**再开始后续的指令。
 
   - RAW
-
     $V0 \leftarrow V1 + V2 $
-
     $V3 \leftarrow V0\times V4$
 
   - RAR
-
     $V0 \leftarrow V1 + V2$
-
     $V3 \leftarrow V1 \times V4$
 
 - Functional conflict - 部件的结构冲突，必须等待前一条指令**最后一个元素完成**再开始后续的指令。
@@ -682,18 +681,14 @@ SIMD为单指令流多数据流。
 ![image-20241229205006268](./markdown-img/final_review.assets/image-20241229205006268.png)
 
 1. 三条指令串行的情况
-
-   经过8拍$V0$的第一个元素到达$V2$，那么再过$(N-1)$拍$V0$的最后一个元素就会到达$V2$。
-
-   因此总共需要$[(1+6+1)+N-1] + [(1+6+1)+N-1] + [(1+7+1)+N-1] = 3N+22$拍。
+    经过8拍$V0$的第一个元素到达$V2$，那么再过$(N-1)$拍$V0$的最后一个元素就会到达$V2$。
+    因此总共需要$[(1+6+1)+N-1] + [(1+6+1)+N-1] + [(1+7+1)+N-1] = 3N+22$拍。
 
 2. 前两条指令并行、和第三条指令串行的情况
-
-   $max{[(1+6+1)+N-1], [(1+6+1)+N-1]} + [(1+7+1)+N-1] = 2N+15$
+    $max{[(1+6+1)+N-1], [(1+6+1)+N-1]} + [(1+7+1)+N-1] = 2N+15$
 
 3. 采用向量链接技术
-
-   我们只需要知道$V4$的第一个结果多久可以出来：$8+1+7+1=17$拍，随后还有$(N-1)$条指令，因此总共需要的拍数为$max{(1+6+1), (1+6+1)} + (1+7+1)+N-1 = N+16$拍。
+    我们只需要知道$V4$的第一个结果多久可以出来：$8+1+7+1=17$拍，随后还有$(N-1)$条指令，因此总共需要的拍数为$max{(1+6+1), (1+6+1)} + (1+7+1)+N-1 = N+16$拍。
 
 #### 5.1.3 RV64V
 
@@ -721,22 +716,22 @@ SIMD为单指令流多数据流。
 
 - 和向量机的相同之处：
 
-  - 可以很好地处理数据级别的并行问题
-  - Scatter-gather transfers 分散-聚集传输方式
-  - Mask registers
-  - Large register files
+    - 可以很好地处理数据级别的并行问题
+    - Scatter-gather transfers 分散-聚集传输方式
+    - Mask registers
+    - Large register files
 
 - 和向量机的不同之处：
 
-  - 没有标量处理机
+    - 没有标量处理机
 
-  - 采用多线程隐藏内存延迟
+    - 采用多线程隐藏内存延迟
 
-  - 拥有多个功能单元，而不像向量处理器那样只有少数几个深度流水线单元
+    - 拥有多个功能单元，而不像向量处理器那样只有少数几个深度流水线单元
 
-  - 增加了硬件实现的线程调度机制，更快速和稳定
+    - 增加了硬件实现的线程调度机制，更快速和稳定
 
-    ![image-20241229213805412](./markdown-img/final_review.assets/image-20241229213805412.png)
+      ![image-20241229213805412](./markdown-img/final_review.assets/image-20241229213805412.png)
 
 ### 5.2 LLP
 
@@ -744,19 +739,19 @@ SIMD为单指令流多数据流。
 
 1. 没有跨迭代相关的情况，直接并行
 
-   ![image-20241229214838829](./markdown-img/final_review.assets/image-20241229214838829.png)
+    ![image-20241229214838829](./markdown-img/final_review.assets/image-20241229214838829.png)
 
 2. 有跨迭代相关但是可以消除
 
-   *个人认为消除跨迭代相关的本质是不让B[i]和B[i+1]出现在一个循环里，把相关性放到同一个循环内*
+    *个人认为消除跨迭代相关的本质是不让B[i]和B[i+1]出现在一个循环里，把相关性放到同一个循环内*
 
-   本次循环两个指令相关可以使用向量链接技术解决
+    本次循环两个指令相关可以使用向量链接技术解决
 
-   ![image-20241229215659222](./markdown-img/final_review.assets/image-20241229215659222.png)
+    ![image-20241229215659222](./markdown-img/final_review.assets/image-20241229215659222.png)
 
 3. 无法消除的跨迭代循环（两条指令都跨迭代相关）
 
-   ![image-20241229215302740](./markdown-img/final_review.assets/image-20241229215302740.png)
+    ![image-20241229215302740](./markdown-img/final_review.assets/image-20241229215302740.png)
 
 相关性的判断与通过重命名解决dependency：
 
@@ -772,7 +767,6 @@ SIMD为单指令流多数据流。
 - Cache coherence
 
 ![image-20241229221138884](./markdown-img/final_review.assets/image-20241229221138884.png)
-
 
 
 ### 6.1 多处理器的内存架构
@@ -812,15 +806,15 @@ SIMD为单指令流多数据流。
 
 - NUMA 有两种拓展：
 
-  - NC-NUMA: Non Cache NUMA 没cache
+    - NC-NUMA: Non Cache NUMA 没cache
 
-    ![image-20241229230544954](./markdown-img/final_review.assets/image-20241229230544954.png)
+        ![image-20241229230544954](./markdown-img/final_review.assets/image-20241229230544954.png)
 
-  - CC-NUMA: Coherent Cache NUMA 有cache
+    - CC-NUMA: Coherent Cache NUMA 有cache
 
-    有自己的 cache 和目录，存在 cache 一致性的问题。当有一个数据改了，如何保证其他 cache 里的数据的正确性。多个cache从表现上不存在内存的不统一，好像只有一个cache一样。
+        有自己的 cache 和目录，存在 cache 一致性的问题。当有一个数据改了，如何保证其他 cache 里的数据的正确性。多个cache从表现上不存在内存的不统一，好像只有一个cache一样。
 
-    ![image-20241229230559153](./markdown-img/final_review.assets/image-20241229230559153.png)
+        ![image-20241229230559153](./markdown-img/final_review.assets/image-20241229230559153.png)
 
 - NUMA又叫**distributed shared-memory multiprocessor (DSP)**。
 
