@@ -1,5 +1,5 @@
 site_name: wyr's notes #网站名字
-site_url:  #你的网址
+site_url: https://tsuki0512.github.io/ #你的网址
 site_author: wyr #你的名字
 theme:
   name: material #主题
@@ -53,11 +53,14 @@ nav:
       - 内存层次: 2024_fall/CA/CA3.md
       - 指令级并行: 2024_fall/CA/CA4.md
       - DLP和TLP: 2024_fall/CA/CA5.md
-    - 操作系统（学习中）:
+    - 操作系统:
       - 期末复习: 2024_fall/OS/final_review.md
-    - 计算理论（学习中）:
-      - 2024_fall/计算理论/Lec1.md
-      - 2024_fall/计算理论/Lec2.md
+    - 计算理论: 
+      - 概述与经验: 2024_fall/计算理论/index.md
+      - FA: 2024_fall/计算理论/Lec1.md
+      - REX: 2024_fall/计算理论/Lec2.md
+    - 计算机网络:
+      - 概述与经验: 2024_fall/CN/CN.md
     - 数理基础课程资源汇总:
       - 离散数学及其应用: 离散数学.md
       - 微积分（甲）: 微积分.md

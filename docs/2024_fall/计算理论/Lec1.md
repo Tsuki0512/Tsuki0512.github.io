@@ -4,8 +4,6 @@
 
 ![9ec470ebae8437c535e8c66aa1ecec3](./markdown-img/Lec1.assets/9ec470ebae8437c535e8c66aa1ecec3.jpg)
 
-参考笔记：[鹤翔万里的笔记本](https://note.tonycrane.cc/cs/tcs/toc/topic1/)
-
 ## 问题、语言定义
 
 ### 问题
