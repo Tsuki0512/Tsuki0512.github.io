@@ -53,14 +53,16 @@ nav:
       - 内存层次: 2024_fall/CA/CA3.md
       - 指令级并行: 2024_fall/CA/CA4.md
       - DLP和TLP: 2024_fall/CA/CA5.md
-    - 操作系统:
-      - 期末复习: 2024_fall/OS/final_review.md
+    - 操作系统: 2024_fall/OS/final_review.md
     - 计算理论: 
       - 概述与经验: 2024_fall/计算理论/index.md
       - FA: 2024_fall/计算理论/Lec1.md
       - REX: 2024_fall/计算理论/Lec2.md
-    - 计算机网络:
-      - 概述与经验: 2024_fall/CN/CN.md
+    - 计算机网络: 2024_fall/CN/CN.md
+    - 编译原理（学习中）: 
+      - Introduction: 2025_spring/cp/chap1.md
+      - Lexical Analysis: 2025_spring/cp/chap2.md
+    - 自然语言处理导论（学习中）: 2025_spring/nlp/nlp.md
     - 数理基础课程资源汇总:
       - 离散数学及其应用: 离散数学.md
       - 微积分（甲）: 微积分.md
