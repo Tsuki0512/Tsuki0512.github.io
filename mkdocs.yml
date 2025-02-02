@@ -62,6 +62,7 @@ nav:
     - 编译原理（学习中）: 
       - Introduction: 2025_spring/cp/chap1.md
       - Lexical Analysis: 2025_spring/cp/chap2.md
+      - Parsing: 2025_spring/cp/chap3.md
     - 自然语言处理导论（学习中）: 2025_spring/nlp/nlp.md
     - 数理基础课程资源汇总:
       - 离散数学及其应用: 离散数学.md
