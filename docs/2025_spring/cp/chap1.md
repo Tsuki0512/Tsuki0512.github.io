@@ -8,11 +8,22 @@
 
 ## 1.1 模块与接口
 
-![image-20250130025106128](./chap1.assets/image-20250130025106128.png)
+![image-20250220142023843](./chap1.assets/image-20250220142023843.png)
+
+Tiger编译器的流程：
+
+![image-20250220142156023](./chap1.assets/image-20250220142156023.png)
 
 编译器被划分成了不同的**module**模块（**phases**阶段可以是一个或者多个module），每个模块之间通过**interface**接口连接。（并不是所有的编译器都是按照这个框架来的，能跑就行）
 
-抽象语言：在模块间传递的信息的描述方式，比如IR Trees。
+抽象语言：在模块间传递的信息的描述方式
+
+- AST - 抽象语法树，语法分析+“parsing actions”生成
+- IR Tree - 语义分析后按一定规则生成的树型中间表示
+- Canonicalized IR Tree - 对IR Tree做变换所得（方便生成汇编）
+- Assem - 指令选择器生成（一种特殊的汇编）
+- CFG (Control Flow Graph) 控制流图 - 方便进行数据流分析，例如活跃变量分析(liveness Analysis)
+- Interference Graph - 从活跃变量分析的结果构造，用于指导寄存器分配
 
 ### 1.1.1 各个阶段的具体功能
 
