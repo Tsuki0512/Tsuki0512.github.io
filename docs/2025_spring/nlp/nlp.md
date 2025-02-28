@@ -1,1 +1,3 @@
-//todo
+![image-20250223151118466](./nlp.assets/image-20250223151118466.png)
+
+![image-20250223151134768](./nlp.assets/image-20250223151134768.png)
