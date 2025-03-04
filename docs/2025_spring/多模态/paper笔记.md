@@ -1,18 +1,20 @@
-## 0-1-1 Visual Instruction Turing
+## 0-1 什么是具备多模态理解能力的MLLM
+
+### 0-1-1 Visual Instruction Turing
 
 - [论文链接](https://arxiv.org/abs/2304.08485)
 
 - 参考链接：[1](https://blog.csdn.net/qq_58400270/article/details/135073408) [2](https://zhuanlan.zhihu.com/p/647782091)
 
-### 1 前置知识
+#### 1 前置知识
 
 ![image-20250303105247532](./paper%E7%AC%94%E8%AE%B0.assets/image-20250303105247532.png)
 
 指令微调和提示微调的目的都是去挖掘语言模型本身具备的知识。不同的是，Prompt 是激发语言模型的**补全能力**，例如根据上半句生成下半句，或是完形填空等。Instruct 是激发语言模型的**理解能力**，它通过给出更明显的指令，让模型去做出正确的行动。**指令微调的优点是它经过多任务的微调后，也能够在其他任务上做zero-shot，而提示微调都是针对一个任务的。泛化能力不如指示学习**。
 
-### 2 具体实现
+#### 2 具体实现
 
-#### 2.1 视觉指令数据集
+##### 2.1 视觉指令数据集
 
 用于指令微调的指示学习阶段。
 
@@ -22,7 +24,7 @@
 
 训练过程中，模型通过图片描述和三类指令给出回答。
 
-#### 2.2 LLaVa架构
+##### 2.2 LLaVa架构
 
 ![image-20250303111756590](./paper%E7%AC%94%E8%AE%B0.assets/image-20250303111756590.png)
 
@@ -41,7 +43,7 @@ LLaVA 处理这个问题的流程如下：
 4. **输出 (`X_a`)**
       - 模型输出 `"这是一只狗"`，完成任务。
 
-#### 2.3 训练过程
+##### 2.3 训练过程
 
 ![image-20250303135208878](./paper%E7%AC%94%E8%AE%B0.assets/image-20250303135208878.png)
 
@@ -60,7 +62,7 @@ LLaVA 处理这个问题的流程如下：
   A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human’s questions. and <STOP> = ###
   ```
 
-##### 2.3.1 第一阶段：特征对齐预训练
+###### 2.3.1 第一阶段：特征对齐预训练
 
 在2.2的架构中，我们看到语言模型会结合`H_v`和`H_q`给出回答，所以我们在这一步需要做的就是对齐两者的特征。
 
@@ -68,7 +70,7 @@ LLaVA 处理这个问题的流程如下：
 
 而我们训练的过程就是调整线性层参数使得$X_a$的$p$最大化。
 
-##### 2.3.2 第二阶段：端到端的微调
+###### 2.3.2 第二阶段：端到端的微调
 
 始终保持视觉编码器的权重冻结（即不更新视觉编码器的权重），继续更新投影层的预训练权重以及 LLaVA 中的大语言模型（LLM）的权重。
 
@@ -77,13 +79,13 @@ LLaVA 处理这个问题的流程如下：
 1. chatbot: 在聊天机器人输出的三种类型回复中，对话类型是多轮的，而另外两种回复类型是单轮的。在训练过程中，对这三种回复类型进行均匀采样。
 2. Science QA: 将数据组织成单轮对话形式，模型需要完成两项任务，一是以自然语言的形式提供推理过程，二是在多个选项中选择答案，训练中我们把问题和上下文作为$X_{instruction}$，把推理过程和答案作为$X_a$。
 
-## 0-1-2 MiniGPT-4: Enhancing Vision-Language Understanding with Advanced Large Language Models
+### 0-1-2 MiniGPT-4: Enhancing Vision-Language Understanding with Advanced Large Language Models
 
 - [论文链接](https://arxiv.org/abs/2304.10592)
 
 - 参考链接：[1](https://jackcrum.blog.csdn.net/article/details/131258219?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-131258219-blog-130386728.235%5Ev43%5Epc_blog_bottom_relevance_base8&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-131258219-blog-130386728.235%5Ev43%5Epc_blog_bottom_relevance_base8&utm_relevant_index=5) [2](https://blog.csdn.net/m0_52911108/article/details/142914183)
 
-### 1 模型结构
+#### 1 模型结构
 
 MiniGPT-4处理视觉和语言任务的流程：
 
@@ -109,9 +111,9 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
 - 仅训练线性层即可对齐视觉编码器和LLM的特征，且训练开销不大 *q: 这里的特征对齐具体是什么含义*
 - 采用image caption对模型训练效果并不好，提供小而细节的图像描述可以更好地解决这个问题
 
-### 2 训练过程
+#### 2 训练过程
 
-#### 2.1 第一阶段预训练
+##### 2.1 第一阶段预训练
 
 通过大量对齐的图片-文本对去训练模型整体的视觉-语言能力，将线性层输出作为LLM的软提示输入，目的是让LLM输出正确的回答。这个过程只训练线性层参数。
 
@@ -133,7 +135,7 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
 
 我们将处理完毕的数据集用于第二阶段的微调训练。
 
-#### 2.2 第二阶段微调
+##### 2.2 第二阶段微调
 
 通过第一阶段制作的数据集，从指令集中随机抽取指令作为`<Instruction>`，在LLM中输入：
 
@@ -145,8 +147,20 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
 
 *q: 第一阶段得到的是文本-图像数据集，但是模型输入不是图像+语言吗，这个文本在这里起到什么作用*
 
----
+*a: 作为训练的输入输出对的输出内容，因为指令集里面的指令都是换着不同方式表达同一个意思（描述图片details）*
 
+## 0-2 常见的图像生成范式
+
+### 0-2-1 High-Resolution Image Synthesis with Latent Diffusion Models
+
+- [论文链接](https://arxiv.org/abs/2112.10752)
+- 参考链接：
+
+//todo
+
+### 0-2-2 Taming Transformers for High-Resolution Image Synthesis
+
+- [论文链接](https://arxiv.org/abs/2012.09841)
 - 参考链接：[1](https://blog.csdn.net/weixin_43357695/article/details/135995463)
 
 //todo
