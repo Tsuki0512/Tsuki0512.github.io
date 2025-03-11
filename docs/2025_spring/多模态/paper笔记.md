@@ -424,7 +424,7 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
 ### 0-3-2 Emu3: Next-Token Prediction is All You Need
 
 - [论文链接](https://arxiv.org/abs/2409.18869)
-- 学习链接：[1](https://blog.csdn.net/Together_CZ/article/details/143966869?ops_request_misc=%257B%2522request%255Fid%2522%253A%25226ce6597c971b982c13f201eb13cc3007%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=6ce6597c971b982c13f201eb13cc3007&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-143966869-null-null.142^v102^pc_search_result_base9&utm_term=Emu3%3A%20Next-Token%20Prediction%20is%20All%20You%20Need&spm=1018.2226.3001.4187)
+- 参考链接：[1](https://blog.csdn.net/Together_CZ/article/details/143966869?ops_request_misc=%257B%2522request%255Fid%2522%253A%25226ce6597c971b982c13f201eb13cc3007%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=6ce6597c971b982c13f201eb13cc3007&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-143966869-null-null.142^v102^pc_search_result_base9&utm_term=Emu3%3A%20Next-Token%20Prediction%20is%20All%20You%20Need&spm=1018.2226.3001.4187)
 
 #### 1 核心思路
 
@@ -449,14 +449,65 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
 - 指令对齐训练：输入多轮对话示例（如 "画一只戴眼镜的猫"），模型学习根据指令生成符合要求的输出
 - 效率优化训练：在保持效果前提下，训练模型减少计算资源消耗
 
-//todo
-
 ## 1-1 Janus: Decoupling Visual Encoding for Unified Multimodal Understanding and Generation
 
 - [论文链接](https://arxiv.org/abs/2410.13848)
 
+- 参考链接：[1](https://blog.csdn.net/sexy19910923/article/details/143095754)
+- [一个好用的翻译网站](https://doc2x.com/)
 
+这个工作核心创新点是解耦视觉编码器，之前的工作在理解和生成的两个任务上采用了单一的视觉编码器，但是这两个任务所需的表征是存在显著差异的：
+
+- **理解任务**更倾向于提取高级语义信息，是提取信息+推理的结合，因此重点在高维**语义表征**
+- **生成任务**更倾向于局部细节与全局一致，重点在低维的**细节编码**
+
+因此在这个工作我们引入了两条独立的视觉编码路径分别用于多模态的理解和生成，并且由相同的transformer架构统一起来。
+
+### 1 模型架构
+
+![image-20250311203559053](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311203559053.png)
+
+- 理解任务
+    - SigLIP编码器从图像中提取高维语义特征，从二维网格展平为一维序列并且映射到LLM输入空间
+    - tokenize文本输入
+    - 上述两种特征统一使用transformer处理
+- 生成任务
+    - 使用VQ tokenizer转换图像为离散特征ID并展平映射到输入空间
+    - 拼接特征序列进行预测 - 内置预测头用于文本预测，使用随机初始化的预测头进行图像预测
+    - 预测遵循自回归框架
+
+### 2 训练过程
+
+![image-20250311204057042](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311204057042.png)
+
+**第一阶段：训练适配器和图像头。**该阶段的主要目标是在嵌入空间内创建视觉和语言元素之间的概念联系，使LLM能够理解图像中显示的实体并具有初步的视觉生成能力。在此阶段，保持视觉编码器和 LLM 冻结，只允许更新理解适配器、生成适配器和图像头中的可训练参数。
+
+**第二阶段： 统一预训练。**在这个阶段，使用多模态语料库进行统一预训练，使 Janus 能够学习多模态理解和生成。解冻 LLM 并利用所有类型的训练数据：纯文本数据、多模态理解数据和视觉生成数据。受 Pixart 的启发，首先使用 ImageNet-1k 进行简单的视觉生成训练，以帮助模型掌握基本的像素依赖性。随后，使用通用文本到图像数据增强了模型的开放域视觉生成能力。
+
+**第三阶段： 监督微调。**在此阶段，使用指令调整数据对预训练模型进行微调，以增强其指令跟随和对话能力。微调除生成编码器之外的所有参数。专注于监督答案，同时屏蔽系统和用户提示。为了确保 Janus 精通多模态理解和生成，不会针对特定任务微调单独的模型。相反，混合使用纯文本对话数据、多模态理解数据和视觉生成数据，确保跨各种场景的多功能性。
+
+训练过程中采用的是交叉熵损失；推理过程中采用next-token prediction。
+
+### 3 模型拓展
+
+1. 多模态理解
+      - 更强大的视觉编码器
+      - 动态高分辨率技术
+2. 视觉生成
+      - 更细粒度编码器
+      - 采用专门的视觉生成损失函数
+      - 结合自回归（因果注意力）和并行（双向注意力）方法减少累积误差
+3. 对额外模态的支持
 
 ## 1-2 Show-o: One Single Transformer to Unify Multimodal Understanding and Generation
 
 - [论文链接](https://arxiv.org/abs/2408.12528)
+- 参考链接：[1](https://blog.csdn.net/buganything/article/details/141603951?ops_request_misc=%257B%2522request%255Fid%2522%253A%252209864a1e4f7a846855712b1153eb6fa0%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=09864a1e4f7a846855712b1153eb6fa0&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-6-141603951-null-null.142^v102^pc_search_result_base9&utm_term=show-o&spm=1018.2226.3001.4187)
+
+在之前的多模态大模型中，普遍采用自回归预测方式，但是其因果注意力机制对于处理高分辨率的图像和视频任务需要大量的采样步骤。
+
+本次工作尝试将单一的Transformer同时涉及自回归和diffusion modeling。不同于之前传统的连续扩散，我们采用离散去噪diffusion来对离散图像token进行建模、生成。
+
+![image-20250311213412697](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311213412697.png)
+
+//todo
