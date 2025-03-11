@@ -314,7 +314,149 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
 
 ### 0-2-2 Taming Transformers for High-Resolution Image Synthesis
 
+---
+
+#### 前置1：VQVAE
+
+学习链接：[1](https://spaces.ac.cn/archives/6760)
+
+传统自回归模型在处理图像生成问题的时候是逐像素生成的：
+
+![image-20250311124714888](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311124714888.png)
+
+会存在以下问题：
+
+1. 不同递归顺序会带来区别较大的结果
+2. 慢，消耗算力大
+3. 割裂类别间联系，可能肉眼无法区分的像素在计算loss的时候和区别很大的像素一样
+
+而VAE通过最邻近将连续向量映射为了编码表中的一个固定向量，将其离散化：
+
+![image-20250311125319634](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311125319634.png)
+
+而为了保持重构时较小的失真率，我们将图片编码为$m×m$个$d$维向量：
+
+![image-20250311125544612](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311125544612.png)
+
+而这个离散的实现会带来两个问题，具体解决方式可以见原文：
+
+1. 离散数据点带来的梯度消失问题，采用Straight-Through的思想在反向传播的时候**自行设计梯度**解决
+      ![image-20250311130829879](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311130829879.png)
+2. 为了保证我们的最邻近足够准确，将两个向量的距离也加入loss函数中并且调整两者占比参数进行优化，而且我们倾向于固定$z$让$z_q$去靠近$z$因为$z_q$是人为设计的可调的编码表，最终loss函数如下：
+      ![image-20250311130809671](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311130809671.png)
+
+---
+
 - [论文链接](https://arxiv.org/abs/2012.09841)
-- 参考链接：[1](https://blog.csdn.net/weixin_43357695/article/details/135995463)
+- 参考链接：[1](https://blog.csdn.net/weixin_43357695/article/details/135995463) *其实写得一般，不如gpt(x*
+
+#### 1 模型框架
+
+模型的核心思想是结合了transformer和CNN的优点，使用CNN来有效地学习上下文丰富的视觉部分的codebook，然后Transformer学习它们的全局组合模型。
+
+![image-20250310151736307](./paper%E7%AC%94%E8%AE%B0.assets/image-20250310151736307.png)
+
+1. **VQGAN 预训练**：
+      - CNN 编码器 **E** 将图像编码成潜在表示 **ẑ**。
+      - 量化 **ẑ**，将其映射到离散的代码簿 **𝒵**，得到 **z_q**。
+      - CNN 解码器 **G** 负责重建图像，判别器 **D** 进行对抗训练提高质量。
+2. **Transformer 训练**：
+      - 以 **z_q** 作为离散 token 序列，训练 Transformer 进行自回归建模。
+3. **图像生成**：
+      - 生成阶段，Transformer 根据已有 token 逐步预测 **z_q**。
+      - 预测得到的 **z_q** 通过 VQGAN 解码器 **G** 生成最终的图像。
+## 0-3 尝试在一个MLLM中统一生成和理解
+
+### 0-3-1 Making LLaMA SEE and Draw with SEED Tokenizer
+
+- [论文链接](https://arxiv.org/abs/2310.01218)
+
+#### 1 模型架构
+
+![image-20250311152742653](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311152742653.png)
+
+**(a) 视觉信号的 "翻译" 过程** - SEED会将提取特征后的2D图片转换成1D序列的Vision codes，这些vision code是有意义的语义单元（比如 "猫的尾巴"、"红色汽车"），而不是单纯的像素块
+
+**(b) 多模态内容的 "编织" 过程** - 把Vision codes和Text混合成一条序列，使得多模态LLM可以使用next-word prediction执行可拓展的多模态自回归
+
+而论文中为了保证理解和生成任务正常执行，生成的Vision code需要：
+
+1. 有一维**因果依赖关系**的tokens - 因为原始图像是二维的，像素之间的依赖关系和传统文本处理下的单向注意力机制不匹配
+2. 有**高层语义** - “把Vision codes和Text混合成一条序列”这个过程要求它们具有相同程度的语义
+
+#### 2 训练方法
+
+##### 2.1 SEED Tokenizer
+
+![image-20250311164323893](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311164323893.png)
+
+**核心目标**：把图像转换成适合大模型处理的 "视觉单词" 序列，同时保持语义连贯性和生成能力。
+
+**主要组件与流程**：
+
+1. **图像翻译器（ViT 编码器）** - 把图像切成 16x16 像素的小方块，并将每个方块转换成一个特征向量
+2. **因果关系调整器（Causal Q-Former）** - 把原来 2D 网格排列的特征向量重新排列成 1D 序列并确保每个新标签生成时依赖前面所有标签的信息
+3. **视觉字典（VQ Codebook）** - 把连续的特征向量转换成离散的视觉单词，每个视觉单词对应一个具体语义，保证生成的单词序列有因果关系（后面的词依赖前面的）
+4. **生成控制器（MLP）** - 将视觉单词序列压缩成一个生成指令（1 个综合向量），这个指令能控制图像生成模型并且与预训练的图像生成模型（unCLIP-SD）的潜在空间对齐
+
+**训练过程**：
+
+1. 训练因果Q-Former - 是最小化图中"Contrastive"的loss的过程
+2. 训练Tokenize和De-tokenize - 是最小化图中两个"Reconstruct"的loss的过程
+
+##### 2.2 SEED-LLaMA
+
+![image-20250311154746741](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311154746741.png)
+
+**核心目标**：训练出可以在交错的视觉和文本数据上进行多模态自回归预测的LLM
+
+**处理过程**：
+
+1. 预处理：把文本和图像都变成token。
+2. 输入LLM：把处理好的离散的tokens输入，用 “[IMG]” 标记表示图像的开始，模型会同时处理**图片信息**和**文字信息**。模型的任务是理解这些信息，并生成一段与图片和文字相关的描述。
+3. 推理：生成输出的token序列，并且将这些token转换回可读的结果，图片符号被还原成图片，文字符号被还原成文字；最终输出是盛开的莲花图片和描述：“从花苞到盛开通常需要半个月”。
+
+**训练过程**：
+
+1. 多模态预训练 - 让模型理解 "图文混合语言" 的生成规律，使用next token prediction的方式让模型学会图文信息的相互依赖关系（如看到 "红色" 视觉词后更可能生成 "苹果" 文字）并且能像人类一样边想文字边想图像
+2. 指令微调
+
+### 0-3-2 Emu3: Next-Token Prediction is All You Need
+
+- [论文链接](https://arxiv.org/abs/2409.18869)
+- 学习链接：[1](https://blog.csdn.net/Together_CZ/article/details/143966869?ops_request_misc=%257B%2522request%255Fid%2522%253A%25226ce6597c971b982c13f201eb13cc3007%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=6ce6597c971b982c13f201eb13cc3007&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-143966869-null-null.142^v102^pc_search_result_base9&utm_term=Emu3%3A%20Next-Token%20Prediction%20is%20All%20You%20Need&spm=1018.2226.3001.4187)
+
+#### 1 核心思路
+
+通过将图像、文本和视频标记化为离散空间，我们在多模态序列的混合上从头开始训练一个单一的Transformer。
+
+![image-20250311172034209](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311172034209.png)
+
+#### 2 预训练
+
+训练数据结构如下：
+
+![image-20250311173220058](./paper%E7%AC%94%E8%AE%B0.assets/image-20250311173220058.png)
+
+用一个大Transformer模型处理所有模态的 token，使用标准的交叉熵损失进行下一个标记预测任务进行训练。为了防止视觉标记主导学习过程，我们对与视觉标记相关的损失应用0.5的权重。
+
+预训练过程分为两个阶段。在第一阶段，不使用视频数据，从上下文长度为5120的文本和图像数据从头开始训练；在第二阶段，引入视频数据，并使用131072的上下文长度。
+
+#### 3 后训练
+
+- 任务定制微调：用特定任务数据集（如 COCO 图像描述数据集）训练
+- 对比学习优化：让模型生成的图像与真实图像对比，调整参数使差异更小
+- 指令对齐训练：输入多轮对话示例（如 "画一只戴眼镜的猫"），模型学习根据指令生成符合要求的输出
+- 效率优化训练：在保持效果前提下，训练模型减少计算资源消耗
 
 //todo
+
+## 1-1 Janus: Decoupling Visual Encoding for Unified Multimodal Understanding and Generation
+
+- [论文链接](https://arxiv.org/abs/2410.13848)
+
+
+
+## 1-2 Show-o: One Single Transformer to Unify Multimodal Understanding and Generation
+
+- [论文链接](https://arxiv.org/abs/2408.12528)
