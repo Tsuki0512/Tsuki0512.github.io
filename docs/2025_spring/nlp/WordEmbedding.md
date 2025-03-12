@@ -51,6 +51,8 @@
 
 ![image-20250307153345923](./WordEmbedding.assets/image-20250307153345923.png)
 
+[有一个很好理解的demo](http://bit.ly/wevi-online)
+
 ## 3 上述工作几个优化方向
 
 其实这个做法并没有理论上的贡献，它认为的技术创新：
