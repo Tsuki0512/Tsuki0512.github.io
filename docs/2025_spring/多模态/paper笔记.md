@@ -231,6 +231,8 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
   ![image-20250310144959734](./paper%E7%AC%94%E8%AE%B0.assets/image-20250310144959734.png)
 - 多头注意力机制：在单头注意力机制的基础上采用GPU并行计算，采用不同的$Q$、$K$、$V$矩阵去产生不同的注意力机制，关注不同的上下文关系。
 
+// todo1 - 前置: CLIP, VIT
+
 ---
 
 - [论文链接](https://arxiv.org/abs/2112.10752)
@@ -367,6 +369,8 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
       - 预测得到的 **z_q** 通过 VQGAN 解码器 **G** 生成最终的图像。
 ## 0-3 尝试在一个MLLM中统一生成和理解
 
+以下两个模型的基本思路是一致的，都是把图片编码成离散的vision tokens。但是其实现的范式的不一样的，SEED基于diffusion model，而emu3直接基于VQGAN。
+
 ### 0-3-1 Making LLaMA SEE and Draw with SEED Tokenizer
 
 - [论文链接](https://arxiv.org/abs/2310.01218)
@@ -399,10 +403,12 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
 3. **视觉字典（VQ Codebook）** - 把连续的特征向量转换成离散的视觉单词，每个视觉单词对应一个具体语义，保证生成的单词序列有因果关系（后面的词依赖前面的）
 4. **生成控制器（MLP）** - 将视觉单词序列压缩成一个生成指令（1 个综合向量），这个指令能控制图像生成模型并且与预训练的图像生成模型（unCLIP-SD）的潜在空间对齐
 
+**这个SD Decoder是基于diffusion的，所以这个模型的视觉token最终是用于生成扩散过程中的控制条件，也就是生成指令的。并不是next token prediction。**
+
 **训练过程**：
 
 1. 训练因果Q-Former - 是最小化图中"Contrastive"的loss的过程
-2. 训练Tokenize和De-tokenize - 是最小化图中两个"Reconstruct"的loss的过程
+2. 训练Tokenize和De-tokenize - 是最小化图中两个"Reconstruct"的loss的过程 - 训练两个空间的vision code、embedding对齐
 
 ##### 2.2 SEED-LLaMA
 
@@ -442,10 +448,14 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
 
 预训练过程分为两个阶段。在第一阶段，不使用视频数据，从上下文长度为5120的文本和图像数据从头开始训练；在第二阶段，引入视频数据，并使用131072的上下文长度。
 
+预测方式是next token prediction，基于VQGAN。
+
 #### 3 后训练
 
 - 任务定制微调：用特定任务数据集（如 COCO 图像描述数据集）训练
 - 对比学习优化：让模型生成的图像与真实图像对比，调整参数使差异更小
+    - //todo2：对比学习
+
 - 指令对齐训练：输入多轮对话示例（如 "画一只戴眼镜的猫"），模型学习根据指令生成符合要求的输出
 - 效率优化训练：在保持效果前提下，训练模型减少计算资源消耗
 
@@ -502,7 +512,7 @@ mini-GPT4训练的是线性层的参数，使得视觉特征和语言信息在�
 ## 1-2 Show-o: One Single Transformer to Unify Multimodal Understanding and Generation
 
 - [论文链接](https://arxiv.org/abs/2408.12528)
-- 参考链接：[1](https://blog.csdn.net/buganything/article/details/141603951?ops_request_misc=%257B%2522request%255Fid%2522%253A%252209864a1e4f7a846855712b1153eb6fa0%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=09864a1e4f7a846855712b1153eb6fa0&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-6-141603951-null-null.142^v102^pc_search_result_base9&utm_term=show-o&spm=1018.2226.3001.4187) *有一些可以参考的，不过有一些部分感觉写错了？*
+- 参考链接：[1](https://blog.csdn.net/buganything/article/details/141603951?ops_request_misc=%257B%2522request%255Fid%2522%253A%252209864a1e4f7a846855712b1153eb6fa0%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=09864a1e4f7a846855712b1153eb6fa0&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-6-141603951-null-null.142^v102^pc_search_result_base9&utm_term=show-o&spm=1018.2226.3001.4187)
 
 在之前的多模态大模型中，普遍采用自回归预测方式，但是其因果注意力机制对于处理高分辨率的图像和视频任务需要大量的采样步骤。
 
@@ -580,6 +590,9 @@ QK-Norm: 希望矩阵中的每一行都与其他行有相似的程度，避免�
     - $(1+w)ℓ_c^t$放大条件约束的影响
     - $-wℓ_u^t$削弱无条件预测的权重
     - 最终 logit 偏向符合输入文本的 tokens
+
+**整体的工作原理就是：先进行文本token的next token prediction，在读到文本token的结束标记的时候切换为diffusion生成模型的工作状态，给几个图像切片利用之前所有预测的文本tokens作为控制条件输入模型进行T步去噪生成对应的vision tokens，再切换到next token prediction模式，而前面生成的文本token和vision token都作为模型的输入**
+
 ---
 
 *附：一些在学习过程中的ai自编小故事（x 我当时觉得他说得挺对的后来发现和这篇论文不是一回事情*
@@ -611,8 +624,8 @@ QK-Norm: 希望矩阵中的每一行都与其他行有相似的程度，避免�
 2. **训练阶段优化的核心参数**
       - 共享参数：MTP 损失与自回归生成损失$L_{NTP}$共享同一套 Transformer 参数。
           - 例如：模型在训练时同时学习两个任务：
-              1. **自回归生成**（如根据 “猫” 生成图像）。
-              2. **降噪恢复**（如从模糊的 “猫” 图像恢复原图）。
+                1. **自回归生成**（如根据 “猫” 生成图像）。
+                2. **降噪恢复**（如从模糊的 “猫” 图像恢复原图）。
 
       - 参数优化目标：
           - 通过梯度反向传播，使模型同时提升两个能力：
