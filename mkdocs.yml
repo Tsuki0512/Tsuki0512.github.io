@@ -66,6 +66,7 @@ nav:
     - 自然语言处理导论（学习中）:
       - Deep Learning Basics: 2025_spring/nlp/DeepLearningBasics.md
       - Word Embedding: 2025_spring/nlp/WordEmbedding.md
+      - Convolutional Neural Networks: 2025_spring/nlp/ConvolutionalNeuralNetworks.md
     - 数理基础课程资源汇总:
       - 离散数学及其应用: 离散数学.md
       - 微积分（甲）: 微积分.md
