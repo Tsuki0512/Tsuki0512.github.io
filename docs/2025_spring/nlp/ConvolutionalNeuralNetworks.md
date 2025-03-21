@@ -13,7 +13,7 @@
 1. 在我们做检测的时候，同一个特征会出现在不同图片的不同区域。每个神经元只能检测指定位置的特征，因此不同位置的特征需要不同的神经元，但是由于检测都是同一个特征，所以神经元都是差不多的：
     ![image-20250314140916477](./ConvolutionalNeuralNetworks.assets/image-20250314140916477.png)
 2. 下采样：通过例如移除一张图片所有奇数列和奇数行的方式缩放图片，这个缩小不影响神经元的特征检测。</br>
-基于上述特性，完整的CNN如下图所示：
+   基于上述特性，完整的CNN如下图所示：
     ![image-20250314140932671](./ConvolutionalNeuralNetworks.assets/image-20250314140932671.png)
 
 ### 1.2 卷积
@@ -26,9 +26,11 @@
 
 - 而由于特征可能出现在不同的位置，所以我们用卷积核遍历整张图片；
 
+- 卷积核就是在训练过程中被训练的参数；
+
 - 因为边缘可以补0，所以卷积之后图片大小不变：zero padding:
     ![image-20250314135959494](./ConvolutionalNeuralNetworks.assets/image-20250314135959494.png)
-在神经网络中的实现就是在一个神经元内，只有被对应卷积核覆盖的像素点才有值，而不同位置只是置1的输入变量不一样，权重参数是一样的(Shared Weights)：
+    在神经网络中的实现就是在一个神经元内，只有被对应卷积核覆盖的像素点才有值，而不同位置只是置1的输入变量不一样，权重参数是一样的(Shared Weights)：
     ![image-20250314141001586](./ConvolutionalNeuralNetworks.assets/image-20250314141001586.png)
 
 ### 1.3 池化
@@ -116,8 +118,8 @@ Max Pooling：对feature map分块，保留块内最大值，检测区域内最�
 
 - 池化丢失了**位置信息**，例如旋转人脸导致无法识别，但是交换眼睛和嘴巴的位置却导致依旧识别为人：
     ![image-20250314150630815](./ConvolutionalNeuralNetworks.assets/image-20250314150630815.png)
-针对上述问题，有一个尝试是capsule network：
-![image-20250314150917527](./ConvolutionalNeuralNetworks.assets/image-20250314150917527.png)
+    针对上述问题，有一个尝试是capsule network：
+    ![image-20250314150917527](./ConvolutionalNeuralNetworks.assets/image-20250314150917527.png)
 
 传统的神经元基本处理的是标量，标量没有方向，而capsule做的就是将输入变成向量（数组实现），输出也是数组。而我们在神经元会对其进行仿射变换，加权求和的过程也是根据注意力机制动态变化的：
 
@@ -126,3 +128,68 @@ Max Pooling：对feature map分块，保留块内最大值，检测区域内最�
 检测形状和形状的朝向，初始层是三角形的capsule和长方形的capsule，然后对这两个capsule做动态路由，在下一层匹配成帆船/房子的capsule。
 
 没有成功可能是硬件不匹配。
+
+### 3.4 Kolmogorov-Arnold Network (KAN)
+
+提出了一种理论：很多简单函数的组合可以表达多种复杂函数。
+
+KAN不学权重，学激活函数。
+
+![image-20250321134227702](./ConvolutionalNeuralNetworks.assets/image-20250321134227702.png)
+
+函数怎么学？- 学样条函数B-Splines，把每个函数定义域切成小块，用数字表示（近似）每一个小块的函数；最后的激活函数是所有这些函数的线性组合，而学习的过程就是调整每一个函数对应的参数的过程（拉长、拉宽等）。
+
+优点？- 表达能力比传统mlp好，同样的性能需要参数更少，因为函数本身就携带更多的信息。新内容进来的时候对旧内容的记忆更好。
+
+需要更高精度？- 把样条变得更小，进一步细化参数，不需要新增。
+
+怎么做卷积？把卷积核从数字变成函数。
+
+![image-20250321135132060](./ConvolutionalNeuralNetworks.assets/image-20250321135132060.png)
+
+最大的优势在于支持科学计算，训练结束之后可以直接根据激活函数写出公式：
+
+![image-20250321135258602](./ConvolutionalNeuralNetworks.assets/image-20250321135258602.png)
+
+不但可以简单地完成输入输出的映射，还能显式地表达映射关系，适用于研究一些普适的科学原理。
+
+MultiKAN - 之前是将所有样条函数简单相加，现在引入了乘法，表现能力更强，例如上图的右边用更简单的方式表达了和左图相同的内容。
+
+### 3.5 CNN for NLP
+
+考虑一个任务，比如句子（情感/主题/...）分类。
+
+如何利用词向量得到句子特征？- 最简单的方式就是Bag of words --- 相加所有词向量，把相加结果扔给分类器。
+
+- 不考虑词的顺序，太粗糙。*区分不了俄罗斯炮轰乌克兰vs乌克兰炮轰俄罗斯*
+
+为了解决序列问题，提出了**Bag of n-grams** - 我们使用一个大小为n的窗口在句子上滑动提取x个n元组，再相加去分类：
+
+![image-20250321140439321](./ConvolutionalNeuralNetworks.assets/image-20250321140439321.png)
+
+问题：
+
+- 参数爆炸，二元、三元的组合太多了
+
+（一维）卷积的本质其实也是滑动窗口，调整步长可以使得组合更少：
+
+![image-20250321141243804](./ConvolutionalNeuralNetworks.assets/image-20250321141243804.png)
+
+我们可以通过一些规则将句子分为几段：
+
+- **Max pooling:** “Did you see this feature anywhere in the range?” (most common)
+- **Average pooling:** “How prevalent is this feature over the entire range”
+- **k-Max pooling:** “Did you see this feature up to k times?”
+- **Dynamic pooling:** “Did you see this feature in the beginning? In the middle? In the end?”
+
+整体架构：将每个词向量纵向排布，使用不同卷积核（行数n代表n元组）检测不同特征，对得到的feature map做pooling后组合分类：
+
+![image-20250321141623366](./ConvolutionalNeuralNetworks.assets/image-20250321141623366.png)
+
+还有一种技术是膨胀卷积Dilated Convolution，方便并行且避免了重叠，在nlp里面用得比较多：
+
+![image-20250321141906316](./ConvolutionalNeuralNetworks.assets/image-20250321141906316.png)
+
+相当于卷积的流程不是全连接，而是构成了树，重新定义了邻居关系。
+
+*这里的表述存疑*

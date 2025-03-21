@@ -69,6 +69,8 @@ nav:
       - Deep Learning Basics: 2025_spring/nlp/DeepLearningBasics.md
       - Word Embedding: 2025_spring/nlp/WordEmbedding.md
       - Convolutional Neural Networks: 2025_spring/nlp/ConvolutionalNeuralNetworks.md
+      - Recurrent Neural Networks: 2025_spring/nlp/RecurrentNeuralNetworks.md
+      - Attention: 2025_spring/nlp/Attention.md
     - 数理基础课程资源汇总:
       - 离散数学及其应用: 离散数学.md
       - 微积分（甲）: 微积分.md
