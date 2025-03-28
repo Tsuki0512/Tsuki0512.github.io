@@ -72,6 +72,7 @@ nav:
       - Convolutional Neural Networks: 2025_spring/nlp/ConvolutionalNeuralNetworks.md
       - Recurrent Neural Networks: 2025_spring/nlp/RecurrentNeuralNetworks.md
       - Attention: 2025_spring/nlp/Attention.md
+      - NLGandNMT: 2025_spring/nlp/NLGAndNMT.md
     - 数理基础课程资源汇总:
       - 离散数学及其应用: 离散数学.md
       - 微积分（甲）: 微积分.md
