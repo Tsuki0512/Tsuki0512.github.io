@@ -10,6 +10,7 @@
     * [高级数据结构与算法分析期末整理](ADS_复习整理.md)
     * [图像信息处理历年卷整理](dip历年卷整理.md)
     * [计算机体系结构期末整理](2024_fall/CA/final_review.md)
+    * [编译原理期中梳理](2025_spring/cp/midterm.md)
 
 !!! blue-box ""
     <div style="display: flex; align-items: center; gap: 20px;margin-bottom: 20px; ">
