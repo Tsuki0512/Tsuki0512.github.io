@@ -4,6 +4,7 @@
 
 可以带一张a4（可手写/打印），考试范围到语义分析的符号表部分
 
+[cheating sheet](./midterm.assets/编译原理_midterm_A4_ver3.pdf)
 <!--
 
 ## 考试内容
