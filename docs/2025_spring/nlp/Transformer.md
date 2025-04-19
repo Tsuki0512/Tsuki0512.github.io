@@ -47,3 +47,5 @@ RNN的缺点是难并行（激活层有串行的依赖关系） - 不好scale up
 ![image-20250411145811826](./Transformer.assets/image-20250411145811826.png)
 
 transformer快在编码，解码是无法并行的。
+
+bench-normalization：对每一个bench的每一个维度做均值为0方差为1的高斯归一化，
