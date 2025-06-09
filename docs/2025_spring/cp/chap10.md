@@ -4,7 +4,7 @@
 
 - 姚培森老师2024~2025学年春夏ch10ppt
 - [wcjj的笔记](https://shiseab.github.io/notebook/Compiler/ch10/#dataflow-analysis)
-- 伟大的Gemini 2.5 pro deep research
+- [伟大的Gemini 2.5 pro deep research](https://docs.google.com/document/d/1WHHylSfWv7NFEj6yySPxmN44VVPLehjEuW1J-KL50uc/edit?usp=sharing)
 
 ---
 

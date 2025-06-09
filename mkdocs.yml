@@ -69,6 +69,7 @@ nav:
       - Activation Record: 2025_spring/cp/chap6.md
       - IR Trees: 2025_spring/cp/chap7.md
       - Liveness Analysis: 2025_spring/cp/chap10.md
+      - Register Allocation: 2025_spring/cp/chap11.md
     - 自然语言处理导论（学习中）:
       - Deep Learning Basics: 2025_spring/nlp/DeepLearningBasics.md
       - Word Embedding: 2025_spring/nlp/WordEmbedding.md
