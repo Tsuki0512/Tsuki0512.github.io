@@ -1,4 +1,4 @@
-# 7 Translation into Intermediate Code
+# 7 Translation into Intermediate Code 中间代码生成
 
 ## 7.1 中间表示概述
 

@@ -67,7 +67,7 @@ nav:
       - Abstract Syntax: 2025_spring/cp/chap4.md
       - Semantic Analysis: 2025_spring/cp/chap5.md
       - Activation Record: 2025_spring/cp/chap6.md
-      - IR Trees: 2025_spring/cp/chap7.md
+      - IR Trees: 2025_spring/cp/chap7_for_final.md
       - Liveness Analysis: 2025_spring/cp/chap10.md
       - Register Allocation: 2025_spring/cp/chap11.md
       - Garbage Collection: 2025_spring/cp/chap13.md
