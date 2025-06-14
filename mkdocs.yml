@@ -71,6 +71,9 @@ nav:
       - Liveness Analysis: 2025_spring/cp/chap10.md
       - Register Allocation: 2025_spring/cp/chap11.md
       - Garbage Collection: 2025_spring/cp/chap13.md
+      - Object-Oriented Languages: 2025_spring/cp/chap14.md
+    - 软件过程（学习中）:
+      - 期末刷题记录: 2025_spring/se/final.md
     - 自然语言处理导论（学习中）:
       - Deep Learning Basics: 2025_spring/nlp/DeepLearningBasics.md
       - Word Embedding: 2025_spring/nlp/WordEmbedding.md

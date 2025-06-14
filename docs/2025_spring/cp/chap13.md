@@ -394,7 +394,9 @@ function DFS(x_root)
 
 ## 5 垃圾回收与编译器的接口 Interface to the Compiler
 
-和编译器的交互分为以下方面：
+不考。
+
+<!--和编译器的交互分为以下方面：
 
 1. 将程序中的对象创建语句（如 `new Object()`）翻译成调用运行时分配例程的指令
 2. 描述根节点的位置，让垃圾回收知道从哪里开始追踪可达对象
@@ -494,3 +496,4 @@ Solution：
 
 - **Pointer map** ：for each derived pointer, specify which base pointer it's derived from
 - **Liveness** ：a derived pointer implicitly keeps its base pointer live!
+-->
