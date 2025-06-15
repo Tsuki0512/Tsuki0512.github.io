@@ -6,6 +6,7 @@
     - 语法分析
     - 语义分析 - 符号表
 - [语义分析类型检查](https://tsuki0512.github.io/2025_spring/cp/type_checking)
+- [活动记录](https://tsuki0512.github.io/2025_spring/cp/chap6_for_final/)
 - [中间代码生成](https://tsuki0512.github.io/2025_spring/cp/chap7_for_final/)
 - [基本块和traces](https://tsuki0512.github.io/2025_spring/cp/chap8/)
 - [指令选择](https://tsuki0512.github.io/2025_spring/cp/chap9/)
@@ -19,5 +20,4 @@
 
 待完善部分：
 
-- [活动记录](https://tsuki0512.github.io/2025_spring/cp/chap6/)
 - cheating sheet
