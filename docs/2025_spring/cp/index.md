@@ -5,6 +5,7 @@
     - 词法分析
     - 语法分析
     - 语义分析 - 符号表
+- [语义分析类型检查](https://tsuki0512.github.io/2025_spring/cp/type_checking)
 - [中间代码生成](https://tsuki0512.github.io/2025_spring/cp/chap7_for_final/)
 - [基本块和traces](https://tsuki0512.github.io/2025_spring/cp/chap8/)
 - [指令选择](https://tsuki0512.github.io/2025_spring/cp/chap9/)
@@ -18,7 +19,5 @@
 
 待完善部分：
 
-- 语法分析错误恢复（yps老师说其他老师可能会考）
-- [语义分析类型检查](https://tsuki0512.github.io/2025_spring/cp/chap5/#52-type-checking)
 - [活动记录](https://tsuki0512.github.io/2025_spring/cp/chap6/)
 - cheating sheet

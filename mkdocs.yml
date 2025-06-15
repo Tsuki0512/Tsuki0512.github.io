@@ -67,6 +67,7 @@ nav:
       - Parsing: 2025_spring/cp/chap3.md
       - Abstract Syntax: 2025_spring/cp/chap4.md
       - Semantic Analysis: 2025_spring/cp/chap5.md
+      - Type Checking (期末梳理版): 2025_spring/cp/type_checking.md
       - Activation Record: 2025_spring/cp/chap6.md
       - IR Trees: 2025_spring/cp/chap7_for_final.md
       - Basic Blocks and Traces: 2025_spring/cp/chap8.md
