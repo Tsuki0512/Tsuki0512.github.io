@@ -52,6 +52,7 @@
 ![image-20250609154913742](./chap13.assets/image-20250609154913742.png)
 
 1. **标记阶段 (Mark Phase):**
+      
       - 从根节点（程序变量）开始，遍历所有可达的对象
       - 对所有搜索到的（可达的）对象进行标记
       - 通常采用DFS或BFS来遍历对象图
@@ -76,24 +77,25 @@
     - 检查堆中的每一个对象：
         - 如果对象被标记了，说明它是可达的，取消其标记，为下一次GC做准备
         - 如果对象没有被标记，说明它是不可达的垃圾，将其占用的内存空间回收到空闲链表 (freelist) 中，以供后续分配使用
-    - ```c++
-      // 初始化 freelist 为空或者指向已有的空闲块
-      freelist =...
-      // p 从堆的起始地址开始扫描
-      p = first address in heap
-      while p < last address in heap:
-          // 检查记录 p 是否被标记
-          if record p is marked:
-              unmark p // 取消标记，为下次GC准备
-          else: // 记录 p 未被标记，是垃圾
-              // 假设记录的第一个字段 f1 可以用来链接空闲链表
-              let f1 be the first field in p
-              p.f1 = freelist // 将当前垃圾块链入 freelist 的头部
-              freelist = p
-          // 移动 p到下一个记录的起始位置
-          p = p + (size of record p)
-      ```
-当空闲链表为空，无法满足新的内存分配请求时，垃圾回收器会被再次触发 。  
+    - 代码：
+        ```c++
+        // 初始化 freelist 为空或者指向已有的空闲块
+        freelist =...
+        // p从堆的起始地址开始线性扫描整个内存区域
+        p = first address in heap
+        while p < last address in heap:
+            // 检查记录p是否被标记
+            if record p is marked:
+                unmark p // 取消标记，为下次GC准备
+            else: // 记录p未被标记，是垃圾
+                // 假设记录的第一个字段f1可以用来链接空闲链表
+                let f1 be the first field in p
+                p.f1 = freelist // 将当前垃圾块链入freelist的头部
+                freelist = p
+            // 移动p到下一个记录的起始位置
+            p = p + (size of record p)
+        ```
+      当空闲链表为空，无法满足新的内存分配请求时，垃圾回收器会被再次触发
 
 ### 2.2 成本分析
 

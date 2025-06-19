@@ -13,3 +13,6 @@
 .md-typeset .admonition.blue-box > .admonition-title {
     background-color: #f2f9fe; /* 蓝紫色的背景 */
 }
+body {
+  background-color: #f8f1f9 !important;
+}

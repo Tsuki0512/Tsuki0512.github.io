@@ -186,7 +186,7 @@ $MEM(BINOP(PLUS,MEM(e_r),CONST(n∗W)))$
 
 **`if-else`语句**
 
-一个`if test then arm1 else arm2`语句会被翻译成如下结构的IR Tree ：
+一个`if test then stmt1 else stmt2`语句会被翻译成如下结构的IR Tree ：
 
 ```
 SEQ(CJUMP(op, e1, e2, t, f),

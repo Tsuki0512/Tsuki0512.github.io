@@ -3,9 +3,17 @@ site_url: https://tsuki0512.github.io/ #你的网址
 site_author: wyr #你的名字
 theme:
   name: material #主题
+  features:
+    - navigation.sections # 启用可点击的章节标题
+    - navigation.indexes
   palette:
-    primary: deep purple
-    accent: purple
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
   #font:
     #text: LXGW WenKai TC
     #text: PT Sans Caption
@@ -31,7 +39,10 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.details
-
+  - pymdownx.tabbed:
+      alternate_style: true 
+  - pymdownx.tasklist:
+      custom_checkbox: true
 nav:
   - Home: index.md
   - 专业课程: 
@@ -59,8 +70,8 @@ nav:
       - FA: 2024_fall/计算理论/Lec1.md
       - REX: 2024_fall/计算理论/Lec2.md
     - 计算机网络: 2024_fall/CN/CN.md
-    - 编译原理（学习中）: 
-      - 目录（整理汇总）: 2025_spring/cp/index.md
+    - 编译原理: 
+      - 2025_spring/cp/index.md
       - 期中梳理: 2025_spring/cp/midterm.md
       - Introduction: 2025_spring/cp/chap1.md
       - Lexical Analysis: 2025_spring/cp/chap2.md
@@ -77,9 +88,9 @@ nav:
       - Garbage Collection: 2025_spring/cp/chap13.md
       - Object-Oriented Languages: 2025_spring/cp/chap14.md
       - Loop Optimizations: 2025_spring/cp/chap18.md
-    - 软件过程（学习中）:
+    - 软件工程（学习中）:
       - 期末刷题记录: 2025_spring/se/final.md
-    - 自然语言处理导论（学习中）:
+    - 自然语言处理导论（待完善）:
       - Deep Learning Basics: 2025_spring/nlp/DeepLearningBasics.md
       - Word Embedding: 2025_spring/nlp/WordEmbedding.md
       - Convolutional Neural Networks: 2025_spring/nlp/ConvolutionalNeuralNetworks.md
