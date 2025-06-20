@@ -1,0 +1,3093 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="wyr">
+      
+      
+        <link rel="canonical" href="https://tsuki0512.github.io/2025_spring/cp/chap10/">
+      
+      
+        <link rel="prev" href="../chap9/">
+      
+      
+        <link rel="next" href="../chap11/">
+      
+      
+      <link rel="icon" href="../../../assets/hzhf.jpg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Liveness Analysis - wyr's notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#10-liveness-analysis" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="wyr&#39;s notes" class="md-header__button md-logo" aria-label="wyr's notes" data-md-component="logo">
+      
+  <img src="../../../assets/hzhf.jpg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            wyr's notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Liveness Analysis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Tsuki0512/Tsuki0512.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Wyr's Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="wyr&#39;s notes" class="md-nav__button md-logo" aria-label="wyr's notes" data-md-component="logo">
+      
+  <img src="../../../assets/hzhf.jpg" alt="logo">
+
+    </a>
+    wyr's notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Tsuki0512/Tsuki0512.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Wyr's Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    专业课程
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            专业课程
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据结构基础
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            数据结构基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期中前内容
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    图论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    排序
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dip%E5%8E%86%E5%B9%B4%E5%8D%B7%E6%95%B4%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    图像信息处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E9%80%BB%E6%9C%9F%E6%9C%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数字逻辑设计
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ADS_%E5%A4%8D%E4%B9%A0%E6%95%B4%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级数据结构与算法分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据库系统
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            数据库系统
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    cheatingsheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../minisql%E5%88%86%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Minisql分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../2024_fall/CA/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    计算机体系结构
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            计算机体系结构
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/final_review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期末复习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/CA1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机设计基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/CA2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    流水线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/CA3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    内存层次
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/CA4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    指令级并行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/CA5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DLP和TLP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/OS/final_review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    操作系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../2024_fall/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    计算理论
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            计算理论
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/Lec1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/Lec2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REX
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CN/CN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机网络
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    编译原理
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            编译原理
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../midterm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期中梳理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lexical Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Parsing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abstract Syntax
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Semantic Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../type_checking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Type Checking (期末梳理版)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap6_for_final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Activation Record
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap7_for_final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IR Trees
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basic Blocks and Traces
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instruction Selection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Liveness Analysis
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Liveness Analysis
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 数据流分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 数据流分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 编译优化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-cfg" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 CFG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 分析的不可判定性
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 活跃变量分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 活跃变量分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 活跃变量
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 构建数据流方程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 构建数据流方程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-defnuseninnoutn" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.1 def[n]和use[n]，in[n]和out[n]的定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.2 构建数据流方程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 求解数据流方程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 其他探讨
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 其他探讨">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 加速计算
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 理论视角
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 静态活跃性 vs. 动态活跃性
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Register Allocation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Garbage Collection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Object-Oriented Languages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Loop Optimizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    软件工程（学习中）
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            软件工程（学习中）
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../se/final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期末刷题记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    自然语言处理导论（待完善）
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            自然语言处理导论（待完善）
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/DeepLearningBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deep Learning Basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/WordEmbedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Word Embedding
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/ConvolutionalNeuralNetworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Convolutional Neural Networks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/RecurrentNeuralNetworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recurrent Neural Networks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/Attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attention
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/NLGAndNMT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NLGandNMT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/Transformer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数理基础课程资源汇总
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            数理基础课程资源汇总
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    离散数学及其应用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BE%AE%E7%A7%AF%E5%88%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    微积分（甲）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%A4%A7%E7%89%A9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    大学物理（乙）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BA%BF%E4%BB%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性代数（甲）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../C%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    C程序设计基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%A4%9A%E6%A8%A1%E6%80%81/paper%E7%AC%94%E8%AE%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多模态大模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    课程心得
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            课程心得
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%80%9A%E8%AF%86%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    通识课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E7%90%86%E5%9F%BA%E7%A1%80%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数理基础课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E4%B8%93%E4%B8%9A%E5%BF%85%E4%BF%AE%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    专业必修课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E4%B8%93%E4%B8%9A%E9%80%89%E4%BF%AE%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    专业选修课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%A2%8E%E7%A2%8E%E5%BF%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    一些碎碎念
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    CMU_DeepVision项目记录
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            CMU_DeepVision项目记录
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    概述
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_prelearning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线上课程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pytorch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    pytorch入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0807/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec1 - Transformers and RAG
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0807_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec2 - Ray Tracing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0809/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec3 - 3D Vision
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0816/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec4 - Deep Learning Basics and Adversarial
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 数据流分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 数据流分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 编译优化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-cfg" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 CFG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 分析的不可判定性
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 活跃变量分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 活跃变量分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 活跃变量
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 构建数据流方程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 构建数据流方程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-defnuseninnoutn" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.1 def[n]和use[n]，in[n]和out[n]的定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.2 构建数据流方程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 求解数据流方程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 其他探讨
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 其他探讨">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 加速计算
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 理论视角
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 静态活跃性 vs. 动态活跃性
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="10-liveness-analysis">10 Liveness Analysis 活跃变量分析<a class="headerlink" href="#10-liveness-analysis" title="Permanent link">&para;</a></h1>
+<p>参考资料：</p>
+<ul>
+<li>姚培森老师2024~2025学年春夏ch10ppt</li>
+<li><a href="https://shiseab.github.io/notebook/Compiler/ch10/#dataflow-analysis">wcjj的笔记</a></li>
+<li><a href="https://docs.google.com/document/d/1WHHylSfWv7NFEj6yySPxmN44VVPLehjEuW1J-KL50uc/edit?usp=sharing">伟大的Gemini 2.5 pro deep research</a></li>
+</ul>
+<hr />
+<p>追踪变量的生命周期，判断哪些之后还会被用到，哪些已经不再需要了</p>
+<h2 id="1">1 数据流分析<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>在不实际运行程序的情况下，通过静态分析程序的源代码或IR，来收集程序在（可能的）运行时关于数据如何“流动”的信息 。</p>
+<h3 id="11">1.1 编译优化<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<p><strong>信息收集的层次：</strong> 编译器优化和分析可以在不同的粒度或范围上进行 ：</p>
+<ul>
+<li><strong>局部优化 (Local Optimization):</strong> 工作范围通常限制在单个<strong>基本块</strong>（Basic Block）内。这是最简单直接的分析层次。</li>
+<li><strong>过程内/全局优化 (Intraprocedural/Global Optimization):</strong> 分析范围扩展到整个函数或过程。此时，需要考虑基本块之间的控制流转移。</li>
+<li><strong>过程间/全程序优化 (Interprocedural/Whole-Program Optimization):</strong> 分析跨越多个函数或过程的边界，甚至在整个程序的范围内进行。这是最复杂但可能带来最大收益的分析层次，有时甚至在链接阶段进行（称为链接时优化，LTO）。</li>
+</ul>
+<p><strong>分析与转换：</strong> 编译器优化的过程通常遵循一个两步流程 ：</p>
+<ol>
+<li><strong>分析 (Analyze):</strong> 在这个阶段，编译器对程序的IR执行“程序分析”，以收集关于程序行为的“事实”。例如，确定一个变量在某点是否“活跃”，一个表达式的值是否为常量，或者一个指针可能指向哪些内存位置。
+    <img alt="image-20250608150143050" src="../chap10.assets/image-20250608150143050.png" /></li>
+<li><strong>转换 (Transform):</strong> 在收集到足够的事实之后，编译器会基于这些事实对程序进行等价的转换，目的是提升程序的性能（如速度、空间效率）或减小程序体积。<em>常见的转换包括常量折叠（将运行时的常量计算提前到编译时完成）、死代码消除（移除不会影响程序最终结果的代码）、循环不变代码外提（将循环中每次迭代都计算相同结果的语句移到循环外）以及寄存器分配（将变量有效地分配到CPU寄存器中）等。</em></li>
+</ol>
+<p>在不同的优化粒度范围，编译器会使用不同的中间表示，例如 Local 时使用 dependence graph；Intraprocedural (or global) 时使用 control-flow graph for dataflow analysis；Interprocedural (or who-program) 时使用 Call graph, ICFG, SDG</p>
+<h3 id="12-cfg">1.2 CFG<a class="headerlink" href="#12-cfg" title="Permanent link">&para;</a></h3>
+<p><img alt="image-20250608151952909" src="../chap10.assets/image-20250608151952909.png" /></p>
+<p>数据流分析中一种至关重要的中间表示，一个有向图。</p>
+<p>组成元素：</p>
+<p><strong>节点 (Nodes):</strong></p>
+<ul>
+<li>在最细粒度的CFG中，一个节点可以代表程序中的一条单独语句，例如赋值语句（如 <code>x := y op z</code> 或 <code>x := op z</code>）、复制语句（如 <code>x := y</code>）、条件分支语句（如 <code>if x relop y goto L</code>）或无条件跳转语句（如 <code>goto L</code>）。</li>
+</ul>
+<p><strong>边 (Edges):</strong></p>
+<ul>
+<li>一条从节点A到节点B的边表示，当节点A代表的语句执行完毕后，程序控制流可能转移到节点B代表的语句。例如，顺序执行的语句之间会有一条边；条件语句则会根据条件的真假产生两条或多条出边，分别指向不同的后续语句。</li>
+</ul>
+<p>例子：</p>
+<p><img alt="image-20250608151040173" src="../chap10.assets/image-20250608151040173.png" /></p>
+<p>在满足特定条件的时候，我们可以考虑将语句们聚合成一个<strong>基本块</strong>。</p>
+<p><strong>基本块 (Basic Blocks)：CFG的简化与加速</strong></p>
+<ul>
+<li>定义：一个基本块 (Basic Block) 是一段连续的指令序列，它满足以下两个条件：<ol>
+<li>只有一个入口点：控制流只能从基本块的第一条指令进入。</li>
+<li>只有一个出口点：控制流只能从基本块的最后一条指令离开（即块内除了最后一条指令外，没有任何跳转指令；最后一条指令可以是跳转指令）。</li>
+</ol>
+</li>
+<li>例子：
+    <img alt="image-20250608151504763" src="../chap10.assets/image-20250608151504763.png" />
+但是在活跃变量分析中，每个basic block都只有一个 statement（single-statement basic blocks）。</li>
+</ul>
+<p>CFG中的节点关系：</p>
+<ul>
+<li><code>pred[n]</code>: 表示CFG中节点 <code>n</code> 的所有<strong>前驱 (predecessor)</strong> 节点的集合。即那些执行后可能立即跳转到节点 <code>n</code> 的节点。</li>
+<li><code>succ[n]</code>: 表示CFG中节点 <code>n</code> 的所有<strong>后继 (successor)</strong> 节点的集合。即节点 <code>n</code> 执行后可能立即跳转到的那些节点。</li>
+</ul>
+<p>例子：</p>
+<p><img alt="image-20250608154341113" src="../chap10.assets/image-20250608154341113.png" /></p>
+<h3 id="13">1.3 分析的不可判定性<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
+<p>考虑这个代码：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">    </span><span class="c1">// 变量x在这一行之后是否活跃？</span>
+<span class="n">f</span><span class="p">();</span><span class="w">       </span><span class="c1">// 调用一个函数f</span>
+<span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w">  </span><span class="c1">// 返回x的值</span>
+</code></pre></div></td></tr></table></div>
+<p>表面上看，变量 <code>x</code> 在第1行被赋值后，其值在第3行被使用，因此 <code>x</code> 在第1行之后似乎是活跃的。但是，如果函数 <code>f()</code> 是一个永不返回的函数（例如，它内部包含一个无限循环），那么第3行的 <code>return x;</code> 语句实际上永远不会被执行。在这种情况下，第1行对 <code>x</code> 的赋值就是无用的，<code>x</code> 在该点之后也就不再活跃。判断一个变量是否活跃，竟然间接依赖于判断函数 <code>f()</code> 是否会停机——而著名的“停机问题”正是不可判定的经典例子。</p>
+<p>我们使用Rice定理推广可得：<strong>任何关于程序计算的函数本身的非平凡（nontrivial）语义属性都是不可判定的</strong>。</p>
+<p>因此我们在活跃变量分析的时候，采取了<strong>过近似 (overapproximation)</strong>的策略，分析算法找出的活跃变量集合，可能会比在任何一次实际动态执行中真正活跃的变量集合要大一些，但它绝不会遗漏任何一个真正活跃的变量。例如，当遇到一个 <code>if</code> 条件分支时，由于在编译时无法确定条件是真还是假（这可能取决于运行时的输入），静态分析通常会假设两个分支都可能被执行。</p>
+<h2 id="2">2 活跃变量分析<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<h3 id="21">2.1 活跃变量<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<p><strong>定义：</strong> 一个变量 <code>x</code> 在程序的某个点 <code>p</code> (或者说在执行某条语句 <code>s</code> 之前) 被认为是<strong>活跃 (live)</strong>的，必须满足以下三个条件 ：</p>
+<ol>
+<li>从点 <code>p</code> 开始，存在至少一条可能的执行路径。</li>
+<li>在这条执行路径上，变量 <code>x</code> 的当前值在未来的某个点 <code>s'</code> 被<strong>使用 (used)</strong> (例如，出现在表达式的右侧、作为函数参数、或在条件判断中)。</li>
+<li>在这条执行路径上，从点 <code>p</code> 到达使用点 <code>s'</code> 的过程中，变量 <code>x</code> 没有被<strong>重新定义 (redefined / killed)</strong> (即没有新的值赋给 <code>x</code>)。</li>
+</ol>
+<p><img alt="image-20250608155422336" src="../chap10.assets/image-20250608155422336.png" /></p>
+<p>而我们的分析方式通常是反向分析的。</p>
+<p>通过活跃变量分析我们可以：</p>
+<ol>
+<li><strong>实现寄存器分配 (Register Allocation)</strong></li>
+</ol>
+<p>考虑以下代码序列：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">      </span><span class="c1">// 语句1执行后，a活跃，其值为1</span>
+<span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w">  </span><span class="c1">// 语句2使用a，定义b。执行后，a不再活跃（假设后续不再用），b活跃</span>
+<span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w">  </span><span class="c1">// 语句3使用b，定义c。执行后，b不再活跃（假设后续不再用），c活跃</span>
+<span class="k">return</span><span class="w"> </span><span class="n">c</span><span class="w">   </span><span class="c1">// 语句4使用c</span>
+</code></pre></div></td></tr></table></div>
+<p>我们可以分析出各个变量的活跃区间（这里用语句编号表示，区间为左闭右开，表示变量在该语句执行后到下一相关语句执行前是活跃的）：</p>
+<ul>
+<li>变量 <code>a</code> 的活跃区间大约是：从语句1之后到语句2之前。</li>
+<li>变量 <code>b</code> 的活跃区间大约是：从语句2之后到语句3之前。</li>
+<li>变量 <code>c</code> 的活跃区间大约是：从语句3之后到语句4之前。 </li>
+</ul>
+<p>（更精确地说，<code>a</code> 在语句1执行后到语句2执行前是活跃的；<code>b</code> 在语句2执行后到语句3执行前是活跃的；<code>c</code> 在语句3执行后到语句4执行前是活跃的。） 由于这三个变量 <code>a</code>, <code>b</code>, <code>c</code> 的活跃区间互不重叠，编译器可以将它们都分配到同一个寄存器（例如，<code>r</code>）中。代码可以被重写为 ：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">        </span><span class="c1">// 对应 a = 1</span>
+<span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w">    </span><span class="c1">// 对应 b = a + 2 (即 r = r + 2)</span>
+<span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w">    </span><span class="c1">// 对应 c = b + 3 (即 r = r + 3)</span>
+<span class="k">return</span><span class="w"> </span><span class="n">r</span><span class="w">     </span><span class="c1">// 对应 return c</span>
+</code></pre></div></td></tr></table></div>
+<p>通过这种方式，原本需要三个不同存储位置的变量，现在只需要一个寄存器即可，大大提高了寄存器的利用率。</p>
+<ol>
+<li><strong>Code Optimizations</strong> -- <strong>死代码消除 (Dead Code Elimination):</strong> 如果一个赋值语句 <code>$x =...$</code> 执行之后，变量 <code>x</code> 立即变成“死的”（即它的值在后续的任何执行路径中都不会再被使用），那么这个赋值语句就是<strong>死代码 (dead code)</strong>。它做了无用功，浪费了计算资源。编译器可以利用活跃性信息安全地移除这类死代码，从而减小程序体积并可能提高运行速度。</li>
+<li><strong>IR Construction</strong> -- <strong>优化静态单赋值（SSA）构造 (Optimizing SSA Construction):</strong> SSA是一种重要的中间表示形式，它要求每个变量只被赋值一次。活跃性信息可以帮助更有效地将程序转换为SSA形式，并进行基于SSA的优化。</li>
+<li><strong>Security/Reliability</strong> -- <strong>检测未初始化变量的使用 (Detecting Use of Uninitialized Variables):</strong> 虽然这不是活跃性分析的主要目标，但相关的分析技术（例如，通过跟踪变量是否在使用前已被明确定义）可以帮助编译器发现潜在的程序错误，如使用了未经初始化的变量。</li>
+</ol>
+<h3 id="22">2.2 构建数据流方程<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<h4 id="221-defnuseninnoutn">2.2.1 <code>def[n]</code>和<code>use[n]</code>，<code>in[n]</code>和<code>out[n]</code>的定义<a class="headerlink" href="#221-defnuseninnoutn" title="Permanent link">&para;</a></h4>
+<p>为了进行活跃变量分析，我们需要首先为CFG中的每个节点 <code>n</code>（代表一条语句或一个基本块）确定两组关键的局部信息：在该节点中被<strong>定义 (defined)</strong> 的变量集合和被<strong>使用 (used)</strong> 的变量集合 。</p>
+<ul>
+<li><strong><code>use[n]</code> (变量使用集合):</strong> 指在节点 <code>n</code> 所代表的语句或指令中，其值被<strong>读取或使用</strong>的变量的集合。通常，这指的是出现在表达式右侧、作为函数调用参数、或在条件判断语句中被引用的变量。<ul>
+<li>例如，对于语句 <code>$x := y + z;</code>，<code>use[n]</code> 是 <code>{y, z}</code>。</li>
+<li>对于语句 <code>if (a &lt; b) goto L;</code>，<code>use[n]</code> 是 <code>{a, b}</code>。</li>
+<li>对于语句 <code>return c;</code>，<code>use[n]</code> 是 <code>{c}</code>。</li>
+</ul>
+</li>
+<li><strong><code>def[n]</code> (变量定义集合):</strong> 指在节点 <code>n</code> 所代表的语句或指令中，被<strong>赋值或写入新值</strong>的变量的集合。通常，这指的是出现在赋值语句左侧的变量。<ul>
+<li>例如，对于语句 <code>$x := y + z;</code>，<code>def[n]</code> 是 <code>{x}</code>。</li>
+<li>对于语句 <code>if (a &lt; b) goto L;</code>，<code>def[n]</code> 通常是空集 <code>{}</code>，因为条件判断语句本身一般不改变任何变量的值（除非有副作用，但简单模型中通常不考虑）。</li>
+</ul>
+</li>
+</ul>
+<p>数据流分析就是将上述局部信息通过CFG在全局范围内传播，一个变量可能因为在某个节点被 <code>use</code> 而变得活跃；一个变量的当前值则可能因为在某个节点被 <code>def</code> 而“死亡”（即其旧值不再活跃，新值开始活跃）。</p>
+<p>而对于CFG中的每一个节点 <code>n</code>，我们关心两个关键的活跃变量集合 ：</p>
+<ul>
+<li><strong><code>in[n]</code> (Live-in set):</strong> 在节点 <code>n</code> 的<strong>入口处 (entry)</strong>，即在节点 <code>n</code> 代表的语句即将执行<strong>之前</strong>，处于活跃状态的变量的集合。如果一个变量 <code>x</code> 属于 <code>out[n]</code>，这意味着在节点 <code>n</code> 执行完毕后，<code>x</code> 的值沿着从 <code>n</code> 出发的某条控制流路径，在未来的某个时刻将会被使用。</li>
+<li><strong><code>out[n]</code> (Live-out set):</strong> 在节点 <code>n</code> 的<strong>出口处 (exit)</strong>，即在节点 <code>n</code> 代表的语句执行完毕<strong>之后</strong>，处于活跃状态的变量的集合。如果一个变量 <code>x</code> 属于 <code>in[n]</code>，这意味着在节点 <code>n</code> 即将执行之前，<code>x</code> 的当前值是必需的。要么在节点内部被使用，要么在之后的节点被使用。</li>
+</ul>
+<p><code>in[n]</code> 和 <code>out[n]</code> 就是在特定程序点（语句的入口和出口）对活跃性进行的形式化描述。整个分析的目标就是为程序中的所有节点 <code>n</code> 计算出这些集合。</p>
+<h4 id="222">2.2.2 构建数据流方程<a class="headerlink" href="#222" title="Permanent link">&para;</a></h4>
+<p>活跃性规则：</p>
+<p><img alt="image-20250608161619063" src="../chap10.assets/image-20250608161619063.png" /></p>
+<ol>
+<li><strong>规则1 (信息从后继节点的<code>IN</code>流向当前节点的<code>OUT</code>)：</strong>如果一个变量 <code>a</code> 在节点 <code>m</code> 的某个直接后继节点 <code>n</code> 的入口处是活跃的（即 <span class="arithmatex">\(a \in in[n]\)</span>, <span class="arithmatex">\(m \in pred[n]\)</span>），那么变量 <code>a</code> 在节点 <code>m</code> 的出口处也必须是活跃的（即 <span class="arithmatex">\(a \in out[m]\)</span>）；</li>
+<li><strong>规则2 (信息从<code>USE</code>流向<code>IN</code>)：</strong>如果一个变量 <code>a</code> 在节点 <code>n</code> 中被直接使用（即 <span class="arithmatex">\(a \in use[n]\)</span>），那么变量 <code>a</code> 在节点 <code>n</code> 的入口处必须是活跃的（即 <span class="arithmatex">\(a \in in[n]\)</span>）；</li>
+<li><strong>规则3 (信息从<code>OUT</code>流向<code>IN</code>，如果未被<code>DEF</code>)：</strong>如果一个变量 <code>a</code> 在节点 <code>n</code> 的出口处是活跃的（即 <span class="arithmatex">\(a \in out[n]\)</span>），并且变量 <code>a</code> <strong>没有</strong>在节点 <code>n</code> 中被重新定义（即 <span class="arithmatex">\(a \notin def[n]\)</span>），那么变量 <code>a</code> 在节点 <code>n</code> 的入口处也必须是活跃的（即 <span class="arithmatex">\(a \in in[n]\)</span>）。
+    例子（四行推理分别使用了规则：1；23；1；3）：
+    <img alt="image-20250608162104055" src="../chap10.assets/image-20250608162104055.png" /></li>
+</ol>
+<p><strong>数据流方程组</strong> ： 基于上述规则，我们可以得到以下两个核心的数据流方程：</p>
+<ol>
+<li><strong><span class="arithmatex">\(out[n] = \bigcup_{s \in succ[n]} in[s]\)</span></strong><ul>
+<li>解释：一个变量在节点 <code>n</code> 的出口处是活跃的，当且仅当它在节点 <code>n</code> 的至少一个直接后继节点 <code>s</code>的入口处是活跃的。这个方程体现了活跃性信息是如何从后继节点的 <code>in</code> 集合“向上”或“反向”流入当前节点的 <code>out</code> 集合的。</li>
+<li>描述了活跃性如何跨越控制流边<strong>反向</strong>传播。</li>
+</ul>
+</li>
+<li><strong><span class="arithmatex">\(in[n] = use[n] \cup (out[n] - def[n])\)</span></strong><ul>
+<li>解释：一个变量在节点n的入口处是活跃的，存在两种可能性：<ul>
+<li><strong>情况一：</strong> 该变量在节点 <code>n</code> 中被直接使用（即属于 <code>use[n]</code> 集合）。</li>
+<li><strong>情况二：</strong> 该变量在节点 <code>n</code> 的出口处是活跃的（即属于 <code>out[n]</code> 集合），<strong>并且</strong>它没有在节点 <code>n</code> 中被重新定义（即不属于 <code>def[n]</code> 集合）。</li>
+</ul>
+</li>
+<li>描述了活跃性如何受到语句 <code>n</code> 的<strong>局部</strong>行为（即它的使用和定义）的影响。</li>
+</ul>
+</li>
+</ol>
+<h3 id="23">2.3 求解数据流方程<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
+<p><img alt="image-20250608162530962" src="../chap10.assets/image-20250608162530962.png" /></p>
+<p><img alt="image-20250608164415321" src="../chap10.assets/image-20250608164415321.png" /></p>
+<p>节点遍历顺序： 对于反向数据流分析（如活跃变量分析），以与控制流相反的顺序（例如，CFG的拓扑排序的逆序）处理节点，并且在处理每个节点 <code>n</code> 时，先计算 <code>out[n]</code> 再计算 <code>in[n]</code>，通常能使算法更快收敛。</p>
+<p>例子：</p>
+<p><img alt="image-20250608164613892" src="../chap10.assets/image-20250608164613892.png" /></p>
+<h2 id="3">3 其他探讨<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h3 id="31">3.1 加速计算<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p><strong>1. 使用基本块</strong></p>
+<p>当使用基本块作为CFG节点时，我们需要重新定义 <code>use</code> 和 <code>def</code>（其中 <code>B</code> 代表一个基本块）：</p>
+<ul>
+<li><code>use</code>：是在基本块 <code>B</code> 中，那些在块内任何对其的定义（赋值）<strong>之前</strong>就被使用的变量的集合。</li>
+<li><code>def</code>：是在基本块 <code>B</code> 中被定义（赋值）的所有变量的集合（如果一个变量在块内被多次定义，通常我们关心的是其最终的定义，或者简单地将其视为被定义过即可，具体取决于分析的精度需求）。</li>
+<li>计算基本块的 <code>use</code> 和 <code>def</code> 时，需要考虑块内语句的顺序。例如，如果块内有语句 <code>s_1: y := x; s_2: x := 1;</code>，那么对于整个块而言，<code>x</code> 是被 <code>use</code> 的（在 <code>s_1</code>），然后被 <code>def</code> 的（在 <code>s_2</code>）。</li>
+</ul>
+<p><strong>2. 集合的表示方法 (Representation of Sets)</strong></p>
+<p>在数据流分析中，<code>in</code>、<code>out</code>、<code>use</code>、<code>def</code> 集合的表示和操作效率对整体性能有很大影响。</p>
+<p>常见的集合表示方法有：</p>
+<ul>
+<li>位向量 (Bit Arrays / Bit Vectors) - 适合稠密集合<ul>
+<li>如果程序中总共有 <code>V</code> 个不同的变量，我们可以为每个变量分配一个唯一的序号（从0到 <code>V-1</code>）。然后，一个长度为 <code>V</code> 的位向量就可以用来表示一个变量集合。向量中的第 <code>i</code> 位为1表示第 <code>i</code> 个变量在该集合中，为0则表示不在。</li>
+<li><strong>优点：</strong> 集合操作可以非常高效地通过按位逻辑运算来实现。</li>
+<li><strong>缺点：</strong> 稀疏集合下位向量会造成大量的空间浪费（大部分位都是0）。</li>
+</ul>
+</li>
+<li>排序列表 (Sorted Lists) - 适合稀疏集合<ul>
+<li>用一个有序的列表（例如，按照变量名或其唯一ID排序）来存储集合中的变量。</li>
+<li><strong>优点：</strong> 集合的并集、交集等操作可以通过类似于归并排序中的合并步骤来实现，时间复杂度与集合大小成线性关系。</li>
+<li><strong>缺点：</strong> 对于稠密集合列表操作（尤其是查找和插入）可能比位向量的位运算要慢。</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 一次分析一个变量 (Analyzing One Variable at a Time)</strong></p>
+<p>适用于当编译器只对少数几个变量的活跃性感兴趣时，或者当许多临时变量的活跃范围非常短且局部时。</p>
+<h3 id="32">3.2 理论视角<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p><strong>1. 时间复杂度</strong></p>
+<p>对于一个大小为 <span class="arithmatex">\(N\)</span> 的程序（最多 <span class="arithmatex">\(N\)</span> 个节点和 <span class="arithmatex">\(N\)</span> 个变量），每次集合操作的时间复杂度为 <span class="arithmatex">\(O(N)\)</span>。最坏情况下，迭代算法的时间复杂度为 <span class="arithmatex">\(O(N^4)\)</span>。但在实际应用中，由于合适的计算顺序，通常在 <span class="arithmatex">\(O(N)\)</span> 到 <span class="arithmatex">\(O(N^2)\)</span> 之间。</p>
+<p><strong>2. 最小不动点</strong></p>
+<p>活跃变量的数据流方程可能有多个解。但迭代算法总是能计算出<strong>最小不动点</strong>，这个解是所有其他解的子集。这意味着它提供了最精确的过近似。</p>
+<h3 id="33-vs">3.3 静态活跃性 vs. 动态活跃性<a class="headerlink" href="#33-vs" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>静态活跃性（Static Liveness）</strong>（过近似）：一个变量 <code>a</code> 在节点 <code>n</code> 处是静态活跃的，如果存在从 <code>n</code> 到 <code>a</code> 的某个使用点的一条控制流路径，且该路径上没有对 <code>a</code> 的定义。这是编译器在编译时可以确定的活跃性。</li>
+<li><strong>动态活跃性（Dynamic Liveness）</strong>（欠近似）：一个变量 <code>a</code> 在节点 <code>n</code> 处是动态活跃的，如果程序的某个执行路径从 <code>n</code> 到 <code>a</code> 的使用点，且该路径上没有对 <code>a</code> 的定义。这是程序实际运行时才能确定的活跃性，通常难以精确计算。</li>
+</ul>
+<p><strong>重要关系</strong>：如果一个变量是动态活跃的，那么它也一定是静态活跃的。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.sections", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+        <script src="https://gcore.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

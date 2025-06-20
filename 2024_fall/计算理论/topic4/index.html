@@ -1,0 +1,3165 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="wyr">
+      
+      
+        <link rel="canonical" href="https://tsuki0512.github.io/2024_fall/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/topic4/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/hzhf.jpg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>判定问题 - wyr's notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="wyr&#39;s notes" class="md-header__button md-logo" aria-label="wyr's notes" data-md-component="logo">
+      
+  <img src="../../../assets/hzhf.jpg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            wyr's notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              判定问题
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Tsuki0512/Tsuki0512.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Wyr's Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="wyr&#39;s notes" class="md-nav__button md-logo" aria-label="wyr's notes" data-md-component="logo">
+      
+  <img src="../../../assets/hzhf.jpg" alt="logo">
+
+    </a>
+    wyr's notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Tsuki0512/Tsuki0512.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Wyr's Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    专业课程
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            专业课程
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据结构基础
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            数据结构基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期中前内容
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    图论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    排序
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dip%E5%8E%86%E5%B9%B4%E5%8D%B7%E6%95%B4%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    图像信息处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E9%80%BB%E6%9C%9F%E6%9C%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数字逻辑设计
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ADS_%E5%A4%8D%E4%B9%A0%E6%95%B4%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级数据结构与算法分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据库系统
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            数据库系统
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    cheatingsheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../minisql%E5%88%86%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Minisql分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../CA/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    计算机体系结构
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            计算机体系结构
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/final_review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期末复习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/CA1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机设计基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/CA2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    流水线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/CA3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    内存层次
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/CA4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    指令级并行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/CA5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DLP和TLP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../OS/final_review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    操作系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    计算理论
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            计算理论
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lec1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Lec2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REX
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CN/CN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机网络
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../2025_spring/cp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    编译原理
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            编译原理
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/midterm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期中梳理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lexical Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Parsing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abstract Syntax
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Semantic Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/type_checking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Type Checking (期末梳理版)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap6_for_final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Activation Record
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap7_for_final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IR Trees
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basic Blocks and Traces
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instruction Selection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Liveness Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Register Allocation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Garbage Collection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Object-Oriented Languages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Loop Optimizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    软件工程（学习中）
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            软件工程（学习中）
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/se/final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期末刷题记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    自然语言处理导论（待完善）
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            自然语言处理导论（待完善）
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/DeepLearningBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deep Learning Basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/WordEmbedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Word Embedding
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/ConvolutionalNeuralNetworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Convolutional Neural Networks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/RecurrentNeuralNetworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recurrent Neural Networks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/Attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attention
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/NLGAndNMT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NLGandNMT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/Transformer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数理基础课程资源汇总
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            数理基础课程资源汇总
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    离散数学及其应用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BE%AE%E7%A7%AF%E5%88%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    微积分（甲）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%A4%A7%E7%89%A9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    大学物理（乙）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BA%BF%E4%BB%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性代数（甲）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../C%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    C程序设计基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/%E5%A4%9A%E6%A8%A1%E6%80%81/paper%E7%AC%94%E8%AE%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多模态大模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    课程心得
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            课程心得
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%80%9A%E8%AF%86%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    通识课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E7%90%86%E5%9F%BA%E7%A1%80%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数理基础课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E4%B8%93%E4%B8%9A%E5%BF%85%E4%BF%AE%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    专业必修课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E4%B8%93%E4%B8%9A%E9%80%89%E4%BF%AE%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    专业选修课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%A2%8E%E7%A2%8E%E5%BF%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    一些碎碎念
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    CMU_DeepVision项目记录
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            CMU_DeepVision项目记录
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    概述
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_prelearning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线上课程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pytorch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    pytorch入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0807/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec1 - Transformers and RAG
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0807_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec2 - Ray Tracing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0809/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec3 - 3D Vision
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0816/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec4 - Deep Learning Basics and Adversarial
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#church-turing-thesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Church-Turing Thesis
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      编码与判定问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="编码与判定问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      规约
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      语言的存在性问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="语言的存在性问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      集合的可列性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      非递归可枚举语言的存在性
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      停机问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="停机问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      停机问题相关判定问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      上述判定问题的统一化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      证明是否可判定的方法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      自输出程序问题
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      图灵机枚举字符串
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">判定问题<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract</p>
+<p>理论计算机科学导引第九至第十一周课程内容</p>
+</div>
+<h2 id="church-turing-thesis">Church-Turing Thesis<a class="headerlink" href="#church-turing-thesis" title="Permanent link">&para;</a></h2>
+<p>Intuition of algorithms equals (deterministic) Turing machine that halts on every input. 即算法本质上就是图灵机。算法用来解决（判定）问题，而图灵机可以判定语言，二者是等价的。</p>
+<h2 id="_2">编码与判定问题<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Any finite set can be encoded</li>
+<li>A finite collection of finite sets can be encoded<ul>
+<li>FA, PDA, CFG, REX, TM 都可以被编码</li>
+</ul>
+</li>
+<li>对于 <span class="arithmatex">\(O\)</span>，我们用 <span class="arithmatex">\(\texttt{"}O\texttt{"}\)</span> 表示其编码</li>
+<li>decide problem &lt;=&gt; recursive languages（可判定）</li>
+</ul>
+<details class="example" open="open">
+<summary>判定问题 <span class="arithmatex">\(R_1\)</span></summary>
+<p><span class="arithmatex">\(A_{\text{DFA}}=\{\texttt{"}D\texttt{"}\texttt{"}w\texttt{"}: D\text{ is a DFA that accpets }w\}\)</span></p>
+<p>设计一个图灵机 <span class="arithmatex">\(M_{R_1}\)</span> 判定这个问题，输入为 <span class="arithmatex">\(\texttt{"}D\texttt{"}\texttt{"}w\texttt{"}\)</span></p>
+<ol>
+<li>默认的判断（以后不再重复写）<ol>
+<li>如果输入是非法的，则 reject</li>
+<li>如果输入是合法的，则进行解码，得到 <span class="arithmatex">\(D\)</span> 和 <span class="arithmatex">\(w\)</span></li>
+</ol>
+</li>
+<li>run <span class="arithmatex">\(D\)</span> on <span class="arithmatex">\(w\)</span></li>
+<li>if <span class="arithmatex">\(D\)</span> ends with final (<span class="arithmatex">\(D\)</span> accept <span class="arithmatex">\(w\)</span>)</li>
+<li>&emsp;&emsp;accept <span class="arithmatex">\(\texttt{"}D\texttt{"}\texttt{"}w\texttt{"}\)</span></li>
+<li>else</li>
+<li>&emsp;&emsp;reject</li>
+</ol>
+</details>
+<details class="example" open="open">
+<summary>判定问题 <span class="arithmatex">\(R_2\)</span></summary>
+<p><span class="arithmatex">\(A_{\text{NFA}}\)</span>，即 NFA <span class="arithmatex">\(N\)</span> 是否接受字符串 <span class="arithmatex">\(w\)</span></p>
+<p><span class="arithmatex">\(M_{R_2}\)</span> = on input <span class="arithmatex">\(\texttt{"}N\texttt{"}\texttt{"}w\texttt{"}\)</span></p>
+<ol>
+<li><span class="arithmatex">\(N\)</span> -&gt; an equivalent DFA <span class="arithmatex">\(D\)</span></li>
+<li>run <span class="arithmatex">\(M_{R_1}\)</span> on <span class="arithmatex">\(\texttt{"}D\texttt{"}\texttt{"}w\texttt{"}\)</span></li>
+<li>return the result of <span class="arithmatex">\(M_{R_1}\)</span></li>
+</ol>
+<p><span class="arithmatex">\(\texttt{"}N\texttt{"}\texttt{"}w\texttt{"}\in A_{\text{NFA}}\)</span> &lt;=&gt; <span class="arithmatex">\(\texttt{"}D\texttt{"}\texttt{"}w\texttt{"}\in A_{\text{DFA}}\)</span> 称为 a reduction from <span class="arithmatex">\(A_{\text{NFA}}\)</span> to <span class="arithmatex">\(A_{\text{DFA}}\)</span>，即规约</p>
+</details>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(R_3\)</span> (<span class="arithmatex">\(A_{\text{REX}}\)</span>)</summary>
+<p><span class="arithmatex">\(A_{\text{REX}}=\{\texttt{"}R\texttt{"}\texttt{"}w\texttt{"}: R\text{ is a regular expression that generates }w\}\)</span></p>
+<p><span class="arithmatex">\(M_{R_3}\)</span> = on input <span class="arithmatex">\(\texttt{"}R\texttt{"}\texttt{"}w\texttt{"}\)</span></p>
+<ol>
+<li><span class="arithmatex">\(R\)</span> -&gt; an equivalent NFA <span class="arithmatex">\(N\)</span></li>
+<li>run <span class="arithmatex">\(M_{R_2}\)</span> on <span class="arithmatex">\(\texttt{"}N\texttt{"}\texttt{"}w\texttt{"}\)</span></li>
+<li>return the result of <span class="arithmatex">\(M_{R_2}\)</span></li>
+</ol>
+</details>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(R_4\)</span> (<span class="arithmatex">\(E_{\text{DFA}}\)</span>)</summary>
+<p><span class="arithmatex">\(E_{\text{DFA}}=\{\texttt{"}D\texttt{"}: D\text{ is a DFA with }L(D)=\emptyset\}\)</span></p>
+<p><span class="arithmatex">\(M_{R_4}\)</span> = on input <span class="arithmatex">\(\texttt{"}D\texttt{"}\)</span></p>
+<ol>
+<li>if <span class="arithmatex">\(D\)</span> has no final state</li>
+<li>&emsp;&emsp;accept</li>
+<li>else</li>
+<li>&emsp;&emsp;"conceptually" do BFS in the diagram</li>
+<li>&emsp;&emsp;if there is a path from <span class="arithmatex">\(s\)</span> to a final state</li>
+<li>&emsp;&emsp;&emsp;&emsp;reject</li>
+<li>&emsp;&emsp;else</li>
+<li>&emsp;&emsp;&emsp;&emsp;accept</li>
+</ol>
+</details>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(R_5\)</span> (<span class="arithmatex">\(EQ_{\text{DFA}}\)</span>)</summary>
+<p><span class="arithmatex">\(EQ_{\text{DFA}} = \{\texttt{"}D_1\texttt{"}\texttt{"}D_2\texttt{"}: D_1\text{ and }D_2\text{ are two DFAs with }L(D_1)=L(D_2)\}\)</span></p>
+<p>Hint:</p>
+<ul>
+<li>对称差 <span class="arithmatex">\(A\oplus B=\{x\in A\cup B\text{ and }x\notin A\cap B\}=A\cup B - A\cap B\)</span><ul>
+<li><span class="arithmatex">\(A\oplus B = (A\cup B)\cap(\overline{A\cap B}) = (A\cup B)\cap(\overline{A}\cup\overline{B})\)</span></li>
+</ul>
+</li>
+<li><span class="arithmatex">\(A=B\)</span> iff <span class="arithmatex">\(A\oplus B = \emptyset\)</span>（可以借此规约至 <span class="arithmatex">\(R_4\)</span>）</li>
+</ul>
+<p><span class="arithmatex">\(M_{R_5}\)</span> = on input <span class="arithmatex">\(\texttt{"}D_1\texttt{"}\texttt{"}D_2\texttt{"}\)</span></p>
+<ol>
+<li>construct <span class="arithmatex">\(D_3\)</span> with <span class="arithmatex">\(L(D_3) = L(D_1)\oplus L(D_2)\)</span></li>
+<li>run <span class="arithmatex">\(M_{R_4}\)</span> on <span class="arithmatex">\(\texttt{"}D_3\texttt{"}\)</span></li>
+<li>return the result of <span class="arithmatex">\(M_{R_4}\)</span></li>
+</ol>
+</details>
+<h3 id="_3">规约<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>规约定义：<ul>
+<li><span class="arithmatex">\(A,B\)</span> are languages over some alphabet <span class="arithmatex">\(\Sigma\)</span></li>
+<li>A reduction from <span class="arithmatex">\(A\)</span> to <span class="arithmatex">\(B\)</span> is a recursive function <span class="arithmatex">\(f\colon \Sigma^*\rightarrow\Sigma^*\)</span></li>
+<li>s.t. for <span class="arithmatex">\(x\in\Sigma^*\)</span>, <span class="arithmatex">\(x\in A\)</span> iff <span class="arithmatex">\(f(x)\in B\)</span></li>
+</ul>
+</li>
+<li>Theorem. If <span class="arithmatex">\(B\)</span> is recursive, and exists a reduction <span class="arithmatex">\(f\)</span> from <span class="arithmatex">\(A\)</span> to <span class="arithmatex">\(B\)</span>, then <span class="arithmatex">\(A\)</span> is recursive.<ul>
+<li>Proof. <span class="arithmatex">\(\exist M_B\)</span> decides <span class="arithmatex">\(B\)</span>, <span class="arithmatex">\(M_A\)</span> = on input <span class="arithmatex">\(x\)</span>:<ol>
+<li>compute <span class="arithmatex">\(f(x)\)</span></li>
+<li>run <span class="arithmatex">\(M_B\)</span> on <span class="arithmatex">\(\texttt{"}f(x)\texttt{"}\)</span></li>
+<li>return the result of <span class="arithmatex">\(M_B\)</span></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><span class="arithmatex">\(A\)</span> 的判定难度小于等于 <span class="arithmatex">\(B\)</span>，所以 <span class="arithmatex">\(A\)</span> 可以规约到 <span class="arithmatex">\(B\)</span> 也可以记为 <span class="arithmatex">\(A\leq B\)</span></li>
+</ul>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(C_1\)</span> (<span class="arithmatex">\(A_{\text{CFG}}\)</span>)</summary>
+<p><span class="arithmatex">\(A_{\text{CFG}} = \{\texttt{"}G\texttt{"}\texttt{"}w\texttt{"}: G\text{ is a CFG that generates }w\}\)</span></p>
+<p><span class="arithmatex">\(M_{C_1}\)</span> = on input <span class="arithmatex">\(\texttt{"}G\texttt{"}\texttt{"}w\texttt{"}\)</span></p>
+<ol>
+<li><span class="arithmatex">\(G\)</span> -&gt; <span class="arithmatex">\(G'\)</span> in CNF</li>
+<li>enumerate all the derivations of length <span class="arithmatex">\(2|w|-1\)</span></li>
+<li>if any of them generates <span class="arithmatex">\(w\)</span></li>
+<li>&emsp;&emsp;accept <span class="arithmatex">\(\texttt{"}G\texttt{"}\texttt{"}w\texttt{"}\)</span></li>
+<li>else</li>
+<li>&emsp;&emsp;reject</li>
+</ol>
+</details>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(C_2\)</span> (<span class="arithmatex">\(A_{\text{PDA}}\)</span>)</summary>
+<p><span class="arithmatex">\(A_{\text{PDA}} = \{\texttt{"}P\texttt{"}\texttt{"}w\texttt{"}: P\text{ is a PDA that accepts }w\}\)</span></p>
+<p>可以规约到问题 <span class="arithmatex">\(C_1\)</span>。</p>
+</details>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(C_3\)</span> (<span class="arithmatex">\(E_\text{CFG}\)</span>)</summary>
+<p><span class="arithmatex">\(E_\text{CFG} = \{\texttt{"}G\texttt{"}: G\text{ is a CFG with }L(G)=\emptyset\}\)</span></p>
+<p>提供一个算法来进行判断：</p>
+<ul>
+<li>标记所有的 terminal symbol</li>
+<li>如果一个规则的右侧均被标记，则同样标记左侧符号出现的所有位置</li>
+<li>最终无法进一步标记时，如果 S 被标记了，则 <span class="arithmatex">\(L(G)\)</span> 不为空</li>
+</ul>
+<p>S 被标记了相当于存在一种方案可以推导至均为 terminal。</p>
+<p>e.g. S-&gt;Aa A-&gt;CB C-&gt;e C-&gt;a B-&gt;b，先标记 abe，再标记 CB，再标记 A（因为 A-&gt;CB），再标记 S，所以这个 CFG 的 language 不为空。</p>
+</details>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(C_4\)</span> (<span class="arithmatex">\(E_\text{PDA}\)</span>)</summary>
+<p>可以规约到 <span class="arithmatex">\(C_3\)</span>。</p>
+</details>
+<h2 id="_4">语言的存在性问题<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>目前我们知道的语言分类如下：</p>
+<p><img alt="" src="/assets/images/cs/tcs/toc/topic4/img1.light.png#only-light" />
+<img alt="" src="/assets/images/cs/tcs/toc/topic4/img1.dark.png#only-dark" /></p>
+<p>接下来想要找到两种语言：</p>
+<ul>
+<li>recursively enumerable 但不 recursive</li>
+<li>不 recursively enumerable</li>
+</ul>
+<h3 id="_5">集合的可列性<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>集合 <span class="arithmatex">\(S\)</span> 是可列的（countable）当且仅当它是有限的或存在双射 <span class="arithmatex">\(f\colon S\to\mathbb{N}\)</span>，否则就是不可列的（uncountable）。</p>
+<details class="success" open="open">
+<summary>Lemma 1. 集合 <span class="arithmatex">\(S\)</span> 是可列的当且仅当存在一个单射 <span class="arithmatex">\(g\colon S\to\mathbb{N}\)</span></summary>
+<p>Proof. 如果 <span class="arithmatex">\(S\)</span> 是有限的，则自然成立，否则：</p>
+<ul>
+<li>左推右，双射也满足单射，自然成立</li>
+<li>右推左，则构造一个双射<ul>
+<li>存在单射，则可以将 <span class="arithmatex">\(S\)</span> 的元素进行排序并编号 <span class="arithmatex">\(S_1, S_2, \cdots\)</span><ul>
+<li>同时使其满足 <span class="arithmatex">\(g(S_1) &lt; g(S_2) &lt; \cdots\)</span></li>
+</ul>
+</li>
+<li>令 <span class="arithmatex">\(f(S_i) = i\)</span>，则 <span class="arithmatex">\(f\)</span> 是一个双射</li>
+</ul>
+</li>
+</ul>
+</details>
+<details class="tip" open="open">
+<summary>Corollary 1. 任意可列集的子集也是可列的</summary>
+<p>Proof. 根据 Lemma 1. <span class="arithmatex">\(A\)</span> 是可列的，则存在单射 <span class="arithmatex">\(f\colon A\to\mathbb{N}\)</span>，则任意 <span class="arithmatex">\(A'\subseteq A\)</span>，也存在单射 <span class="arithmatex">\(f\colon A'\to\mathbb{N}\)</span> 成立，所以 <span class="arithmatex">\(A'\)</span> 是可列的。</p>
+</details>
+<h3 id="_6">非递归可枚举语言的存在性<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<details class="success" open="open">
+<summary>Lemma 2. 对于符号集 <span class="arithmatex">\(\Sigma\)</span>，<span class="arithmatex">\(\Sigma^*\)</span> 是可列的</summary>
+<p>假设 <span class="arithmatex">\(\Sigma=\{0, 1\}\)</span>，则 <span class="arithmatex">\(\Sigma^*=\{e, 0, 1, 00, 01, 10, 11, \cdots\}\)</span>，可以将其映射到 <span class="arithmatex">\(\{0, 1, 2, \cdots\}\)</span>，而且是双射，所以是可列的。</p>
+<p>证明的话则说明 <span class="arithmatex">\(\forall s\in\Sigma^*, \exist f(s)\)</span> 即可，而 <span class="arithmatex">\(f(s)\)</span> 不会超过 <span class="arithmatex">\(2^{|s|}\)</span>，所以总可以找到。</p>
+</details>
+<details class="tip" open="open">
+<summary>Corollary 2. 所有图灵机组成的集合 <span class="arithmatex">\(\{M: M\text{ is a TM}\}\)</span> 是可列的</summary>
+<p>图灵机都可以用有限的符号集表示，所以等价于字符串，根据 Lemma 2. 所有图灵机组成的集合是可列的。</p>
+</details>
+<details class="success" open="open">
+<summary>Lemma 3. 令 <span class="arithmatex">\(\mathcal{L}\)</span> 是 <span class="arithmatex">\(\Sigma\)</span> 上所有语言的集合，则 <span class="arithmatex">\(\mathcal{L}\)</span> 不可列</summary>
+<p>Proof. 反证法，假设 <span class="arithmatex">\(\mathcal{L}\)</span> 是可列的，则可以将其元素编号为 <span class="arithmatex">\(L_1, L_2, \cdots\)</span>。而 <span class="arithmatex">\(\Sigma^*\)</span> 是可列的，也可以将其编号为 <span class="arithmatex">\(s_1, s_2, \cdots\)</span>。</p>
+<p>接下来构造一个语言 <span class="arithmatex">\(D=\{s_i:s_i\notin L_i\}\)</span>，因为它也是一个 <span class="arithmatex">\(\Sigma\)</span> 上的语言，所以应该也属于 <span class="arithmatex">\(\mathcal{L}\)</span>。但其包含的字符串都有不属于某一个现有语言中的，即 <span class="arithmatex">\(\forall i, s_i\in D\text{ iff }s_i\notin L_i\)</span>，所以 <span class="arithmatex">\(D\neq L_i\)</span>，所以 <span class="arithmatex">\(D\)</span> 不属于 <span class="arithmatex">\(\mathcal{L}\)</span>，矛盾。</p>
+</details>
+<p>根据 Corollary 2. 和 Lemma 3. 我们知道图灵机的集合是可列的，但语言的集合是不可列的，所以一定存在一些语言是不能被图灵机判定的，也就是非 recursively enumerable 的。</p>
+<h2 id="_7">停机问题<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>现定义语言 <span class="arithmatex">\(H=\{\texttt{"}M\texttt{"}\texttt{"}w\texttt{"}: M\text{ is a TM that halts on }w\}\)</span>，即判定图灵机 <span class="arithmatex">\(M\)</span> 是否在输入 <span class="arithmatex">\(w\)</span> 上停机。</p>
+<details class="success" open="open">
+<summary>Theorem 1. 语言 <span class="arithmatex">\(H\)</span> 是 recursively enumerable 的</summary>
+<p>很简单，直接让 <span class="arithmatex">\(M\)</span> 在 <span class="arithmatex">\(w\)</span> 上运行即可，停机就是 accept，不停机就是 reject，所以是 recursively enumerable 的。</p>
+<p>形式化描述则构造图灵机 <span class="arithmatex">\(U\)</span> = on input <span class="arithmatex">\(\texttt{"}M\texttt{"}\texttt{"}w\texttt{"}\)</span>：</p>
+<ol>
+<li>run <span class="arithmatex">\(M\)</span> on <span class="arithmatex">\(w\)</span></li>
+</ol>
+<p><span class="arithmatex">\(U\)</span> halts on <span class="arithmatex">\(\texttt{"}M\texttt{"}\texttt{"}w\texttt{"}\)</span> iff <span class="arithmatex">\(M\)</span> halts on <span class="arithmatex">\(w\)</span>.</p>
+<p>（这个图灵机 <span class="arithmatex">\(U\)</span> 后续还会用到）</p>
+</details>
+<details class="success" open="open">
+<summary>Theorem 2. 语言 <span class="arithmatex">\(H\)</span> 不是 recursive 的</summary>
+<p>再定义一个语言 <span class="arithmatex">\(H_d=\{\texttt{"}M\texttt{"}: M\text{ is a TM that does NOT halt on }\texttt{"}M\texttt{"}\}\)</span>，即判定图灵机 <span class="arithmatex">\(M\)</span> 是否在输入 <span class="arithmatex">\(\texttt{"}M\texttt{"}\)</span>（自己的编码）上停机。</p>
+<p>接下来我们尝试分别证明两个结论：</p>
+<details class="tip">
+<summary>如果 <span class="arithmatex">\(H\)</span> 是 recursive 的，则 <span class="arithmatex">\(H_d\)</span> 也是</summary>
+<p>如果 <span class="arithmatex">\(H\)</span> 是 recursive 的，则存在图灵机 <span class="arithmatex">\(M_H\)</span> 判定 <span class="arithmatex">\(H\)</span>，那么构造图灵机 <span class="arithmatex">\(M_d\)</span> = on input <span class="arithmatex">\(\texttt{"}M\texttt{"}\)</span>：</p>
+<ol>
+<li>run <span class="arithmatex">\(M_H\)</span> on <span class="arithmatex">\(\texttt{"}M\texttt{"}\texttt{"}M\texttt{"}\)</span></li>
+<li>if <span class="arithmatex">\(M_H\)</span> accepts <span class="arithmatex">\(\texttt{"}M\texttt{"}\texttt{"}M\texttt{"}\)</span></li>
+<li>&emsp;&emsp;reject</li>
+<li>else</li>
+<li>&emsp;&emsp;accept</li>
+</ol>
+<p>那么这个图灵机可以判定 <span class="arithmatex">\(H_d\)</span>，所以 <span class="arithmatex">\(H_d\)</span> 是 recursive 的。</p>
+</details>
+<details class="tip">
+<summary>语言 <span class="arithmatex">\(H_d\)</span> 不是 recursively enumerable 的</summary>
+<p>假设它是，则存在图灵机 <span class="arithmatex">\(D\)</span> 半判定它，则 <span class="arithmatex">\(D\)</span> 在输入 <span class="arithmatex">\(\texttt{"}M\texttt{"}\)</span> 时：</p>
+<ul>
+<li>如果 <span class="arithmatex">\(\texttt{"}M\texttt{"}\in H_d\)</span> 则停机</li>
+<li>如果 <span class="arithmatex">\(\texttt{"}M\texttt{"}\notin H_d\)</span> 则不停机</li>
+</ul>
+<p>那么当 <span class="arithmatex">\(M=D\)</span> 时，则出现情况：</p>
+<ul>
+<li>如果 <span class="arithmatex">\(\texttt{"}D\texttt{"}\in H_d\)</span> 则停机<ul>
+<li>而  <span class="arithmatex">\(\texttt{"}D\texttt{"}\in H_d\)</span> 意味着 <span class="arithmatex">\(D\)</span> 不会在自身编码上停机，矛盾</li>
+</ul>
+</li>
+<li>如果 <span class="arithmatex">\(\texttt{"}D\texttt{"}\notin H_d\)</span> 则不停机<ul>
+<li>而  <span class="arithmatex">\(\texttt{"}D\texttt{"}\notin H_d\)</span> 意味着 <span class="arithmatex">\(D\)</span> 会在自身编码上停机，矛盾</li>
+</ul>
+</li>
+</ul>
+<p>所以假设不成立，<span class="arithmatex">\(H_d\)</span> 不是 recursively enumerable 的。</p>
+</details>
+<p>根据这两个结论，如果 <span class="arithmatex">\(H\)</span> 是 recursive 的，则 <span class="arithmatex">\(H_d\)</span> 也是，而 recursive 一定是 recursively enumerable 的，但我们又证明了 <span class="arithmatex">\(H_d\)</span> 不是 recursively enumerable 的，所以产生了矛盾。那么就说明 <span class="arithmatex">\(H\)</span> 不是 recursive 的。</p>
+</details>
+<p>这样就找到了之前说到的两个语言：</p>
+<ul>
+<li><span class="arithmatex">\(H\)</span>：recursively enumerable 但不 recursive</li>
+<li><span class="arithmatex">\(H_d\)</span>：不 recursively enumerable</li>
+</ul>
+<h3 id="_8">停机问题相关判定问题<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">注意以下判断问题都是不可判定的</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">如果 <span class="arithmatex">\(A\leq B\)</span>，且 <span class="arithmatex">\(A\)</span> 是非 recursive 的，则 <span class="arithmatex">\(B\)</span> 也非 recursive</p>
+</div>
+<details class="example" open="open">
+<summary>判定问题 <span class="arithmatex">\(A_1 = \{\texttt{"}M\texttt{"}: M\text{ is a TM that halts on }e\}\)</span></summary>
+<p>试图进行规约 <span class="arithmatex">\(H\leq A_1\)</span>，根据规约的定义需要满足将任意输入给 <span class="arithmatex">\(H\)</span> 的字符串 <span class="arithmatex">\(\texttt{"}M\texttt{"}\texttt{"}w\texttt{"}\)</span> 转换为输入给 <span class="arithmatex">\(A_1\)</span> 的字符串 <span class="arithmatex">\(\texttt{"}M^*\texttt{"}\)</span>，满足 <span class="arithmatex">\(M\)</span> 在 <span class="arithmatex">\(w\)</span> 上停机当且仅当 <span class="arithmatex">\(M^*\)</span> 在 <span class="arithmatex">\(e\)</span> 上停机。</p>
+<p>则定义图灵机 <span class="arithmatex">\(M^*\)</span> = on input <span class="arithmatex">\(u\)</span></p>
+<ol>
+<li>run <span class="arithmatex">\(M\)</span> on <span class="arithmatex">\(w\)</span></li>
+</ol>
+<p>这样就可以达到效果。即 <span class="arithmatex">\(M^*\)</span> 在 <span class="arithmatex">\(e\)</span> 上停机 &lt;=&gt; <span class="arithmatex">\(M^*\)</span> 在某些字符串上停机 &lt;=&gt; <span class="arithmatex">\(M^*\)</span> 在任意输入上停机 &lt;=&gt; <span class="arithmatex">\(M\)</span> 在 <span class="arithmatex">\(w\)</span> 上停机。</p>
+</details>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(A_2 = \{\texttt{"}M\texttt{"}: M\text{ is a TM that halts on some input}\}\)</span></summary>
+<p>根据上面 <span class="arithmatex">\(A_1\)</span> 的结论，使用 <span class="arithmatex">\(M^*\)</span> 即可，是完全等价的。</p>
+</details>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(A_3 = \{\texttt{"}M\texttt{"}: M\text{ is a TM that halts on every input}\}\)</span></summary>
+<p>同理等价</p>
+</details>
+<details class="example" open="open">
+<summary>判定问题 <span class="arithmatex">\(A_4 = \{\texttt{"}M_1\texttt{"}\texttt{"}M_2\texttt{"}: M_1\text{ and }M_2\text{ are two TM with }L(M_1)=L(M_2)\}\)</span></summary>
+<p>尝试规约 <span class="arithmatex">\(A_3\leq A_4\)</span>，<span class="arithmatex">\(A_3\)</span> 的输入为 <span class="arithmatex">\(\texttt{"}M\texttt{"}\)</span>，<span class="arithmatex">\(A_4\)</span> 的输入为 <span class="arithmatex">\(\texttt{"}M_1\texttt{"}\texttt{"}M_2\texttt{"}\)</span>，需要满足 <span class="arithmatex">\(M\)</span> 在任意输入上停机当且仅当 <span class="arithmatex">\(M_1\)</span> 和 <span class="arithmatex">\(M_2\)</span> 半判定的语言相同。</p>
+<p>令 <span class="arithmatex">\(M_1\)</span> = <span class="arithmatex">\(M\)</span>, <span class="arithmatex">\(M_2\)</span> = on input <span class="arithmatex">\(x\)</span>:</p>
+<ol>
+<li>halts</li>
+</ol>
+<p>这样我们知道 <span class="arithmatex">\(M_2\)</span> 会在任意输入上停机，所以 <span class="arithmatex">\(M\)</span> 在任意输入上停机 &lt;=&gt; <span class="arithmatex">\(M\)</span> 即 <span class="arithmatex">\(M_1\)</span> 和 <span class="arithmatex">\(M_2\)</span> 半判定的语言相同。</p>
+</details>
+<details class="example" open="open">
+<summary>判定问题 <span class="arithmatex">\(R_\text{TM}=\{\texttt{"}M\texttt{"}: M\text{ is a TM with }L(M)\text{ is regular}\}\)</span></summary>
+<p>问题 <span class="arithmatex">\(\overline{R_\text{TM}} = \{\texttt{"}M\texttt{"}: M\text{ is a TM with }L(M)\text{ is not regular}\}\)</span> 是可判定的则 <span class="arithmatex">\(R_\text{TM}\)</span> 也是可判定的。</p>
+<p>接下来尝试规约 <span class="arithmatex">\(H\leq\overline{R_\text{TM}}\)</span>，<span class="arithmatex">\(H\)</span> 的输入 <span class="arithmatex">\(\texttt{"}M\texttt{"}\texttt{"}w\texttt{"}\)</span> 转换为 <span class="arithmatex">\(\overline{R_\text{TM}}\)</span> 的输入 <span class="arithmatex">\(\texttt{"}M^*\texttt{"}\)</span>，需要满足 <span class="arithmatex">\(M\)</span> 在 <span class="arithmatex">\(w\)</span> 上停机当且仅当 <span class="arithmatex">\(L(M^*)\)</span> 不是 regular 的。</p>
+<p>构造图灵机 <span class="arithmatex">\(M^*\)</span> = on input <span class="arithmatex">\(x\)</span></p>
+<ol>
+<li>run <span class="arithmatex">\(M\)</span> on <span class="arithmatex">\(w\)</span></li>
+<li>run <span class="arithmatex">\(U\)</span> on <span class="arithmatex">\(x\)</span></li>
+</ol>
+<p>则 <span class="arithmatex">\(L(M^*)\)</span> 有两种情况：</p>
+<ul>
+<li>在第一行停机时 <span class="arithmatex">\(L(M^*) = L(U) = H\)</span></li>
+<li>在第一行不停机时 <span class="arithmatex">\(L(M^*) = \emptyset\)</span></li>
+</ul>
+<p>因为 <span class="arithmatex">\(\emptyset\)</span> 是 regular 的，所以 <span class="arithmatex">\(L(M^*)\)</span> 不是 regular 的 &lt;=&gt; <span class="arithmatex">\(M\)</span> 在 <span class="arithmatex">\(w\)</span> 上停机。</p>
+</details>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(CF_\text{TM}=\{\texttt{"}M\texttt{"}: M\text{ is a TM with }L(M)\text{ is context-free}\}\)</span></summary>
+<p>同上，<span class="arithmatex">\(\emptyset\)</span> 也是 context-free 的，所以同样可以规约 <span class="arithmatex">\(H\leq CF_\text{TM}\)</span>。</p>
+</details>
+<details class="example">
+<summary>判定问题 <span class="arithmatex">\(REC_\text{TM}=\{\texttt{"}M\texttt{"}: M\text{ is a TM with }L(M)\text{ is recursive}\}\)</span></summary>
+<p>同上，<span class="arithmatex">\(\emptyset\)</span> 也是 recursive 的，所以同样可以规约 <span class="arithmatex">\(H\leq REC_\text{TM}\)</span>。</p>
+</details>
+<h3 id="_9">上述判定问题的统一化<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>前面可以利用停机问题规约证明不可判定的问题都可以表示为 <span class="arithmatex">\(R(P) = \{\texttt{"}M\texttt{"}: M\text{ is a TM with }L(M)\text{ having property }P\}\)</span>，其中 <span class="arithmatex">\(P\)</span> 可以是例如 regular / context free / recursive 等，或者说明 <span class="arithmatex">\(L(M)=\Sigma^*\)</span>（即在任意输入上停机）或 <span class="arithmatex">\(e\in L(M)\)</span>（即在空串上停机）等。这些情况下问题 <span class="arithmatex">\(R(P)\)</span> 都是不可判定的。</p>
+<details class="success" open="open">
+<summary>Rice's Theorem</summary>
+<p>令 <span class="arithmatex">\(\mathcal{L}(P)\)</span> 为具有性质 <span class="arithmatex">\(P\)</span> 的所有 recursively enumerable 语言的集合，则 <span class="arithmatex">\(R(P)\)</span> 可以表示为 <span class="arithmatex">\(\{\texttt{"}M\texttt{"}: M\text{ is a TM with }L(M)\in\mathcal{L}(P)\}\)</span>，则有：</p>
+<ul>
+<li>如果 <span class="arithmatex">\(\mathcal{L}(P)=\emptyset\)</span> 或 <span class="arithmatex">\(\mathcal{L}(P)\)</span> 包含所有 recursively enumerable 语言<ul>
+<li>则 <span class="arithmatex">\(R(P)\)</span> 是 recursive 的</li>
+</ul>
+</li>
+<li>如果 <span class="arithmatex">\(\mathcal{L}(P)\)</span> 是所有 recursively enumerable 语言的非空真子集<ul>
+<li>则 <span class="arithmatex">\(R(P)\)</span> 不是 recursive 的（即是不可判定的）</li>
+</ul>
+</li>
+</ul>
+<details class="tip">
+<summary>Proof</summary>
+<dl>
+<dt>case 1. <span class="arithmatex">\(\emptyset\notin\mathcal{L}(P)\)</span></dt>
+<dd>
+<p>意味着 <span class="arithmatex">\(\exist A\in\mathcal{L}(P)\)</span> 且 <span class="arithmatex">\(A\neq\emptyset\)</span>，所以可以构造图灵机 <span class="arithmatex">\(M_A\)</span> 半判定 <span class="arithmatex">\(A\)</span>。接下来尝试规约 <span class="arithmatex">\(H\leq R(P)\)</span>（前者图灵机为 <span class="arithmatex">\(M_H\)</span>，后者为 <span class="arithmatex">\(M_R\)</span>）。</p>
+<p>构造图灵机 <span class="arithmatex">\(M_H\)</span> = on input <span class="arithmatex">\(\texttt{"}M\texttt{"}\texttt{"}w\texttt{"}\)</span>:</p>
+<ol>
+<li>construct a TM <span class="arithmatex">\(M^*\)</span> = on input <span class="arithmatex">\(x\)</span>:<ol>
+<li>run <span class="arithmatex">\(M\)</span> on <span class="arithmatex">\(w\)</span></li>
+<li>run <span class="arithmatex">\(M_A\)</span> on <span class="arithmatex">\(x\)</span></li>
+</ol>
+</li>
+<li>run <span class="arithmatex">\(M_R\)</span> on <span class="arithmatex">\(\texttt{"}M^*\texttt{"}\)</span></li>
+<li>return the result of <span class="arithmatex">\(M_R\)</span></li>
+</ol>
+<p>构造的图灵机 <span class="arithmatex">\(M^*\)</span> 的语言有两种情况：</p>
+<ul>
+<li>当 <span class="arithmatex">\(M^*\)</span> 在第一行停机时，<span class="arithmatex">\(L(M^*) = L(M_A) = A\in\mathcal{L}(P)\)</span></li>
+<li>当 <span class="arithmatex">\(M^*\)</span> 在第一行不停机时，<span class="arithmatex">\(L(M^*) = \emptyset\notin\mathcal{L}(P)\)</span></li>
+</ul>
+<p>所以停机问题可以规约至 <span class="arithmatex">\(R(P)\)</span>，所以 <span class="arithmatex">\(R(P)\)</span> 是非 recursive 的。</p>
+</dd>
+<dt>case 2. <span class="arithmatex">\(\emptyset\in\mathcal{L}(P)\)</span></dt>
+<dd>有 <span class="arithmatex">\(\emptyset\notin\overline{\mathcal{L}(P)}\)</span>，根据 case 1. 可以知道 <span class="arithmatex">\(\overline{R(P)}\)</span> 是非 recursive 的，所以 <span class="arithmatex">\(R(P)\)</span> 也是非 recursive 的。</dd>
+</dl>
+</details>
+</details>
+<h3 id="_10">证明是否可判定的方法<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<ul>
+<li>证明可判定（recursive）：<ul>
+<li>通过定义证明，即构建一个图灵机来判定</li>
+<li>通过规约证明，只需要证明当前语言 <span class="arithmatex">\(A\leq\)</span> 一个已知的 recursive 语言</li>
+</ul>
+</li>
+<li>证明不可判定：<ul>
+<li>通过对角化（diagonalization）的技巧证明，即证明 <span class="arithmatex">\(H\)</span> 不可判定的方法</li>
+<li>通过规约证明，只需要证明一个已知的不可判定的语言 <span class="arithmatex">\(\leq\)</span> 当前语言 <span class="arithmatex">\(A\)</span> 即可</li>
+</ul>
+</li>
+<li>证明可半判定（recursively enumerable）：<ul>
+<li>通过定义证明，即构建一个图灵机来半判定</li>
+<li>通过规约证明，只需要证明当前语言 <span class="arithmatex">\(A\leq\)</span> 一个已知的 recursively enumerable 语言 </li>
+</ul>
+</li>
+</ul>
+<details class="example">
+<summary>证明 <span class="arithmatex">\(A=\{\texttt{"}M\texttt{"}: M\text{ is a TM that halts on some input}\}\)</span> 是 recursively enumerable 的</summary>
+<p>将所有输入的字符串按照长度降序排列为 <span class="arithmatex">\(s_1, s_2, \cdots\)</span>，idea 是对每个串同时并行跑图灵机，直到有一个输入停机，这就半判定了。不过因为字符串可能是无穷多的，所以当然没办法并行跑无穷个图灵机。解决方案是将二维无穷结构一维化，即先对 <span class="arithmatex">\(s_1\)</span> 跑一步，没停机就对 <span class="arithmatex">\(s_1\)</span> 和 <span class="arithmatex">\(s_2\)</span> 都跑两步，没停机就对 <span class="arithmatex">\(s_1, s_2, s_3\)</span> 都跑三步，以此类推。这样就可以保证每个串都会被跑到，假设在 <span class="arithmatex">\(s_j\)</span> 的第 <span class="arithmatex">\(k\)</span> 步停机的话，则跑 <span class="arithmatex">\(\max(j, k)\)</span> 步即可。 </p>
+<p>即定义图灵机 <span class="arithmatex">\(M_A\)</span> = on input <span class="arithmatex">\(\texttt{"}M\texttt{"}\)</span>:</p>
+<ol>
+<li>for <span class="arithmatex">\(i = 1, 2,\cdots\)</span></li>
+<li>&emsp;&emsp;for <span class="arithmatex">\(s = s_1, s_2, \cdots, s_i\)</span></li>
+<li>&emsp;&emsp;&emsp;&emsp;run <span class="arithmatex">\(M\)</span> on <span class="arithmatex">\(s\)</span> for <span class="arithmatex">\(i\)</span> steps</li>
+<li>&emsp;&emsp;&emsp;&emsp;if <span class="arithmatex">\(M\)</span> halts on <span class="arithmatex">\(s\)</span> within <span class="arithmatex">\(i\)</span> steps</li>
+<li>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;halt</li>
+</ol>
+</details>
+<ul>
+<li>证明不可半判定：<ul>
+<li>通过规约，证明一个已知的非 recursively enumerable 语言 <span class="arithmatex">\(\leq\)</span> 当前语言 <span class="arithmatex">\(A\)</span></li>
+<li>通过如下定理</li>
+</ul>
+</li>
+</ul>
+<details class="success" open="open">
+<summary>Theorem 3. 如果 <span class="arithmatex">\(A\)</span> 和 <span class="arithmatex">\(\overline{A}\)</span> 都可半判定，则 <span class="arithmatex">\(A\)</span> 可判定</summary>
+<p>Proof. 假设 <span class="arithmatex">\(M_1\)</span> 和 <span class="arithmatex">\(M_2\)</span> 分别半判定 <span class="arithmatex">\(A\)</span> 和 <span class="arithmatex">\(\overline{A}\)</span>，则构造图灵机 <span class="arithmatex">\(M\)</span> = on input <span class="arithmatex">\(x\)</span>:</p>
+<ol>
+<li>run <span class="arithmatex">\(M_1\)</span> and <span class="arithmatex">\(M_2\)</span> on <span class="arithmatex">\(x\)</span> in parallel</li>
+<li>if <span class="arithmatex">\(M_1\)</span> halts</li>
+<li>&emsp;&emsp;accept <span class="arithmatex">\(x\)</span></li>
+<li>else // if <span class="arithmatex">\(M_2\)</span> halts</li>
+<li>&emsp;&emsp;reject <span class="arithmatex">\(x\)</span></li>
+</ol>
+<p>因为 <span class="arithmatex">\(A\)</span> 和 <span class="arithmatex">\(\overline{A}\)</span> 都可半判定，所以在一个输入上 <span class="arithmatex">\(M_1\)</span> 和 <span class="arithmatex">\(M_2\)</span> 有且仅有一个会停机，这样就可以构造 <span class="arithmatex">\(M\)</span> 来判定 <span class="arithmatex">\(A\)</span>。</p>
+<p>所以如果 <span class="arithmatex">\(H\)</span> 是 recursively enumerable 但又不是 recursive 的，那么 <span class="arithmatex">\(\overline{H}\)</span> 一定是非 recursively enumerable 的。</p>
+<p>因此我们也知道：</p>
+<ul>
+<li>recursive 在 <span class="arithmatex">\(\cup,\ \cap,\ \overline{\phantom{A}},\ \circ,\ ^*\)</span> 下都是封闭的</li>
+<li>recursively enumerable 在 <span class="arithmatex">\(\cup,\ \cap,\ \circ,\ ^*\)</span> 下是封闭的，但 <span class="arithmatex">\(\overline{\phantom{A}}\)</span> 下不封闭</li>
+</ul>
+</details>
+<h2 id="_11">自输出程序问题<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h2>
+<p>接下来看一个问题：写一个程序，它可以输出自己的代码。即图灵机 <span class="arithmatex">\(M\)</span> 会在它的纸带上写下 <span class="arithmatex">\(\texttt{"}M\texttt{"}\)</span>。</p>
+<ul>
+<li>做法是将 <span class="arithmatex">\(M\)</span> 分成 <span class="arithmatex">\(A, B\)</span> 两个部分<ul>
+<li><span class="arithmatex">\(A\)</span> 会在纸带上写 <span class="arithmatex">\(\texttt{"}B\texttt{"}\)</span></li>
+<li><span class="arithmatex">\(B\)</span> 会在纸带上写 <span class="arithmatex">\(\texttt{"}A\texttt{"}\)</span> 并且交换 <span class="arithmatex">\(\texttt{"}A\texttt{"}\texttt{"}B\texttt{"}\)</span> 的位置</li>
+</ul>
+</li>
+<li>接下来要解决 <span class="arithmatex">\(B\)</span> 执行时需要依靠于 <span class="arithmatex">\(A\)</span> 的编码的问题<ul>
+<li>令函数 <span class="arithmatex">\(q(w)=\texttt{"}M_w\texttt{"}\)</span>，其中 <span class="arithmatex">\(M_w\)</span> 是一个图灵机，它会在纸带上写下 <span class="arithmatex">\(w\)</span>，然后停机<ul>
+<li>这个函数 <span class="arithmatex">\(q\)</span> 是可计算的（computable）的，因为可以直接构造图灵机 <span class="arithmatex">\(M_w\)</span> = on input <span class="arithmatex">\(x\)</span>:<ol>
+<li>write <span class="arithmatex">\(x\)</span> on the tape</li>
+<li>halt</li>
+</ol>
+</li>
+<li>这意味着只要有一个程序的输出，我们就可以构造一个输出它的图灵机</li>
+</ul>
+</li>
+<li>所以接下来构造图灵机 <span class="arithmatex">\(B\)</span> = on input <span class="arithmatex">\(w\)</span>:<ol>
+<li>compute <span class="arithmatex">\(q(w)\)</span></li>
+<li>write <span class="arithmatex">\(q(w)\cdot w\)</span> on the tape</li>
+</ol>
+</li>
+<li>这样 <span class="arithmatex">\(B\)</span> 已经确定且不依靠 <span class="arithmatex">\(A\)</span> 本身，<span class="arithmatex">\(A\)</span> 可以输出 <span class="arithmatex">\(B\)</span>，然后 <span class="arithmatex">\(B\)</span> 根据 <span class="arithmatex">\(A\)</span> 的输出构造出其图灵机，再输出，就不存在无限递归的问题了</li>
+</ul>
+</li>
+</ul>
+<p>这个算法可以引出一个定理：</p>
+<details class="success" open="open">
+<summary>Recursion Theorem</summary>
+<p>给定任意图灵机 <span class="arithmatex">\(T\)</span>，都能找到图灵机 <span class="arithmatex">\(R\)</span> 使得对于任意字符串 <span class="arithmatex">\(w\)</span>，在 <span class="arithmatex">\(R\)</span> 上计算 <span class="arithmatex">\(w\)</span> 等价于在 <span class="arithmatex">\(T\)</span> 上计算 <span class="arithmatex">\(\texttt{"}R\texttt{"}w\)</span>。</p>
+<details class="tip">
+<summary>Proof</summary>
+<p>构造 <span class="arithmatex">\(R\)</span> 为三段程序 <span class="arithmatex">\(A, B, T\)</span> 的拼接，在输入 <span class="arithmatex">\(w\)</span> 时：</p>
+<ul>
+<li><span class="arithmatex">\(A\)</span> 在纸带上输出 <span class="arithmatex">\(\texttt{"}B\texttt{"}\texttt{"}T\texttt{"}\)</span><ul>
+<li>这之后的纸带为 <span class="arithmatex">\(w\texttt{"}B\texttt{"}\texttt{"}T\texttt{"}\)</span>，其中 <span class="arithmatex">\(w\)</span> 是输入</li>
+</ul>
+</li>
+<li><span class="arithmatex">\(B\)</span> 在纸带上输出 <span class="arithmatex">\(\texttt{"}A\texttt{"}\)</span>，然后重排纸带上的几个部分为 <span class="arithmatex">\(\texttt{"}A\texttt{"}\texttt{"}B\texttt{"}\texttt{"}T\texttt{"}w\)</span>，即 <span class="arithmatex">\(\texttt{"}R\texttt{"}w\)</span></li>
+<li><span class="arithmatex">\(T\)</span> 即给定的任意图灵机<ul>
+<li>此时运行 <span class="arithmatex">\(T\)</span> 的输入就是 <span class="arithmatex">\(\texttt{"}R\texttt{"}w\)</span></li>
+</ul>
+</li>
+</ul>
+</details>
+<p>这意味着一个图灵机可以在运行的时候可以得到自身的编码，即如下图灵机是合法的，<span class="arithmatex">\(M\)</span> = on input <span class="arithmatex">\(x\)</span>:</p>
+<ol>
+<li>obtain <span class="arithmatex">\(\texttt{"}M\texttt{"}\)</span></li>
+<li>...</li>
+</ol>
+</details>
+<details class="example" open="open">
+<summary>利用 Recursion Theorem 证明停机问题不可判定</summary>
+<p>假设 <span class="arithmatex">\(H\)</span> 是可判定的，则存在 <span class="arithmatex">\(M_H\)</span> 判定 <span class="arithmatex">\(H\)</span>。接下来构造图灵机 <span class="arithmatex">\(R\)</span> = on input <span class="arithmatex">\(w\)</span>:</p>
+<ol>
+<li>obtain <span class="arithmatex">\(\texttt{"}R\texttt{"}\)</span></li>
+<li>run <span class="arithmatex">\(M_H\)</span> on <span class="arithmatex">\(\texttt{"}R\texttt{"}w\)</span></li>
+<li>if <span class="arithmatex">\(M_H\)</span> accepts <span class="arithmatex">\(\texttt{"}R\texttt{"}w\)</span></li>
+<li>&emsp;&emsp;looping forever</li>
+<li>else // <span class="arithmatex">\(M_H\)</span> rejects <span class="arithmatex">\(\texttt{"}R\texttt{"}w\)</span></li>
+<li>&emsp;&emsp;halt</li>
+</ol>
+<p>意思就是如果第三行成立，那么就说明 <span class="arithmatex">\(M_H\)</span> 认为 <span class="arithmatex">\(R\)</span> 在 <span class="arithmatex">\(w\)</span> 上停机，所以接下来会进入第四行死循环，导致 <span class="arithmatex">\(R\)</span> 在 <span class="arithmatex">\(w\)</span> 上并没有停机。否则第五行成立，说明 <span class="arithmatex">\(M_H\)</span> 认为 <span class="arithmatex">\(R\)</span> 在 <span class="arithmatex">\(w\)</span> 上不停机，但接下来第六行又会停机。产生了矛盾，所以假设并不成立。</p>
+</details>
+<h2 id="_12">图灵机枚举字符串<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<p>接下来给图灵机再扩充两个功能：</p>
+<ul>
+<li>对于某些状态 <span class="arithmatex">\(q\)</span>，令 <span class="arithmatex">\(L=\{w:(s, \rhd\underline{⌴})\vdash_M^*(q, \rhd\underline{⌴}w)\}\)</span><ul>
+<li>即从空的开始状态执行，收集到 <span class="arithmatex">\(q\)</span> 时纸带上出现的字符串的集合构成语言 <span class="arithmatex">\(L\)</span></li>
+</ul>
+</li>
+<li>则称语言 <span class="arithmatex">\(L\)</span> 是图灵可枚举的（Turing enumerable）</li>
+<li>称 <span class="arithmatex">\(M\)</span> enumerates <span class="arithmatex">\(L\)</span></li>
+</ul>
+<details class="success" open="open">
+<summary>Theorem 4. 语言 <span class="arithmatex">\(L\)</span> 是图灵可枚举的当且仅当它是递归可枚举的（recursively enumerable）</summary>
+<p>Proof. 如果 <span class="arithmatex">\(L\)</span> 是有限的则显然成立，下面考虑 <span class="arithmatex">\(L\)</span> 是无限的情况。</p>
+<ul>
+<li>左推右，如果 <span class="arithmatex">\(L\)</span> 图灵可枚举，则存在 <span class="arithmatex">\(M\)</span> enumerates <span class="arithmatex">\(L\)</span>，目标则是构造 <span class="arithmatex">\(M'\)</span> 半判定 <span class="arithmatex">\(L\)</span><ul>
+<li>构造图灵机 <span class="arithmatex">\(M'\)</span> = on input <span class="arithmatex">\(x\)</span>:<ol>
+<li>run <span class="arithmatex">\(M\)</span> to enumerate <span class="arithmatex">\(L\)</span></li>
+<li>for every string <span class="arithmatex">\(s\)</span> enumerated by <span class="arithmatex">\(M\)</span></li>
+<li>&emsp;&emsp;if <span class="arithmatex">\(s=x\)</span></li>
+<li>&emsp;&emsp;&emsp;&emsp;halt</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>右推左，如果 <span class="arithmatex">\(L\)</span> 递归可枚举，则存在 <span class="arithmatex">\(M\)</span> 半判定 <span class="arithmatex">\(L\)</span>，目标则是构造 <span class="arithmatex">\(M'\)</span> enumerates <span class="arithmatex">\(L\)</span><ul>
+<li>构造方法类似前面证明 <span class="arithmatex">\(A=\{\texttt{"}M\texttt{"}: M\text{ is a TM that halts on some input}\}\)</span> 可半判定的例子</li>
+</ul>
+</li>
+</ul>
+</details>
+<ul>
+<li>令 <span class="arithmatex">\(M\)</span> 是可以判定 <span class="arithmatex">\(L\)</span> 的图灵机</li>
+<li>如果只要 <span class="arithmatex">\((q, \rhd\underline{⌴}w_1)\vdash_M^+(q, \rhd\underline{⌴}w_2)\)</span>，就有 <span class="arithmatex">\(w_2\)</span> 在 <span class="arithmatex">\(w_1\)</span> 的字典序（lexicographical order）后</li>
+<li>则称 <span class="arithmatex">\(M\)</span> lexicographically enumerates <span class="arithmatex">\(L\)</span>，称 <span class="arithmatex">\(L\)</span> 是字典序可枚举的（lexicographically enumerable）</li>
+</ul>
+<details class="success">
+<summary>Theorem 5. 语言 <span class="arithmatex">\(L\)</span> 是字典序可枚举的当且仅当它是可判定的</summary>
+<p>证明方式类似 Theorem 4.</p>
+</details>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.sections", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+        <script src="https://gcore.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

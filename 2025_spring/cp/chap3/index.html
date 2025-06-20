@@ -1,0 +1,3731 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="wyr">
+      
+      
+        <link rel="canonical" href="https://tsuki0512.github.io/2025_spring/cp/chap3/">
+      
+      
+        <link rel="prev" href="../chap2/">
+      
+      
+        <link rel="next" href="../chap4/">
+      
+      
+      <link rel="icon" href="../../../assets/hzhf.jpg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Parsing - wyr's notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#3-parsing" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="wyr&#39;s notes" class="md-header__button md-logo" aria-label="wyr's notes" data-md-component="logo">
+      
+  <img src="../../../assets/hzhf.jpg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            wyr's notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Parsing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Tsuki0512/Tsuki0512.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Wyr's Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="wyr&#39;s notes" class="md-nav__button md-logo" aria-label="wyr's notes" data-md-component="logo">
+      
+  <img src="../../../assets/hzhf.jpg" alt="logo">
+
+    </a>
+    wyr's notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Tsuki0512/Tsuki0512.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Wyr's Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    专业课程
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            专业课程
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据结构基础
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            数据结构基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期中前内容
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    图论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    排序
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dip%E5%8E%86%E5%B9%B4%E5%8D%B7%E6%95%B4%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    图像信息处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E9%80%BB%E6%9C%9F%E6%9C%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数字逻辑设计
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ADS_%E5%A4%8D%E4%B9%A0%E6%95%B4%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级数据结构与算法分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据库系统
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            数据库系统
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    cheatingsheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../minisql%E5%88%86%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Minisql分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../2024_fall/CA/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    计算机体系结构
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            计算机体系结构
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/final_review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期末复习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/CA1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机设计基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/CA2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    流水线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/CA3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    内存层次
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/CA4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    指令级并行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CA/CA5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DLP和TLP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/OS/final_review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    操作系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../2024_fall/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    计算理论
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            计算理论
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/Lec1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/Lec2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REX
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2024_fall/CN/CN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机网络
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    编译原理
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            编译原理
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../midterm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期中梳理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lexical Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Parsing
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Parsing
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 语法分析概述
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 语法分析概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1 上下文无关文法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1.1 上下文无关文法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3111-cfg" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1.1 CFG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3112" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1.2 推导和归约
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3113-cfgparse-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1.3 CFG的Parse Tree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.2 设计编程语言的文法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 递归下降分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 递归下降分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.1 概述
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-ll1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2 LL(1)和预测分析法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.2 LL(1)和预测分析法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3221-ll1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.1 LL(1)文法
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3222-firstfollow" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.2 First集和Follow集
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.2.2 First集和Follow集">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#32221" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.2.1 定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32222" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.2.2 算法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3223-ll1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.3 LL(1)文法定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3224-ll1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.4 实现LL(1)预测分析
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3225" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.5 递归下降预测分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.2.5 递归下降预测分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      非递归实现（不要求掌握）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#323" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.3 文法改造
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.3 文法改造">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3231" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.3.1 提左公因子
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3232" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.3.2 消除左递归
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#324" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.4 错误恢复
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 自底向上分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 自底向上分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-shift-reduce-" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.1 Shift-Reduce 移进-规约分析法
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332-lr0" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2 LR(0)分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3.2 LR(0)分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3321-lr0-parsing-nfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.1 LR(0) Parsing NFA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3322-lr0-parsing-dfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.2 LR(0) Parsing DFA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3323-lr0-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.3 LR(0) parsing分析表
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3324-lr0-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.4 LR(0) Parsing过程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#333-slr1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.3 SLR(1)分析
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#334-lr1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.4 LR(1)分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3.4 LR(1)分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3341-closure" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.4.1 Closure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3342-goto" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.4.2 GOTO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3343-reduce-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.4.3 Reduce Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#335-lalr" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.5 LALR分析
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 语法分析器
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abstract Syntax
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Semantic Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../type_checking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Type Checking (期末梳理版)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap6_for_final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Activation Record
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap7_for_final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IR Trees
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basic Blocks and Traces
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instruction Selection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Liveness Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Register Allocation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Garbage Collection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Object-Oriented Languages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chap18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Loop Optimizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    软件工程（学习中）
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            软件工程（学习中）
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../se/final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期末刷题记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    自然语言处理导论（待完善）
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            自然语言处理导论（待完善）
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/DeepLearningBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deep Learning Basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/WordEmbedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Word Embedding
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/ConvolutionalNeuralNetworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Convolutional Neural Networks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/RecurrentNeuralNetworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recurrent Neural Networks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/Attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attention
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/NLGAndNMT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NLGandNMT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nlp/Transformer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数理基础课程资源汇总
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            数理基础课程资源汇总
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    离散数学及其应用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BE%AE%E7%A7%AF%E5%88%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    微积分（甲）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%A4%A7%E7%89%A9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    大学物理（乙）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BA%BF%E4%BB%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性代数（甲）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../C%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    C程序设计基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%A4%9A%E6%A8%A1%E6%80%81/paper%E7%AC%94%E8%AE%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多模态大模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    课程心得
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            课程心得
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%80%9A%E8%AF%86%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    通识课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E7%90%86%E5%9F%BA%E7%A1%80%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数理基础课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E4%B8%93%E4%B8%9A%E5%BF%85%E4%BF%AE%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    专业必修课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E4%B8%93%E4%B8%9A%E9%80%89%E4%BF%AE%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    专业选修课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%A2%8E%E7%A2%8E%E5%BF%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    一些碎碎念
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    CMU_DeepVision项目记录
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            CMU_DeepVision项目记录
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    概述
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_prelearning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线上课程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pytorch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    pytorch入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0807/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec1 - Transformers and RAG
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0807_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec2 - Ray Tracing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0809/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec3 - 3D Vision
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0816/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec4 - Deep Learning Basics and Adversarial
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 语法分析概述
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 语法分析概述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1 上下文无关文法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1.1 上下文无关文法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3111-cfg" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1.1 CFG
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3112" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1.2 推导和归约
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3113-cfgparse-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1.3 CFG的Parse Tree
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.2 设计编程语言的文法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 递归下降分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 递归下降分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.1 概述
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-ll1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2 LL(1)和预测分析法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.2 LL(1)和预测分析法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3221-ll1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.1 LL(1)文法
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3222-firstfollow" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.2 First集和Follow集
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.2.2 First集和Follow集">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#32221" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.2.1 定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32222" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.2.2 算法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3223-ll1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.3 LL(1)文法定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3224-ll1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.4 实现LL(1)预测分析
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3225" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.5 递归下降预测分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.2.5 递归下降预测分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      非递归实现（不要求掌握）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#323" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.3 文法改造
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.3 文法改造">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3231" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.3.1 提左公因子
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3232" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.3.2 消除左递归
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#324" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.4 错误恢复
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 自底向上分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 自底向上分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-shift-reduce-" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.1 Shift-Reduce 移进-规约分析法
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332-lr0" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2 LR(0)分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3.2 LR(0)分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3321-lr0-parsing-nfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.1 LR(0) Parsing NFA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3322-lr0-parsing-dfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.2 LR(0) Parsing DFA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3323-lr0-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.3 LR(0) parsing分析表
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3324-lr0-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.4 LR(0) Parsing过程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#333-slr1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.3 SLR(1)分析
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#334-lr1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.4 LR(1)分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3.4 LR(1)分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3341-closure" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.4.1 Closure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3342-goto" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.4.2 GOTO
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3343-reduce-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.4.3 Reduce Action
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#335-lalr" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.5 LALR分析
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 语法分析器
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="3-parsing">3 Parsing 语法分析<a class="headerlink" href="#3-parsing" title="Permanent link">&para;</a></h1>
+<p><em>目前笔记还是跟yps老师（他的ppt做得真好啊讲课也好人还那么可爱aaaa（他应该不会看到吧x）课程记的流水账，可能不太完善；期中考前会（尽量）理一份思路清晰的框架出来</em></p>
+<h2 id="31">3.1 语法分析概述<a class="headerlink" href="#31" title="Permanent link">&para;</a></h2>
+<p>语法分析的任务就是分析由词法分析后生成的token序列是否符合语法，如果符合，则生成语法树（通常是<strong>抽象语法树AST</strong>）</p>
+<p><img alt="image-20250227135459312" src="../chap3.assets/image-20250227135459312.png" /></p>
+<h3 id="311">3.1.1 上下文无关文法<a class="headerlink" href="#311" title="Permanent link">&para;</a></h3>
+<h4 id="3111-cfg">3.1.1.1 CFG<a class="headerlink" href="#3111-cfg" title="Permanent link">&para;</a></h4>
+<p>定义可以看<a href="https://note.tonycrane.cc/cs/tcs/toc/topic2/">这里</a>。</p>
+<p>在实际代码中EOF的处理：</p>
+<p><img alt="image-20250227141143674" src="../chap3.assets/image-20250227141143674.png" /></p>
+<ul>
+<li>
+<p><code>$</code> 作为输入的结束符号，表示输入流已经结束。</p>
+</li>
+<li>
+<p>为了明确 <code>$</code> 必须在完整的 <code>S</code> 短语之后出现，定义了一个新的起始符号 <code>S'</code> 并引入产生式 <code>S' → S$</code>。</p>
+</li>
+<li>该文法用于解析数学表达式，确保优先级正确：<ul>
+<li>乘除 (<code>*</code>、<code>/</code>) 优先级高于加减 (<code>+</code>、<code>-</code>)，因为 <code>T</code> 层次低于 <code>E</code>。</li>
+<li>括号 <code>(E)</code> 可用于改变计算顺序。</li>
+</ul>
+</li>
+<li><code>S -&gt; E$</code> 确保解析完整表达式后，输入流必须结束 (<code>$</code>)。</li>
+</ul>
+<p><em>一个有意思的东西（不考，我似懂非懂的）：</em></p>
+<p><img alt="image-20250227140901754" src="../chap3.assets/image-20250227140901754.png" /></p>
+<h4 id="3112">3.1.1.2 推导和归约<a class="headerlink" href="#3112" title="Permanent link">&para;</a></h4>
+<p><img alt="image-20250228151623036" src="../chap3.assets/image-20250228151623036.png" /></p>
+<p><strong>最左推导</strong>：每步代换最左边的非终结符</p>
+<p><img alt="image-20250227144637186" src="../chap3.assets/image-20250227144637186.png" /></p>
+<p><em>相对应的最右规约是自底向上的优先把最右边终结符变成非终结符的过程</em></p>
+<p><strong>最右推导</strong>：每步代换最右边的非终结符</p>
+<p><img alt="image-20250228094307845" src="../chap3.assets/image-20250228094307845.png" /></p>
+<p>推导是生成语言的角度；归约是识别语言的角度。</p>
+<h4 id="3113-cfgparse-tree">3.1.1.3 CFG的Parse Tree<a class="headerlink" href="#3113-cfgparse-tree" title="Permanent link">&para;</a></h4>
+<p>推导过程的图形化表示。</p>
+<p><img alt="image-20250228094855270" src="../chap3.assets/image-20250228094855270.png" /></p>
+<p>对编译器来说，CFG的搜索<span class="arithmatex">\(O(N^3)\)</span>已经很复杂了，我们利用CFG的子集去简化复杂度（降为线性）。</p>
+<h3 id="312">3.1.2 设计编程语言的文法<a class="headerlink" href="#312" title="Permanent link">&para;</a></h3>
+<p><img alt="image-20250228095428926" src="../chap3.assets/image-20250228095428926.png" /></p>
+<p>消除二义性：“给定CFG是否无二义性”是不可判定问题</p>
+<p>常用技术为<strong>分层</strong>：</p>
+<p><img alt="image-20250228095743053" src="../chap3.assets/image-20250228095743053.png" /></p>
+<p>不存在通用算法，但是有很多经验解决这个问题。</p>
+<hr />
+<h2 id="32">3.2 递归下降分析<a class="headerlink" href="#32" title="Permanent link">&para;</a></h2>
+<h3 id="321">3.2.1 概述<a class="headerlink" href="#321" title="Permanent link">&para;</a></h3>
+<p>语法分析的方法分两类：</p>
+<ul>
+<li>
+<p>自顶向下Top-down：从分析树根部开始，尝试推导(derive)出输入串</p>
+</li>
+<li>
+<p>非终结符的替换：不确定性会带来算法复杂度问题，因此规定每次都替换最左边的非终结符</p>
+</li>
+<li>
+<p>产生式的选择：按顺序选择，如果过程中检测到不正确，可能需要<strong>回溯</strong>，但是回溯的代价太高了，类似于NFA，我们想找到类似DFA的文法</p>
+<ul>
+<li>
+<p>通过lookahead的方式去自顶向下生成：</p>
+<p><img alt="image-20250306133311161" src="../chap3.assets/image-20250306133311161.png" /></p>
+</li>
+<li>
+<p>回溯举例 - 核心思路是对不上目标式就回溯：</p>
+<p><img alt="image-20250227151755349" src="../chap3.assets/image-20250227151755349.png" /></p>
+</li>
+</ul>
+</li>
+<li>
+<p>自底向上Bottom-up：从分析树叶子开始，尝试归约(reduce)到文法的开始符号S</p>
+</li>
+</ul>
+<h3 id="322-ll1">3.2.2 LL(1)和预测分析法<a class="headerlink" href="#322-ll1" title="Permanent link">&para;</a></h3>
+<h4 id="3221-ll1">3.2.2.1 LL(1)文法<a class="headerlink" href="#3221-ll1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>L：从左到右扫描</li>
+<li>L：最左推导</li>
+<li>k：向前看k个token来确定产生式（通常k=1）<ul>
+<li>每次为最左边的非终结符号选择产生式时，向前看1个输入符号，预测要用的产生式</li>
+</ul>
+</li>
+</ul>
+<h4 id="3222-firstfollow">3.2.2.2 First集和Follow集<a class="headerlink" href="#3222-firstfollow" title="Permanent link">&para;</a></h4>
+<h5 id="32221">3.2.2.2.1 定义<a class="headerlink" href="#32221" title="Permanent link">&para;</a></h5>
+<p><strong>First集</strong></p>
+<p><img alt="image-20250227152220228" src="../chap3.assets/image-20250227152220228.png" /></p>
+<p><strong>Follow集</strong></p>
+<p><img alt="image-20250227152257941" src="../chap3.assets/image-20250227152257941.png" /></p>
+<p><strong>Nullable</strong></p>
+<p>定义：X is Nullable <strong>iff</strong> X 可以derive一个空串 <strong>iff</strong>：</p>
+<ul>
+<li>Base case：<span class="arithmatex">\(x \to \epsilon\)</span></li>
+<li>Inductive case：<span class="arithmatex">\(X \to Y_1...Y_n\)</span>，if <span class="arithmatex">\(Y_1...Y_n\)</span>是n个非终结符且都可以生成空串</li>
+</ul>
+<h5 id="32222">3.2.2.2.2 算法<a class="headerlink" href="#32222" title="Permanent link">&para;</a></h5>
+<ol>
+<li>
+<p>nullable（根据递归生成过程寻找Nullable集）：
+   <img alt="image-20250227152824655" src="../chap3.assets/image-20250227152824655.png" />
+   nullable集合只增不减，全集有限，所以算法收敛（下面两个算法也同理，算法结束条件都是各集合不能再增长）。</p>
+</li>
+<li>
+<p>first：
+   <img alt="image-20250227153817107" src="../chap3.assets/image-20250227153817107.png" /></p>
+</li>
+<li>
+<p>follow：
+   <img alt="image-20250227153842116" src="../chap3.assets/image-20250227153842116.png" /></p>
+</li>
+<li>
+<p>follow集一些简单的推论：
+   <img alt="image-20250227154419504" src="../chap3.assets/image-20250227154419504.png" /></p>
+</li>
+<li>
+<p>例子：</p>
+<ul>
+<li>first就是把每一个规则对应到first生成的几个case：
+    <img alt="image-20250227154604660" src="../chap3.assets/image-20250227154604660.png" /></li>
+<li>follow的计算我们要充分利用、划分不同的情况，避免遗漏：
+    <img alt="image-20250306134930982" src="../chap3.assets/image-20250306134930982.png" /></li>
+</ul>
+</li>
+<li>虎书中的优化算法（三个集合同时计算且加速收敛）：
+   <img alt="image-20250227154647185" src="../chap3.assets/image-20250227154647185.png" /></li>
+</ol>
+<h4 id="3223-ll1">3.2.2.3 LL(1)文法定义<a class="headerlink" href="#3223-ll1" title="Permanent link">&para;</a></h4>
+<p>以下条件可以保证产生式的唯一性：</p>
+<p><img alt="image-20250306135219870" src="../chap3.assets/image-20250306135219870.png" /></p>
+<h4 id="3224-ll1">3.2.2.4 实现LL(1)预测分析<a class="headerlink" href="#3224-ll1" title="Permanent link">&para;</a></h4>
+<p><strong>构造预测分析表</strong></p>
+<p>表格定义：</p>
+<p><img alt="image-20250306135741383" src="../chap3.assets/image-20250306135741383.png" /></p>
+<p>选择方式遵从以下规则：</p>
+<p><img alt="image-20250306135957231" src="../chap3.assets/image-20250306135957231.png" /></p>
+<p>以上面做好了first和follow集的规则集合为例：</p>
+<p><img alt="image-20250306140059599" src="../chap3.assets/image-20250306140059599.png" /></p>
+<p>由于LL(1)文法可以保证规则选择的唯一性，所以一个格子内不可能有两个规则，所以上面的文法不是LL(1)文法。</p>
+<h4 id="3225">3.2.2.5 递归下降预测分析<a class="headerlink" href="#3225" title="Permanent link">&para;</a></h4>
+<ul>
+<li>分析程序由一组过程组成</li>
+<li>每个非终结符号对应一个过程</li>
+<li>可以通过向前看一个输入符号来唯一选择产生式</li>
+</ul>
+<p><img alt="image-20250306141824149" src="../chap3.assets/image-20250306141824149.png" /></p>
+<p>起点都是terminal，可能不需要预测分析表（first、follow集合）；但如果起点是non-terminal，则需要预测分析表辅助决策：</p>
+<p><img alt="image-20250306141810036" src="../chap3.assets/image-20250306141810036.png" /></p>
+<p>过程/函数的调用树就类似于语法树。</p>
+<h5 id="_1"><em>非递归实现（不要求掌握）</em><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h5>
+<p>使用显式的栈，而不是递归调用来完成分析，整体过程类似于PDA</p>
+<p><img alt="image-20250306142258016" src="../chap3.assets/image-20250306142258016.png" /></p>
+<p>感觉就是PDA的生成过程，还挺直观的</p>
+<p>例子：</p>
+<p><img alt="image-20250306142900815" src="../chap3.assets/image-20250306142900815.png" /></p>
+<h3 id="323">3.2.3 文法改造<a class="headerlink" href="#323" title="Permanent link">&para;</a></h3>
+<h4 id="3231">3.2.3.1 提左公因子<a class="headerlink" href="#3231" title="Permanent link">&para;</a></h4>
+<p>基于上述分析，我们可以得出LL(1)文法一些明显的性质：</p>
+<ul>
+<li>无二义</li>
+<li>无左公因子：如果同一非终结符的多个候选式存在共同前缀，可能导致回溯，我们可以考虑限制文法或进行文法变换</li>
+<li>无左递归</li>
+</ul>
+<hr />
+<p><img alt="image-20250306143610512" src="../chap3.assets/image-20250306143610512.png" /></p>
+<h4 id="3232">3.2.3.2 消除左递归<a class="headerlink" href="#3232" title="Permanent link">&para;</a></h4>
+<p><img alt="image-20250306143706511" src="../chap3.assets/image-20250306143706511.png" /></p>
+<p>这可能导致递归下降分析无限循环：</p>
+<p><img alt="image-20250306143740993" src="../chap3.assets/image-20250306143740993.png" /></p>
+<p>解决方式：把左递归转换成右递归</p>
+<p><img alt="image-20250306143948715" src="../chap3.assets/image-20250306143948715.png" /></p>
+<h3 id="324">3.2.4 错误恢复<a class="headerlink" href="#324" title="Permanent link">&para;</a></h3>
+<p><img alt="image-20250306144440939" src="../chap3.assets/image-20250306144440939.png" /></p>
+<p>一般情况下我们追求能够打印错误并且自行进行错误恢复的错误处理</p>
+<p><img alt="image-20250306144454776" src="../chap3.assets/image-20250306144454776.png" /></p>
+<p><img alt="image-20250306144505080" src="../chap3.assets/image-20250306144505080.png" /></p>
+<h2 id="33">3.3 自底向上分析<a class="headerlink" href="#33" title="Permanent link">&para;</a></h2>
+<p>LL(1)分析：</p>
+<ul>
+<li>优点：直观、符号文法结构；手动构造or自动生成都支持</li>
+<li>缺点：能分析的文法类型受限；即使消除左递归、提取左公因子之后，表达力仍然有限</li>
+</ul>
+<p>所以我们现在更多使用自底向上分析。</p>
+<p><img alt="image-20250306144844620" src="../chap3.assets/image-20250306144844620.png" /></p>
+<h3 id="331-shift-reduce-">3.3.1 Shift-Reduce 移进-规约分析法<a class="headerlink" href="#331-shift-reduce-" title="Permanent link">&para;</a></h3>
+<p>自底向上是从串<span class="arithmatex">\(w\)</span>规约为文法开始符号<span class="arithmatex">\(S\)</span></p>
+<p>规约的过程：与某产生式右部相匹配的特定子串，被替换为该产生式头部的非终结符</p>
+<p>例子：</p>
+<p><img alt="image-20250306151523949" src="../chap3.assets/image-20250306151523949.png" /></p>
+<p>从结果往回看，我们发现这是最右推导的逆过程：</p>
+<p><img alt="image-20250306151621985" src="../chap3.assets/image-20250306151621985.png" /></p>
+<p>因为最右推导的每一个中间状态（合法的每一步）都是有规律可循的，限制了规约方式。</p>
+<p>具体实现就是基于栈的移进-规约</p>
+<p><img alt="image-20250306152055322" src="../chap3.assets/image-20250306152055322.png" /></p>
+<p><img alt="image-20250306152103233" src="../chap3.assets/image-20250306152103233.png" /></p>
+<p>核心问题就是什么时候shift什么时候reduce</p>
+<h3 id="332-lr0">3.3.2 LR(0)分析<a class="headerlink" href="#332-lr0" title="Permanent link">&para;</a></h3>
+<p>文法的表达能力：</p>
+<p><img alt="image-20250306152302485" src="../chap3.assets/image-20250306152302485.png" /></p>
+<p>算法更高级，支持的input就更灵活。但是太灵活之后状态表可能会爆炸。</p>
+<h4 id="3321-lr0-parsing-nfa">3.3.2.1 LR(0) Parsing NFA<a class="headerlink" href="#3321-lr0-parsing-nfa" title="Permanent link">&para;</a></h4>
+<p><strong>1 状态构造</strong></p>
+<p>我们需要解决的关键问题是如何知道栈顶内容可以规约，这个时候我们就要维护一个状态（在这里我们称为<strong>项</strong>），记录当前识别的进度：</p>
+<p><img alt="image-20250306152712105" src="../chap3.assets/image-20250306152712105.png" /></p>
+<p><img alt="image-20250306152735762" src="../chap3.assets/image-20250306152735762.png" /></p>
+<p>而我们知道文法产生式和每个产生式右部的长度都是有限的，所以状态数量也是有限的，完成这个任务的自动机被称为LR(0)自动机，而这个自动机不是用来直接识别语言的，而是记录当前识别进度的。</p>
+<p>例子：</p>
+<p><img alt="image-20250306153103572" src="../chap3.assets/image-20250306153103572.png" /></p>
+<p><strong>2 起始/终止状态</strong></p>
+<p><img alt="image-20250306153348328" src="../chap3.assets/image-20250306153348328.png" /></p>
+<ul>
+<li>起始状态为<span class="arithmatex">\(S'\to·S\$\)</span></li>
+<li>终止状态为<span class="arithmatex">\(S'\to S·\$\)</span></li>
+</ul>
+<p><strong>3 状态迁移</strong></p>
+<p>状态迁移的两种情况：</p>
+<p><img alt="image-20250306153202483" src="../chap3.assets/image-20250306153202483.png" /></p>
+<ol>
+<li>第一种是消耗non-terminal的</li>
+<li>第二种是不消耗non-terminal的，相当于NFA里面的<span class="arithmatex">\(\epsilon\)</span>转换</li>
+</ol>
+<p><strong>4 NFA转DFA</strong></p>
+<p>就是传统的转换过程：子集构造法</p>
+<p>3、4步骤的例子：</p>
+<ul>
+<li>NFA构造：我们先根据所有规则写出<span class="arithmatex">\(\epsilon\)</span>转换，再读一个simbol，再重复上述步骤，直到到达终止态</li>
+</ul>
+<p><img alt="image-20250306153454382" src="../chap3.assets/image-20250306153454382.png" /></p>
+<h4 id="3322-lr0-parsing-dfa">3.3.2.2 LR(0) Parsing DFA<a class="headerlink" href="#3322-lr0-parsing-dfa" title="Permanent link">&para;</a></h4>
+<p>那我们可不可以跳过NFA直接构造DFA呢？</p>
+<p><strong>1 --- 单个状态：项集闭包</strong></p>
+<ul>
+<li>这就相当于我们直接去构造<strong>项集闭包</strong> - 递归地加入闭包内产生式右边第一个非终结符的产生式，和NFA转DFA的<span class="arithmatex">\(\epsilon\)</span> - closure很像。</li>
+<li>两个循环，先遍历闭包中每一个item，再遍历每一个以item的·后面的symbol为起始项的转换关系；直至不再增长（不动点思想）。</li>
+</ul>
+<p><img alt="image-20250306154331228" src="../chap3.assets/image-20250306154331228.png" /></p>
+<p><strong>2 --- 转移函数</strong></p>
+<p>相应地，状态转换函数：</p>
+<p><img alt="image-20250306154311742" src="../chap3.assets/image-20250306154311742.png" /></p>
+<p>goto函数最开始是空集，对于闭包里面每一个项，如果·后面是X，则将其加入goto的结果，并且计算其closure。</p>
+<p><strong>3 --- 整体算法</strong></p>
+<p>整体的DFA构造方法：</p>
+<p><img alt="image-20250306154302105" src="../chap3.assets/image-20250306154302105.png" /></p>
+<p>对每一个状态里面的每一项计算goto的结果并加入DFA直至不再增长。</p>
+<hr />
+<p>例子：</p>
+<p><img alt="image-20250315190018961" src="../chap3.assets/image-20250315190018961.png" /></p>
+<h4 id="3323-lr0-parsing">3.3.2.3 LR(0) parsing分析表<a class="headerlink" href="#3323-lr0-parsing" title="Permanent link">&para;</a></h4>
+<p>从DFA构造语法分析表，使用语法分析表指导parsing</p>
+<ul>
+<li>使用<code>Action</code>和<code>GOTO</code>表项指导Shift、Reduce、Error、Accept四个操作</li>
+</ul>
+<p>以状态为行，以<code>Action</code>的终结符和<code>GOTO</code>的非终结符为列，表项内容为操作：</p>
+<ul>
+<li><code>Action</code>表项：<ul>
+<li>shift+goto下一状态：例如<code>s2</code>就是shift并且去到第二个状态</li>
+<li>当状态i<strong>存在</strong>以·为结尾的项时（有一个项满足就整体都选择规约），选择index为k的产生式进行reduce</li>
+</ul>
+</li>
+<li><code>GOTO</code>表项：<ul>
+<li>列是每次规约所用产生式左边的nonterminal<code>A</code>，表示每次规约之后去到的下一个状态是什么</li>
+</ul>
+</li>
+</ul>
+<p><img alt="image-20250315192619551" src="../chap3.assets/image-20250315192619551.png" /></p>
+<h4 id="3324-lr0-parsing">3.3.2.4 LR(0) Parsing过程<a class="headerlink" href="#3324-lr0-parsing" title="Permanent link">&para;</a></h4>
+<p><strong>1 --- 符号栈变化</strong></p>
+<ul>
+<li><strong>Shift</strong> - push下一个输入的终结符</li>
+<li><strong>Reduce</strong> - <img alt="image-20250315193118105" src="../chap3.assets/image-20250315193118105.png" /></li>
+<li><strong>Error</strong></li>
+<li><strong>Accept</strong> - shift $ 并且可以把栈里面的剩余元素规约成起始符号</li>
+</ul>
+<p><strong>2 --- 状态栈变化</strong></p>
+<ul>
+<li><strong>Shift(n)</strong> - 移进一个token；把新状态n压入栈</li>
+<li><img alt="image-20250315193800532" src="../chap3.assets/image-20250315193800532.png" /></li>
+<li><strong>Accept</strong> - 停止分析，输出成功</li>
+<li><strong>Error</strong> - 停止分析，输出错误</li>
+</ul>
+<p>整体流程：</p>
+<p><img alt="image-20250315194233407" src="../chap3.assets/image-20250315194233407.png" /></p>
+<p><strong>3 --- 例子</strong></p>
+<ul>
+<li>shift：<ul>
+<li><img alt="image-20250315194821302" src="../chap3.assets/image-20250315194821302.png" /></li>
+</ul>
+</li>
+<li>reduce：<ul>
+<li><img alt="image-20250315194838069" src="../chap3.assets/image-20250315194838069.png" /></li>
+</ul>
+</li>
+<li>完整的分析：<ul>
+<li><img alt="image-20250315195459400" src="../chap3.assets/image-20250315195459400.png" /></li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>几个问题：</p>
+<ol>
+<li>为什么没有look ahead： LR(0)中所有的reduce操作实际上是与<strong>状态</strong>绑定的， 而不是与(状态, 输入) 对绑定的。因此我们在读取当前符号之前，就知道应该reduce 还是shift了。而如果是shift，则可认为是读入当前符号以后再做判断，也就是说从理论上讲我们没有(或者说不必)做任何look-ahead。</li>
+<li>局限性：没有足够的上下文来做出更正确(或者说更”聪明”)的决定，遇到<span class="arithmatex">\(X \to \alpha·\)</span>的情况只会无脑根据当前状态规约，会出现shift和reduce冲突、选择什么规则reduce冲突的可能性。后面三者都是为了缓解冲突。</li>
+</ol>
+<p><em>在这里yps老师说写了一个动态demo，还没完结，等完结了放个链接上来。</em></p>
+<h3 id="333-slr1">3.3.3 SLR(1)分析<a class="headerlink" href="#333-slr1" title="Permanent link">&para;</a></h3>
+<p><em>没有出现(1)就是默认(1)</em></p>
+<ul>
+<li>利用<strong>更多信息</strong>来指导规约操作</li>
+<li>LR分析是最右推导的逆过程，由此，每步规约满足<strong><span class="arithmatex">\(t\in \text{Follow}(E)\)</span></strong><ul>
+<li><span class="arithmatex">\(t\)</span>是next token</li>
+<li><span class="arithmatex">\(E\)</span>是用来规约的产生式左部</li>
+</ul>
+</li>
+</ul>
+<p>以下图为例，<span class="arithmatex">\(+\)</span>和<span class="arithmatex">\()\)</span>都<span class="arithmatex">\(\in \text{Follow}(E)\)</span></p>
+<p><img alt="image-20250315212418900" src="../chap3.assets/image-20250315212418900.png" /></p>
+<p>使用这个约束减少冲突，限制非法规约的可能。</p>
+<p>例如，在LR(0)分析中，我们根据顶部状态唯一确定规约动作（顶部状态为3的时候不管next token是什么都无脑规约），而在SLR(1)分析中，因为只有<span class="arithmatex">\(\$\)</span>在E的follow集合内，所以只有<span class="arithmatex">\(T[3,\$] = r2\)</span>是合法的：</p>
+<p><img alt="image-20250315213159462" src="../chap3.assets/image-20250315213159462.png" /></p>
+<p>因此，在具体实现上，SLR和LR(0)唯一的区别就在规约条件中增加了next token是否在产生式左边的follow集合内的判断：</p>
+<p><img alt="image-20250315213644718" src="../chap3.assets/image-20250315213644718.png" /></p>
+<p>当然，这个方法使用follow集解决冲突（必要但不充分），虽然有效但还是不够精确，进行归约的条件更加严格才能进一步降低冲突的可能。</p>
+<p><img alt="image-20250315214257835" src="../chap3.assets/image-20250315214257835.png" /></p>
+<h3 id="334-lr1">3.3.4 LR(1)分析<a class="headerlink" href="#334-lr1" title="Permanent link">&para;</a></h3>
+<p>基本思想：”分裂“一些LR(0)的状态，精确指明何时应该规约。</p>
+<p>因此，我们定义LR(1)的项为<span class="arithmatex">\(A \to \alpha·\beta, a\)</span>，其中<span class="arithmatex">\(a\)</span>是lookahead的next token。</p>
+<p>项的改变带来了很多内容（闭包、规约等）的变化：</p>
+<h4 id="3341-closure">3.3.4.1 Closure<a class="headerlink" href="#3341-closure" title="Permanent link">&para;</a></h4>
+<p><img alt="image-20250315215913927" src="../chap3.assets/image-20250315215913927.png" /></p>
+<p>理解方式：</p>
+<p><img alt="image-20250315220431519" src="../chap3.assets/image-20250315220431519.png" /></p>
+<p>个人理解是在处理<span class="arithmatex">\(\epsilon\)</span>-transition的时候，我们针对·后面那个non-terminal<span class="arithmatex">\(X\)</span>进行转换的时候添加了这个规约完成过程中的next token必须包括在<span class="arithmatex">\(X\)</span>之后的string的first集合里面这一限制条件。</p>
+<p><em>那个derivable from还是没理解，现在只会当一个无情的做题机器（可能孰能生巧做点题目就get了吧</em></p>
+<p>一个闭包的计算例子：</p>
+<p><img alt="image-20250320133747055" src="../chap3.assets/image-20250320133747055.png" /></p>
+<p>有些项比较相似，可以有更compact的等价表示。</p>
+<h4 id="3342-goto">3.3.4.2 GOTO<a class="headerlink" href="#3342-goto" title="Permanent link">&para;</a></h4>
+<p><img alt="image-20250315215943160" src="../chap3.assets/image-20250315215943160.png" /></p>
+<p>基本相同，只换了item的表示。</p>
+<h4 id="3343-reduce-action">3.3.4.3 Reduce Action<a class="headerlink" href="#3343-reduce-action" title="Permanent link">&para;</a></h4>
+<p><img alt="image-20250315220559606" src="../chap3.assets/image-20250315220559606.png" /></p>
+<p>因为LR(1)显式地说明了first集合的关系和next token，所以在规约填表的时候不需要额外计算follow：</p>
+<ul>
+<li>如果要根据<span class="arithmatex">\(A \to \alpha \beta ·, a\)</span>规约，下一个输入符号必须是<span class="arithmatex">\(a\)</span></li>
+</ul>
+<p><em>LR(0)、SLR(1)、LR(1)不同之处在于：自动机相同，表格不同</em></p>
+<p>而LR(1)的缺点是next token要遍历所有终结符，表格的项数（状态数量）可能会爆炸</p>
+<h3 id="335-lalr">3.3.5 LALR分析<a class="headerlink" href="#335-lalr" title="Permanent link">&para;</a></h3>
+<p><em>介于LR(1)和SLR(1)之间，表达能力足够强，状态数量足够小</em></p>
+<p>核心思想：合并LR(1)中只有lookahead symbols不同的状态。</p>
+<p><strong>core</strong> - 状态中去掉lookahead的部分</p>
+<p>合并流程：core保留，lookahead取并集</p>
+<p><img alt="image-20250320134739576" src="../chap3.assets/image-20250320134739576.png" /></p>
+<p>注意点：node改变之后edge也需要改变</p>
+<p><img alt="image-20250320134805019" src="../chap3.assets/image-20250320134805019.png" /></p>
+<p>例子：</p>
+<p><img alt="image-20250320134919634" src="../chap3.assets/image-20250320134919634.png" /></p>
+<p>虽然表项减少了，但是其表达力确实是LR(1)的子集。</p>
+<h2 id="33_1">3.3 语法分析器<a class="headerlink" href="#33_1" title="Permanent link">&para;</a></h2>
+<p>Yacc是语法分析器的生成器：</p>
+<p><img alt="image-20250320135314956" src="../chap3.assets/image-20250320135314956.png" /></p>
+<p>Lex和Yacc的联系：把词法分析器的函数暴露给parser使用</p>
+<p><img alt="image-20250320135458187" src="../chap3.assets/image-20250320135458187.png" /></p>
+<p>考试考点：Yacc的使用、<strong>语义动作</strong></p>
+<p>解决冲突与二义性的方式：</p>
+<ol>
+<li>二义性：手动为算符指定优先级和结合律</li>
+<li>冲突解决：<ul>
+<li>规约/规约冲突 - 选择Yacc说明中先出现的产生式</li>
+<li>移进/规约冲突 - 移进优先</li>
+</ul>
+</li>
+</ol>
+<h2 id="34">3.4 总结<a class="headerlink" href="#34" title="Permanent link">&para;</a></h2>
+<p><em>yps: 熟练度很重要！</em></p>
+<p><img alt="image-20250320140045952" src="../chap3.assets/image-20250320140045952.png" /></p>
+<p><img alt="image-20250320140104321" src="../chap3.assets/image-20250320140104321.png" /></p>
+<p>四个最右推导文法对比：</p>
+<p><img alt="alt text" src="../chap3.assets/image.png" /></p>
+<p><em>yps：还是要好好做题</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.sections", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+        <script src="https://gcore.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

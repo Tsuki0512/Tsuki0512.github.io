@@ -1,0 +1,5402 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="wyr">
+      
+      
+        <link rel="canonical" href="https://tsuki0512.github.io/2024_fall/OS/final_review/">
+      
+      
+        <link rel="prev" href="../../CA/CA5/">
+      
+      
+        <link rel="next" href="../../%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/">
+      
+      
+      <link rel="icon" href="../../../assets/hzhf.jpg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>操作系统 - wyr's notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=LXGW+WenKai+Screen+GB+Screen:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"LXGW WenKai Screen GB Screen";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css">
+    
+      <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="wyr&#39;s notes" class="md-header__button md-logo" aria-label="wyr's notes" data-md-component="logo">
+      
+  <img src="../../../assets/hzhf.jpg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            wyr's notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              操作系统
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Tsuki0512/Tsuki0512.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Wyr's Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="wyr&#39;s notes" class="md-nav__button md-logo" aria-label="wyr's notes" data-md-component="logo">
+      
+  <img src="../../../assets/hzhf.jpg" alt="logo">
+
+    </a>
+    wyr's notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Tsuki0512/Tsuki0512.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Wyr's Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    专业课程
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            专业课程
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据结构基础
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            数据结构基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期中前内容
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    图论
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../FDS3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    排序
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dip%E5%8E%86%E5%B9%B4%E5%8D%B7%E6%95%B4%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    图像信息处理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E9%80%BB%E6%9C%9F%E6%9C%AB/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数字逻辑设计
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ADS_%E5%A4%8D%E4%B9%A0%E6%95%B4%E7%90%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级数据结构与算法分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据库系统
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            数据库系统
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    cheatingsheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../minisql%E5%88%86%E6%9E%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Minisql分析
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../CA/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    计算机体系结构
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            计算机体系结构
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/final_review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期末复习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/CA1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机设计基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/CA2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    流水线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/CA3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    内存层次
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/CA4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    指令级并行
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CA/CA5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DLP和TLP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    操作系统
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    操作系统
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      0 - Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0 - Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.1 操作系统定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.2 操作系统评价方式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.3 操作系统架构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#04" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.4 操作系统任务处理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#05" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.5 操作系统结构设计
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#06" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.6 操作系统运行原理
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-process-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 - Process Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 - Process Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 进程基本概念
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 进程基本概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.1 进程的形式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.2 进程的状态
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 进程管理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 进程管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-fork" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.1 创建 - fork()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-exit" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.2 终止 - exit()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.3 通信
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 进程调度
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4 线程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 同步
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 同步">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 同步工具
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 同步工具">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.1 相关定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2 同步算法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1.2 同步算法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2121-petersons-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2.1 Peterson's Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2122-memory-barriers" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2.2 Memory Barriers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2123-hardware-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2.3 Hardware Instructions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2124-mutex-locks-" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2.4 Mutex Locks - 互斥锁
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2125-semaphores-" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2.5 Semaphores - 信号量
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 同步问题例子
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 同步问题例子">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-the-bounded-buffer-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.1 生产者消费者问题 - The Bounded-Buffer Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-the-readers-writers-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.2 读者写者问题 - The Readers-Writers Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#223-the-dining-philosophers-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.3 哲学家就餐问题 - The Dining Philosophers Problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 死锁问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 死锁问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#231" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3.1 相关定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#232" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3.2 死锁预防
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#233" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3.3 死锁避免
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#234" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3.4 死锁检测及死锁解除
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 内存
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 内存">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 基本概念
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 分页技术
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 分页技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.1 基本设计
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2 优化与改进
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.2 优化与改进">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3221" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.1 查询速度
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3222" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.2 页表内存
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-demand-paging" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 按需换页 demand paging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 按需换页 demand paging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.1 交换技术
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2 按需换页
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 物理帧管理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 物理帧管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4.1 分配策略
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#342" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4.2 置换策略
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-thrashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.5 抖动 - thrashing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.6 内核内存
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 输入/输出
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 输入/输出">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 I/O方式
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 I/O方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-polling" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2.1 轮询polling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#422-interrupt" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2.2 中断Interrupt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#423-dma" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2.3 DMA
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 I/O接口
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 存储
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 存储">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-hdd" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 硬盘 - HDD
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 硬盘 - HDD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.1 I/O流程及开销计算
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#512" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2 调度算法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1.2 调度算法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5121-fcfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.1 FCFS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5122-sstf" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.2 SSTF
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5123-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.3 SCAN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5124-look" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.4 LOOK
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5125-c-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.5 C-SCAN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5126-c-look" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.6 C-LOOK
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-nvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 非易失性内存 - NVM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 存储介质管理技术
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.3 存储介质管理技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#531" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3.1 初始化流程
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#532-raid-" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3.2 RAID - 独立磁盘冗余阵列
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4 I/O设备分类
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6 文件系统
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6 文件系统">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 文件系统
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 目录
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 块分配与块组织
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.5 空闲空间管理
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    计算理论
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            计算理论
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/Lec1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E7%90%86%E8%AE%BA/Lec2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    REX
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CN/CN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机网络
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../2025_spring/cp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    编译原理
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            编译原理
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/midterm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期中梳理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lexical Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Parsing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abstract Syntax
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Semantic Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/type_checking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Type Checking (期末梳理版)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap6_for_final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Activation Record
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap7_for_final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IR Trees
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basic Blocks and Traces
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instruction Selection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Liveness Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Register Allocation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap13/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Garbage Collection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap14/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Object-Oriented Languages
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/cp/chap18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Loop Optimizations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    软件工程（学习中）
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            软件工程（学习中）
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/se/final/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    期末刷题记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    自然语言处理导论（待完善）
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            自然语言处理导论（待完善）
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/DeepLearningBasics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deep Learning Basics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/WordEmbedding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Word Embedding
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/ConvolutionalNeuralNetworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Convolutional Neural Networks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/RecurrentNeuralNetworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Recurrent Neural Networks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/Attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attention
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/NLGAndNMT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NLGandNMT
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/nlp/Transformer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transformers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数理基础课程资源汇总
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            数理基础课程资源汇总
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%A6%BB%E6%95%A3%E6%95%B0%E5%AD%A6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    离散数学及其应用
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BE%AE%E7%A7%AF%E5%88%86/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    微积分（甲）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%A4%A7%E7%89%A9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    大学物理（乙）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BA%BF%E4%BB%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性代数（甲）
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../C%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    C程序设计基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../2025_spring/%E5%A4%9A%E6%A8%A1%E6%80%81/paper%E7%AC%94%E8%AE%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多模态大模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    课程心得
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            课程心得
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%80%9A%E8%AF%86%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    通识课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%95%B0%E7%90%86%E5%9F%BA%E7%A1%80%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    数理基础课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E4%B8%93%E4%B8%9A%E5%BF%85%E4%BF%AE%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    专业必修课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E4%B8%93%E4%B8%9A%E9%80%89%E4%BF%AE%E8%AF%BE%E5%BF%83%E5%BE%97/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    专业选修课
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%A2%8E%E7%A2%8E%E5%BF%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    一些碎碎念
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    CMU_DeepVision项目记录
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            CMU_DeepVision项目记录
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    概述
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_prelearning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线上课程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../pytorch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    pytorch入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0807/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec1 - Transformers and RAG
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0807_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec2 - Ray Tracing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0809/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec3 - 3D Vision
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../CMU_DeepVision_0816/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lec4 - Deep Learning Basics and Adversarial
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      0 - Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0 - Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#01" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.1 操作系统定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#02" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.2 操作系统评价方式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#03" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.3 操作系统架构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#04" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.4 操作系统任务处理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#05" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.5 操作系统结构设计
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#06" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.6 操作系统运行原理
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-process-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 - Process Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 - Process Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 进程基本概念
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 进程基本概念">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.1 进程的形式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.2 进程的状态
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 进程管理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2 进程管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-fork" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.1 创建 - fork()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-exit" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.2 终止 - exit()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.3 通信
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 进程调度
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4 线程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 同步
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 同步">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 同步工具
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 同步工具">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.1 相关定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#212" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2 同步算法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1.2 同步算法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2121-petersons-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2.1 Peterson's Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2122-memory-barriers" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2.2 Memory Barriers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2123-hardware-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2.3 Hardware Instructions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2124-mutex-locks-" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2.4 Mutex Locks - 互斥锁
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2125-semaphores-" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.2.5 Semaphores - 信号量
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 同步问题例子
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 同步问题例子">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221-the-bounded-buffer-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.1 生产者消费者问题 - The Bounded-Buffer Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-the-readers-writers-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.2 读者写者问题 - The Readers-Writers Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#223-the-dining-philosophers-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.3 哲学家就餐问题 - The Dining Philosophers Problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 死锁问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 死锁问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#231" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3.1 相关定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#232" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3.2 死锁预防
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#233" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3.3 死锁避免
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#234" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3.4 死锁检测及死锁解除
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 内存
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 内存">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 基本概念
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 分页技术
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 分页技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.1 基本设计
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2 优化与改进
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.2 优化与改进">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3221" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.1 查询速度
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3222" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2.2 页表内存
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-demand-paging" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 按需换页 demand paging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 按需换页 demand paging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.1 交换技术
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2 按需换页
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 物理帧管理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 物理帧管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4.1 分配策略
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#342" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4.2 置换策略
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-thrashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.5 抖动 - thrashing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.6 内核内存
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 输入/输出
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 输入/输出">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 I/O方式
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 I/O方式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-polling" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2.1 轮询polling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#422-interrupt" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2.2 中断Interrupt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#423-dma" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2.3 DMA
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 I/O接口
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 存储
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 存储">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-hdd" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 硬盘 - HDD
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 硬盘 - HDD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.1 I/O流程及开销计算
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#512" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2 调度算法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1.2 调度算法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#5121-fcfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.1 FCFS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5122-sstf" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.2 SSTF
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5123-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.3 SCAN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5124-look" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.4 LOOK
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5125-c-scan" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.5 C-SCAN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5126-c-look" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2.6 C-LOOK
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-nvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 非易失性内存 - NVM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 存储介质管理技术
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.3 存储介质管理技术">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#531" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3.1 初始化流程
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#532-raid-" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3.2 RAID - 独立磁盘冗余阵列
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-io" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4 I/O设备分类
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6 文件系统
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6 文件系统">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 文件系统
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 目录
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 块分配与块组织
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.5 空闲空间管理
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="_1">操作系统期末复习<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p><em>参考笔记：<a href="https://note.isshikih.top/cour_note/D3QD_OperatingSystem/Unit0/">Isshiki修's Notebook</a></em></p>
+<p>我的os笔记方式和ads类似，还是将重心放在<strong>知识框架的梳理</strong>上，对于笔记中提到的东西如果有点陌生，还是建议去翻找ppt或者王道~</p>
+<h2 id="0-overview">0 - Overview<a class="headerlink" href="#0-overview" title="Permanent link">&para;</a></h2>
+<h3 id="01">0.1 操作系统定义<a class="headerlink" href="#01" title="Permanent link">&para;</a></h3>
+<ul>
+<li>职能角度 - 资源管理</li>
+<li>存在角度 - 管理用户程序的软件程序，kernel是计算机开机后一直在运行的程序</li>
+</ul>
+<h3 id="02">0.2 操作系统评价方式<a class="headerlink" href="#02" title="Permanent link">&para;</a></h3>
+<ol>
+<li>可靠性 - 异常处理机制</li>
+<li>安全性 - 权限管理机制 - 不同权限模式</li>
+<li>易用性 - 系统调用机制<ul>
+<li>操作系统提供的接口：<ul>
+<li>命令接口 - 给用户使用的</li>
+<li>程序接口 - 就是系统调用，给编程人员使用的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>高效性 - 任务执行机制 - 分时系统实现体感上的并行</li>
+<li>公平性 - 进程管理机制 - 避免饥饿现象</li>
+<li>可拓展性、易维护性等开发者角度</li>
+</ol>
+<h3 id="03">0.3 操作系统架构<a class="headerlink" href="#03" title="Permanent link">&para;</a></h3>
+<ul>
+<li>单处理器系统 - 有且仅有一个单核的通用处理器（可以有别的不运行线程的专用处理器）</li>
+<li>多处理器系统 - 多个单核的通用处理器 - 吞吐量提升，但非线性提升</li>
+<li>集群系统 - 多个独立的计算机系统作为节点，通过冗余实现高可用服务，通过并行实现高性能计算<ul>
+<li>对称集群 - 各个节点互相监督</li>
+<li>不对称集群 - 替补关系</li>
+</ul>
+</li>
+</ul>
+<h3 id="04">0.4 操作系统任务处理<a class="headerlink" href="#04" title="Permanent link">&para;</a></h3>
+<p><img alt="e8eed06e6fda3bb829f42af5995a176" src="../markdown-img/final_review.assets/e8eed06e6fda3bb829f42af5995a176.jpg" /></p>
+<ul>
+<li>批处理系统：成批、串行，交互性差<ul>
+<li>单道批处理阶段 - 同一时间一个任务，会导致CPU长时间空闲</li>
+<li>多道批处理阶段 - 多道，宏观上并发（王道原话：“并行”，所以这也是多道批处理的一个特点，但是没有达到真正意义上的进程并行），微观上串行</li>
+</ul>
+</li>
+<li>
+<p>分时系统：“体感上”并行，按照时间片进行进程间切换</p>
+<ul>
+<li>同时性、交互性、独立性、及时性</li>
+</ul>
+</li>
+<li>
+<p>实时系统：特定时间完成特定任务</p>
+<ul>
+<li><em>例如股票交易系统，因为股市的交易行情是实时变化的</em></li>
+</ul>
+</li>
+<li>
+<p>分布式系统：多台计算机共同完成一个任务</p>
+</li>
+</ul>
+<p><em>几乎所有现代操作系统都是“多任务操作系统”，包括单cpu操作系统和多cpu操作系统。</em></p>
+<p><em>在IBM-PC中，操作系统称为微型计算机操作系统。</em></p>
+<h3 id="05">0.5 操作系统结构设计<a class="headerlink" href="#05" title="Permanent link">&para;</a></h3>
+<p>有中心：</p>
+<ul>
+<li>宏内核：耦合所有主要功能，效率高，可靠性低</li>
+<li>微内核：只提供最基本功能，可靠性高，可拓展性高</li>
+<li>基本功能：进程（线程）管理、低级存储器管理、中断和陷入管理</li>
+<li>特点：灵活性和拓展性、可靠性和安全性、可移植性、分布式计算</li>
+</ul>
+<p><em>混合系统结合了宏内核和微内核的设计思路。</em></p>
+<p>分层网状：</p>
+<ul>
+<li>分层设计：类似计网，<span class="arithmatex">\(i\)</span>用<span class="arithmatex">\(i-1\)</span>层接口，开发维护方便，但逐层接口调用导致效率受限</li>
+<li>
+<p><em>最显著的不足：设计困难</em></p>
+</li>
+<li>
+<p>模块化设计：非递进式，将操作系统划分成独立模块</p>
+</li>
+</ul>
+<p>外核：记录已分配给各个虚拟机的有关资源。</p>
+<h3 id="06">0.6 操作系统运行原理<a class="headerlink" href="#06" title="Permanent link">&para;</a></h3>
+<p>引导 <span class="arithmatex">\(\to\)</span> 用户态 |（中断（计时器）、系统调用）| 内核态</p>
+<p>引导相关王道刷题记录：</p>
+<ol>
+<li>存放操作系统自举程序的芯片是ROM</li>
+<li>计算机操作系统的引导程序位于硬盘中</li>
+<li>计算机开机后，操作系统最终被加载到RAM</li>
+<li>计算机启动过程：CPU加电，CS:IP指向FFFF0H <span class="arithmatex">\(\to\)</span> 执行JMP指令跳转到BIOS <span class="arithmatex">\(\to\)</span> 登记BIOS中断程序入口地址 <span class="arithmatex">\(\to\)</span> 硬件自检 <span class="arithmatex">\(\to\)</span> 进行操作系统引导</li>
+</ol>
+<p>原语：可被条用的公用小程序，处于操作系统底层，具有原子性，调用频繁。</p>
+<p><em>操作系统中，通道技术是一种硬件技术。</em></p>
+<p><em>不同操作系统提供的系统调用接口不同。</em></p>
+<p>中断：</p>
+<ul>
+<li>
+<p>从紧急程度：可屏蔽中断、不可屏蔽中断</p>
+</li>
+<li>
+<p>从触发原因：内中断（异常等程序导致的）、外中断（硬件产生，时钟中断、I/O结束）</p>
+</li>
+</ul>
+<p><img alt="image-20241221160302820" src="../markdown-img/final_review.assets/image-20241221160302820.png" /></p>
+<p>中断相关王道刷题记录：</p>
+<ol>
+<li>在中断发生后，进入中断处理的程序属于<strong>操作系统程序</strong>。<em>被中断的程序本身可能是用户程序，也可能是OS程序，但是进入的一定是OS程序</em></li>
+<li>“访管”指令<strong>仅在用户态下</strong>使用。<em>是system call，将用户态变为核心态的程序。属于内部中断。内核态有且仅有这个指令无法执行。</em></li>
+<li>处理外部中断时：</li>
+<li>由硬件保存（中断隐指令自动保存）：PC（断点）、PSW（程序状态字）内容，TLB、cache内容；将CPU模式改为内核态；</li>
+<li>由操作系统完成：保存通用寄存器内容，执行系统调用的服务例程，保存中断屏蔽字</li>
+</ol>
+<h2 id="1-process-management">1 - Process Management<a class="headerlink" href="#1-process-management" title="Permanent link">&para;</a></h2>
+<p><em>进程是资源分配和管理的独立单位</em></p>
+<h3 id="11">1.1 进程基本概念<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
+<h4 id="111">1.1.1 进程的形式<a class="headerlink" href="#111" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p>内核态虚拟内存 - 元数据（进程控制块PCB）</p>
+</li>
+<li>
+<p><img alt="image-20241127232049530" src="../markdown-img/final_review.assets/image-20241127232049530.png" /> </p>
+</li>
+<li>
+<p>用户态虚拟内存 - 实际需要的数据资源</p>
+<p><img alt="image-20241209211633935" src="../markdown-img/final_review.assets/image-20241209211633935.png" /></p>
+</li>
+<li>
+<p>静态部分</p>
+<ul>
+<li>text section - 代码</li>
+<li>data section - 进程全局变量、静态变量</li>
+</ul>
+</li>
+<li>动态更新部分<ul>
+<li>heap - 被动态分配的内存</li>
+<li>stack - 暂时性数据，函数传参、返回值等</li>
+</ul>
+</li>
+</ul>
+<h4 id="112">1.1.2 进程的状态<a class="headerlink" href="#112" title="Permanent link">&para;</a></h4>
+<p>进程的状态和转换关系：</p>
+<p><img alt="image-20241209212059494" src="../markdown-img/final_review.assets/image-20241209212059494.png" /></p>
+<p>实现调度需要维护等待队列（可能有多个）和就绪队列：</p>
+<p><img alt="image-20241209212245180" src="../markdown-img/final_review.assets/image-20241209212245180.png" /></p>
+<h3 id="12">1.2 进程管理<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
+<h4 id="121-fork">1.2.1 创建 - <code>fork()</code><a class="headerlink" href="#121-fork" title="Permanent link">&para;</a></h4>
+<ol>
+<li>复制父进程数据，即直接<code>fork</code></li>
+<li>载入新程序并继续执行，<code>fork</code>后<code>execXX()</code></li>
+</ol>
+<p>相关技术：COW、<code>vfork()</code></p>
+<h4 id="122-exit">1.2.2 终止 - <code>exit()</code><a class="headerlink" href="#122-exit" title="Permanent link">&para;</a></h4>
+<p>子进程通过<code>exit()</code>终止之后（僵尸进程）需要父进程的<code>wait()</code>去回收资源，如果此时父进程被终止则变成孤儿进程，交由<code>init/systemd</code>来<code>wait()</code>或通过级联终止来避免。</p>
+<h4 id="123">1.2.3 通信<a class="headerlink" href="#123" title="Permanent link">&para;</a></h4>
+<ul>
+<li>信号量</li>
+<li>共享内存 - 通过系统调用建立，更快</li>
+<li>信息传递 - 不需要处理数据冲突，少量有用，分布式系统更容易实现</li>
+<li>文件/管道（本质上也是一种文件，单向传输）</li>
+</ul>
+<h3 id="13">1.3 进程调度<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
+<ul>
+<li>调度分类<ul>
+<li>抢占式 - 不占有资源的进程索取cpu资源</li>
+<li>非抢占式 - 已拥有资源的进程主动释放cpu资源</li>
+</ul>
+</li>
+<li>调度过程 - <code>__switch_to</code><ol>
+<li>上下文切换 - 寄存器、进程状态、管理信息</li>
+<li><code>sret</code>回用户态<code>sepc</code></li>
+</ol>
+</li>
+<li>调度算法指标<ul>
+<li>cpu使用率</li>
+<li>吞吐量 - 单位时间内完成的进程数</li>
+<li>周转时间 -开始建立 <span class="arithmatex">\(\to\)</span> 进程完成</li>
+<li>等待时间 - = 周转时间 - 运行时间</li>
+<li>响应时间 - 发出请求 <span class="arithmatex">\(\to\)</span> 第一次响应</li>
+</ul>
+</li>
+<li>调度算法<ul>
+<li>FCFS - 非抢占式、实现简单</li>
+<li>SJF - 非抢占式、平均等待时间最小，会导致饥饿现象且运行时间不好预估</li>
+<li>SRTF - 抢占式（剩余运行时间最短）、平均等待时间最小，会导致饥饿现象且运行时间不好预估</li>
+<li>RR - 抢占式、解决饥饿现象，频繁切换会导致较高的dispatch latency</li>
+<li>priority scheduling - 和SJF/SRTF一样分成抢占式和非抢占式两种，会导致饥饿现象<ul>
+<li>priority aging - 避免饥饿现象，优先级随着等待时间不断增长</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>调度设计<ul>
+<li>multilevel queue scheduling - 队列间根据优先级抢占式调度，队列内根据需求采取不同的调度算法</li>
+<li>multilevel feedback queue scheduling - 允许进程在队列间转移（占有太久cpu -- 优先级<code>--</code>；等待太久 -- 优先级<code>++</code>）</li>
+</ul>
+</li>
+</ul>
+<h3 id="14">1.4 线程<a class="headerlink" href="#14" title="Permanent link">&para;</a></h3>
+<p>定义：进程内可调度的执行单元</p>
+<p>目的：减小fork和切换的开销</p>
+<p>进程间线程共享静态资源，各自维护必需的动态资源：便于线程间通信、任务粒度小减少响应时间；进程内出问题会影响所有线程、内存保护问题。</p>
+<p>多线程模型：</p>
+<ul>
+<li>用户级多线程：支持更多线程数，更容易自定义线程调度算法</li>
+<li>内核级多线程：单线程阻塞不导致整个进程阻塞，可以利用多核实现并行</li>
+<li>关系（用户-内核）：一对一、多对多、多对一</li>
+</ul>
+<h2 id="2">2 同步<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<h3 id="21">2.1 同步工具<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<h4 id="211">2.1.1 相关定义<a class="headerlink" href="#211" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p>race condition：两个进程同时访问一个资源，并且需要对资源作出修改（这个操作在汇编级别不是原子的）的情况，如果不加访问限制则会导致使用过时数据从而写入错误结果。</p>
+</li>
+<li>
+<p>临界资源：只能被至多一个用户占有的资源</p>
+</li>
+<li>
+<p>critical section（临界区段）：访问临界资源的代码段</p>
+</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code>┌─────────────────────┐
+│  Entry Section      │ &lt;-- 判断能否进入临界区（不行则等待）
+├─────────────────────┤
+│  Critical Section   │ &lt;-- 获取、操作临界资源
+├─────────────────────┤
+│  Exit Section       │ &lt;-- 释放临界资源
+├─────────────────────┤
+│  Remainder Section  │ &lt;-- other codes
+└─────────────────────┘
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>
+<p>临界区问题：如何保证最多只有一个用户在执行临界区段的代码</p>
+</li>
+<li>
+<p>解决方案要求：</p>
+<ol>
+<li>临界互斥</li>
+<li>选择时间（选择下一个进入临界区的进程）有限</li>
+<li>等待时间有限</li>
+</ol>
+</li>
+</ul>
+<h4 id="212">2.1.2 同步算法<a class="headerlink" href="#212" title="Permanent link">&para;</a></h4>
+<p>jjm复习课：今年的同步算法比较简单。</p>
+<p><em>内核态的同步问题：对于单处理器只需要在中断发生后禁止中断即可；对于多处理器我们通过非抢占式内核实现内核态的进程数量唯一。接下来是一些更普适的解法。</em></p>
+<hr />
+<h5 id="2121-petersons-algorithm">2.1.2.1 Peterson's Algorithm<a class="headerlink" href="#2121-petersons-algorithm" title="Permanent link">&para;</a></h5>
+<p>限制：参与竞争的进程只能有两个</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// `i` is 0 or 1, indicating current pid, while `j` is another pid.</span>
+<span class="n">process</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">READY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">                    </span><span class="c1">// ┐</span>
+<span class="w">    </span><span class="n">TURN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w">                           </span><span class="c1">// │</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">READY</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">TURN</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">    </span><span class="c1">// ├ entry section</span>
+<span class="w">        </span><span class="c1">// i.e. wait until:             // │</span>
+<span class="w">        </span><span class="c1">//  (1) j exits,                // │</span>
+<span class="w">        </span><span class="c1">//  (2) j is slower, so it      // │</span>
+<span class="w">        </span><span class="c1">//      should run now.         // ┘</span>
+<span class="w">    </span><span class="cm">/* operate critical resources */</span><span class="w">    </span><span class="c1">// - critical section</span>
+<span class="w">    </span><span class="n">READY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                   </span><span class="c1">// - exit section</span>
+<span class="w">    </span><span class="cm">/* other things */</span><span class="w">                  </span><span class="c1">// - remainder section</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>可以通过对各种情况的枚举完成对解决方案三条要求的证明。</p>
+<p>但其实这个方法不适用于现代处理器，因为采用的是乱序流水线，<code>READY[i] = true</code>和<code>TURN = j</code>这两条指令没有严格的执行顺序。</p>
+<h5 id="2122-memory-barriers">2.1.2.2 Memory Barriers<a class="headerlink" href="#2122-memory-barriers" title="Permanent link">&para;</a></h5>
+<p>加入<code>memory_barrier()</code>主动禁止指令重排：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// `i` is 0 or 1, indicating current pid, while `j` is another pid.</span>
+<span class="n">process</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">READY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">                    </span><span class="c1">// ┐</span>
+<span class="w">    </span><span class="n">memory_barrier</span><span class="p">();</span><span class="w">                   </span><span class="c1">// │</span>
+<span class="w">    </span><span class="n">TURN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span><span class="w">                           </span><span class="c1">// │</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">READY</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">TURN</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">    </span><span class="c1">// ├ entry section</span>
+<span class="w">        </span><span class="c1">// i.e. wait until:             // │</span>
+<span class="w">        </span><span class="c1">//  (1) j exits,                // │</span>
+<span class="w">        </span><span class="c1">//  (2) j is slower, so it      // │</span>
+<span class="w">        </span><span class="c1">//      should run now.         // ┘</span>
+<span class="w">    </span><span class="cm">/* operate critical resources */</span><span class="w">    </span><span class="c1">// - critical section</span>
+<span class="w">    </span><span class="n">READY</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                   </span><span class="c1">// - exit section</span>
+<span class="w">    </span><span class="cm">/* other things */</span><span class="w">                  </span><span class="c1">// - remainder section</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>这里还涉及到两个memory model的定义：</p>
+<ol>
+<li>强有序(strongly ordered)：进程对内存做的修改立刻对其它处理器可见；</li>
+<li>弱有序(weakly ordered)：进程对内存做的修改不立刻对其它处理器可见；</li>
+</ol>
+<hr />
+<h5 id="2123-hardware-instructions">2.1.2.3 Hardware Instructions<a class="headerlink" href="#2123-hardware-instructions" title="Permanent link">&para;</a></h5>
+<p>我的理解是把一些操作在硬件层面包装成原子操作。</p>
+<p><strong><code>test_and_set()</code></strong>：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// 目标设true并返回旧值</span>
+<span class="o">&lt;</span><span class="n">atomic</span><span class="o">&gt;</span><span class="w"> </span><span class="n">test_and_set</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">target</span><span class="p">;</span>
+<span class="w">    </span><span class="o">*</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 使用test_and_set解决临界问题</span>
+<span class="n">process</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">test_and_set</span><span class="p">(</span><span class="o">&amp;</span><span class="n">LOCK</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">    </span><span class="c1">// - entry section</span>
+<span class="w">    </span><span class="cm">/* operate critical resources */</span><span class="w">    </span><span class="c1">// - critical section</span>
+<span class="w">    </span><span class="n">LOCK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                       </span><span class="c1">// - exit section</span>
+<span class="w">    </span><span class="cm">/* other things */</span><span class="w">                  </span><span class="c1">// - remainder section</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>为了实现“有限等待时间”的需求，我们需要采取手动分配锁的调度方式：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// `i` is process id in [0, n), where `n` is the count of related process. </span>
+<span class="n">process</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">WAITING</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w">                                  </span><span class="c1">// ┐</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">WAITING</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">test_and_set</span><span class="p">(</span><span class="o">&amp;</span><span class="n">LOCK</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">      </span><span class="c1">// ├ entry sec.</span>
+<span class="w">                                                        </span><span class="c1">// │</span>
+<span class="w">    </span><span class="n">WAITING</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                                 </span><span class="c1">// ┘</span>
+
+<span class="w">    </span><span class="cm">/* operate critical resources */</span><span class="w">                    </span><span class="c1">// - critical sec.</span>
+
+<span class="w">    </span><span class="c1">// i.e. find next waiting process j                 // ┐</span>
+<span class="w">    </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w">                                    </span><span class="c1">// │</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">WAITING</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w">                     </span><span class="c1">// ├ exit sec.</span>
+<span class="w">        </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w">                                </span><span class="c1">// │</span>
+<span class="w">    </span><span class="p">}</span><span class="w">                                                   </span><span class="c1">// │</span>
+<span class="w">    </span><span class="c1">// release j&#39;s LOCK or release whole LOCK           // │</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w">     </span><span class="n">LOCK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                       </span><span class="c1">// │</span>
+<span class="w">    </span><span class="k">else</span><span class="w">            </span><span class="n">WAITING</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">                 </span><span class="c1">// ┘</span>
+
+<span class="w">    </span><span class="cm">/* other things */</span><span class="w">                                  </span><span class="c1">// - remainder sec.</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>由释放锁的进程决定下一个进入临界区的进程，采用从<span class="arithmatex">\(i + 1\)</span>开始的遍历形式保证选择顺序使得不会饥饿。</p>
+<p><strong><code>compare_and_swap()</code></strong>：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&lt;</span><span class="n">atomic</span><span class="o">&gt;</span><span class="w"> </span><span class="n">compare_and_swap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">new_val</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">target</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// *target = (*target == expected) ? new_val : *target;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">target</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="o">*</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new_val</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>和<code>test_and_set()</code>功能类似但是更加普适、可拓展性好。</p>
+<p>通过这个原子操作，我们可以构造<strong>Atomic Variables</strong>（原子变量）：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">increment</span><span class="p">(</span><span class="kt">atomic_int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">tmp</span><span class="p">;</span>
+<span class="w">    </span><span class="k">do</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">v</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">compare_and_swap</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="n">tmp</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>此时我们直接使用了封装好的原子操作实现了变量修改的原子性，不需要涉及临界区的讨论。</p>
+<h5 id="2124-mutex-locks-">2.1.2.4 Mutex Locks - 互斥锁<a class="headerlink" href="#2124-mutex-locks-" title="Permanent link">&para;</a></h5>
+<p>是对2.1.2.3的硬件层面原子操作在软件层面的封装：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// `available` means whether the `LOCK` is free, or whether the related </span>
+<span class="c1">// resources is available</span>
+<span class="n">acquire</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="o">!</span><span class="n">compare_and_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">available</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="p">}</span>
+<span class="n">release</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">available</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>这里也引入了两个概念：</p>
+<ul>
+<li>忙等待：在<code>entry</code>的等待阶段依然占用CPU资源（使用<code>while</code>）</li>
+<li>自旋锁(spinlock)：使用忙等待的互斥锁</li>
+</ul>
+<p>可以通过系统调用避免忙等待，但是要权衡等待浪费的cpu资源和调度开销。</p>
+<hr />
+<h5 id="2125-semaphores-">2.1.2.5 Semaphores - 信号量<a class="headerlink" href="#2125-semaphores-" title="Permanent link">&para;</a></h5>
+<p>提供的两个标准化原子操作接口：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="o">&lt;</span><span class="n">atomic</span><span class="o">&gt;</span><span class="w"> </span><span class="n">wait</span><span class="p">(</span><span class="n">reference</span><span class="w"> </span><span class="n">S</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">S</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="c1">// 忙等待，表示资源有限</span>
+<span class="w">    </span><span class="n">S</span><span class="o">--</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">&lt;</span><span class="n">atomic</span><span class="o">&gt;</span><span class="w"> </span><span class="n">signal</span><span class="p">(</span><span class="n">reference</span><span class="w"> </span><span class="n">S</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">S</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<ul>
+<li>counting semaphore - 计数信号量</li>
+<li>binary semaphore - 二值信号量：<span class="arithmatex">\(0 \le S \le 1\)</span>，表示资源只有一个</li>
+</ul>
+<p>应用：</p>
+<ol>
+<li>程序间通信（或手动串行）</li>
+</ol>
+<p><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">semaphore</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="n">P0</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Section A */</span>
+<span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">P1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">wait</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+<span class="w">    </span><span class="cm">/* Section B */</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+2. 互斥</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// `i` is process id and S is the semaphores</span>
+<span class="n">process</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">wait</span><span class="p">(</span><span class="n">S</span><span class="p">);</span><span class="w">    </span><span class="c1">// i.e. release the &#39;LOCK&#39;</span>
+<span class="w">    </span><span class="cm">/* critical section */</span>
+<span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">S</span><span class="p">);</span><span class="w">  </span><span class="c1">// only one process can pass this line at once</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>优化：</p>
+<p>避免忙等待：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">semaphore</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">value</span><span class="p">;</span>
+<span class="w">    </span><span class="n">waiting_list</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="o">&lt;</span><span class="n">atomic</span><span class="o">&gt;</span><span class="w"> </span><span class="n">wait</span><span class="p">(</span><span class="n">reference</span><span class="w"> </span><span class="n">S</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">--</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">waiting_list</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">current</span><span class="w"> </span><span class="n">process</span><span class="p">);</span>
+<span class="w">        </span><span class="n">sleep</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="o">&lt;</span><span class="n">atomic</span><span class="o">&gt;</span><span class="w"> </span><span class="n">signal</span><span class="p">(</span><span class="n">reference</span><span class="w"> </span><span class="n">S</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">S</span><span class="o">-&gt;</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S</span><span class="o">-&gt;</span><span class="n">waiting_list</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+<span class="w">        </span><span class="n">wakeup</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="22">2.2 同步问题例子<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<h4 id="221-the-bounded-buffer-problem">2.2.1 生产者消费者问题 - The Bounded-Buffer Problem<a class="headerlink" href="#221-the-bounded-buffer-problem" title="Permanent link">&para;</a></h4>
+<p>通过信号量保障生产消费对缓冲区使用的互斥：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">// suppose the capacity of the buffer is n</span>
+<span class="n">semaphore</span><span class="w"> </span><span class="n">mutex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// 互斥</span>
+<span class="n">semaphore</span><span class="w"> </span><span class="n">empty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="c1">// 同步1，生产的等待条件</span>
+<span class="n">semaphore</span><span class="w"> </span><span class="n">full</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// 同步2，消费的等待条件</span>
+</code></pre></div></td></tr></table></div>
+<h4 id="222-the-readers-writers-problem">2.2.2 读者写者问题 - The Readers-Writers Problem<a class="headerlink" href="#222-the-readers-writers-problem" title="Permanent link">&para;</a></h4>
+<p>由<strong>读写冲突</strong>和<strong>写写冲突</strong>引发的问题，通过以下信号量解决（避免饥饿）：</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">semaphores</span><span class="w"> </span><span class="n">rw_mutex</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// 读写/写写互斥锁</span>
+<span class="n">semaphores</span><span class="w"> </span><span class="n">mutex</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// 修改read_count的互斥锁</span>
+<span class="kt">int</span><span class="w">        </span><span class="n">read_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// 读者数量</span>
+
+<span class="c1">// writer&#39;s code</span>
+<span class="n">writer</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">wait</span><span class="p">(</span><span class="n">rw_mutex</span><span class="p">);</span>
+<span class="w">    </span><span class="cm">/* critical section */</span>
+<span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">rw_mutex</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// reader&#39;s code</span>
+<span class="n">reader</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span><span class="w">            </span><span class="c1">//   ┐</span>
+<span class="w">    </span><span class="n">read_count</span><span class="o">++</span><span class="p">;</span><span class="w">           </span><span class="c1">//   ├ obtain `mutex` to increase</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">read_count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">//   │ `read_count`</span>
+<span class="w">        </span><span class="n">wait</span><span class="p">(</span><span class="n">rw_mutex</span><span class="p">);</span><span class="w">     </span><span class="c1">// ┐ │</span>
+<span class="w">    </span><span class="p">}</span><span class="w">                       </span><span class="c1">// │ │</span>
+<span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span><span class="w">          </span><span class="c1">// │ ┘</span>
+<span class="w">                            </span><span class="c1">// ├── readers share `rw_mutex` to</span>
+<span class="w">    </span><span class="cm">/* critical section */</span><span class="w">  </span><span class="c1">// │   read critical resource</span>
+<span class="w">                            </span><span class="c1">// │</span>
+<span class="w">    </span><span class="n">wait</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span><span class="w">            </span><span class="c1">// │ ┐</span>
+<span class="w">    </span><span class="n">read_count</span><span class="o">--</span><span class="p">;</span><span class="w">           </span><span class="c1">// │ ├ obtain `mutex` to decrease</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">read_count</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// │ │ `read_count`</span>
+<span class="w">        </span><span class="n">signal</span><span class="p">(</span><span class="n">rw_mutex</span><span class="p">);</span><span class="w">   </span><span class="c1">// ┘ │</span>
+<span class="w">    </span><span class="p">}</span><span class="w">                       </span><span class="c1">//   │</span>
+<span class="w">    </span><span class="n">signal</span><span class="p">(</span><span class="n">mutex</span><span class="p">);</span><span class="w">          </span><span class="c1">//   ┘</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<p>其中，由于<code>read_count</code>有比较操作，单一信号量不支持这样的原子操作，所以可以理解为<code>read_count</code>和<code>mutex</code>一起构成了一个原子变量。</p>
+<h4 id="223-the-dining-philosophers-problem">2.2.3 哲学家就餐问题 - The Dining Philosophers Problem<a class="headerlink" href="#223-the-dining-philosophers-problem" title="Permanent link">&para;</a></h4>
+<p>由于筷子的互斥我们对每一个筷子维护了一个信号量，但是这种直接的解法可能会导致死锁（每个哲学家都拿了自己右手边的筷子），我们有以下解决方案：</p>
+<ol>
+<li>允许最多 4 位哲学家同时获取筷子；</li>
+<li>哲学家必须同时获取两个筷子，而不能抓一支等一支；<ul>
+<li>为了实现这一点，“抓筷子”这件事应当在一个临界段中完成；</li>
+</ul>
+</li>
+<li>奇数哲学家先拿左手的筷子，偶数哲学家先拿右手的筷子，这样不会产生循环等待。</li>
+</ol>
+<h3 id="23">2.3 死锁问题<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
+<h4 id="231">2.3.1 相关定义<a class="headerlink" href="#231" title="Permanent link">&para;</a></h4>
+<ul>
+<li>死锁：一个处于占有资源且等待资源的状态的线程集合，互相等待彼此占有的资源。</li>
+<li>资源分配图：<ul>
+<li>存在环 <span class="arithmatex">\(\to\)</span> 有可能处于死锁<strong>状态</strong></li>
+<li>不存在环 <span class="arithmatex">\(\to\)</span> 不可能处于死锁状态</li>
+<li>环内节点<strong>只有一个实例</strong> <span class="arithmatex">\(\to\)</span> 一定处于死锁状态</li>
+</ul>
+</li>
+<li>
+<p>安全状态：存在安全序列</p>
+<ul>
+<li>安全状态 <span class="arithmatex">\(\to\)</span> 一定可以<strong>避免</strong>死锁</li>
+<li>不安全状态 <span class="arithmatex">\(\to\)</span> 不一定可以避免死锁</li>
+</ul>
+</li>
+<li>
+<p>死锁条件（必须同时满足）：</p>
+<ol>
+<li>互斥 - mutual exclusion</li>
+<li>持有并等待 - hold and wait</li>
+<li>非抢占 - no preemption</li>
+<li>循环等待 - circular wait</li>
+</ol>
+</li>
+<li>死锁处理：<ol>
+<li>从程序逻辑上预防 - 交给开发者</li>
+<li>从行为规范上破坏死锁条件去预防 - <strong>死锁预防</strong></li>
+<li>禁止可能产生的死锁行为执行 - <strong>死锁避免</strong></li>
+<li>允许死锁出现后再去消除 - <strong>死锁检测</strong>和<strong>死锁解除</strong></li>
+</ol>
+</li>
+</ul>
+<h4 id="232">2.3.2 死锁预防<a class="headerlink" href="#232" title="Permanent link">&para;</a></h4>
+<p>核心思想是规范行为破坏四个死锁条件之一：</p>
+<ol>
+<li>互斥 - 无法破坏</li>
+<li>持有并等待 - 将申请并获得资源变成一次性的操作</li>
+<li>非抢占 - 允许抢占 - 会带来进程被打断可能无法恢复/继续、饥饿问题</li>
+<li>循环等待 - 给资源编号，规定资源申请顺序 - 效率低、资源扩展性差</li>
+</ol>
+<h4 id="233">2.3.3 死锁避免<a class="headerlink" href="#233" title="Permanent link">&para;</a></h4>
+<p>核心思想是通过一些调度算法组织可能导致死锁的行为：</p>
+<ul>
+<li>
+<p>资源分配图算法 - 基于资源分配图 - 适用于每个资源类别<strong>只有一个实例</strong>的情况</p>
+<ol>
+<li>连好<strong>所有</strong>相关的 claim edge；</li>
+<li>对于每条claim edge：<ol>
+<li>如果（在提出申请的时候）变为assignment edge不会成环，则变成request edge；</li>
+<li>在获得资源的时候变成assignment edge</li>
+<li>在释放资源的时候删除assignment edge</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>银行家算法 - 基于安全状态</p>
+<ul>
+<li>数据结构 - 进程数<code>n</code> | 资源种类<code>m</code><ul>
+<li><code>Available[m]</code></li>
+<li><code>Max[n][m]</code></li>
+<li><code>Allocation[n][m]</code></li>
+<li><code>Need[n][m]</code> (<code>Need[i][j] = Max[i][j] - Allocation[i][j]</code>)</li>
+</ul>
+</li>
+<li>算法<ol>
+<li>安全算法 - 寻找安全序列的方式判断是否为安全状态</li>
+<li>资源请求算法 - 维护安全状态，当线程提出资源请求时，模拟资源被分配后的状态并通过安全算法判断是否仍然为安全状态，如果是，则分配。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="234">2.3.4 死锁检测及死锁解除<a class="headerlink" href="#234" title="Permanent link">&para;</a></h4>
+<ul>
+<li>死锁检测：<ul>
+<li>单实例：维护等待图（也是每个资源一个实例的，将资源分配图改为进程间等待关系）并定期调用环检测算法 - 维护和检测开销大</li>
+<li>多实例：类银行家算法（基于安全状态） <em>修佬说jjm说不考</em></li>
+</ul>
+</li>
+<li>死锁解除：<ul>
+<li>杀死所有死锁中的进程</li>
+<li>按照顺序（如优先级）逐个杀直到没有死锁</li>
+<li>回滚并且抢占之前分配的资源 - 饥饿 - 通过优先级算法考虑被回滚次数</li>
+</ul>
+</li>
+</ul>
+<h2 id="3">3 内存<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p>内存的管理是基于<strong>页</strong>的，相对于进程粒度更小。</p>
+<h3 id="31">3.1 基本概念<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<ul>
+<li>内存管理单元MMU - Memory management unit<ul>
+<li>实现进程的内存保护 - 检查访存地址是否位于进程的<code>[base, base + limit]</code>范围内</li>
+<li>实现进程的<strong>虚拟地址空间</strong>（虚拟内存语境下进程的内存结构）到物理地址的映射 - 使用TBL完成</li>
+<li>页表基址寄存器PTBR（页表的物理地址），存于PCB中，参与上下文切换</li>
+<li>地址空间标识符ASID：解决进程切换时需要flushTLB的开销问题，在每次查询的时候额外判断地址空间是否一致</li>
+<li>共享页：多个虚拟地址对应同一个物理地址<ul>
+<li>实现共享库、进程间通信的共享内存法</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>静态代码 <span class="arithmatex">\(\to\)</span> 动态进程过程中的内存转换<ul>
+<li>compile time - 将符号地址（<strong>symbol address</strong>）转换为可重定位地址（<strong>relocatable address</strong>，相对量）/绝对地址（<strong>absolute address</strong>，但是一旦起始地址发生改变，就需要重新编译）</li>
+<li>load time - 将可重定位地址转换为绝对地址，此时如果起始地址改变只需重新装载<ul>
+<li>动态装载（不需要操作系统支持）：未被调用的进程的可重定位地址存在磁盘；被调用时装载进内存</li>
+<li>动态链接库/共享库（需要操作系统支持）：能被动态链接的库</li>
+</ul>
+</li>
+<li>execute time - 如果进程允许被移动，将可重定位地址到绝对地址的转换放在这一步</li>
+</ul>
+</li>
+<li>内存分配<ul>
+<li>可变划分 - 外部碎片<ul>
+<li>First Fit / Best Fit / Worst Fit ...</li>
+</ul>
+</li>
+<li>固定划分 - 内部碎片</li>
+</ul>
+</li>
+</ul>
+<h3 id="32">3.2 分页技术<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<h4 id="321">3.2.1 基本设计<a class="headerlink" href="#321" title="Permanent link">&para;</a></h4>
+<p><img alt="image-20241215170218603" src="../markdown-img/final_review.assets/image-20241215170218603.png" /></p>
+<p>基本设计如上图，对应关系为：<strong>虚拟地址-页 &lt;-----页表-----&gt; 物理地址-帧</strong></p>
+<h4 id="322">3.2.2 优化与改进<a class="headerlink" href="#322" title="Permanent link">&para;</a></h4>
+<h5 id="3221">3.2.2.1 查询速度<a class="headerlink" href="#3221" title="Permanent link">&para;</a></h5>
+<p>为了加速查询，我们引入了cache中的TLB，具体流程如下：</p>
+<p><img alt="image-20241215183323852" src="../markdown-img/final_review.assets/image-20241215183323852.png" /></p>
+<p>对于这个问题，我们定量分析方式如下：</p>
+<p><img alt="image-20241215183517687" src="../markdown-img/final_review.assets/image-20241215183517687.png" /></p>
+<h5 id="3222">3.2.2.2 页表内存<a class="headerlink" href="#3222" title="Permanent link">&para;</a></h5>
+<p>为了解决页表所占内存连续且过大的问题，我们提出以下三种设计：</p>
+<ol>
+<li>
+<p>分层页表 - 使用v位减少部分不需要的映射</p>
+</li>
+<li>
+<p>哈希页表</p>
+<p><img alt="image-20241215184001239" src="../markdown-img/final_review.assets/image-20241215184001239.png" /></p>
+</li>
+<li>
+<p>反式页表 - 物理地址 &lt;----- 反式页表 -----&gt; 虚拟地址，不支持共享页，需要遍历查询</p>
+</li>
+</ol>
+<p>// todo：段式设计</p>
+<h3 id="33-demand-paging">3.3 按需换页 demand paging<a class="headerlink" href="#33-demand-paging" title="Permanent link">&para;</a></h3>
+<h4 id="331">3.3.1 交换技术<a class="headerlink" href="#331" title="Permanent link">&para;</a></h4>
+<ul>
+<li>换页：以帧/页为单位交换，只有在需要的时候将页从外部存储空间换入内存</li>
+<li>交换空间（swap space）：放入这个空间的交换效率高，但是对于换入时机我们需要讨论：<ol>
+<li>进程被创建的时候page in</li>
+<li>页第一次被换出的时候page in</li>
+<li>文件系统中的页保留副本，被替换的时候直接覆盖不需要写回（？没太懂</li>
+</ol>
+</li>
+</ul>
+<p><em>和交换技术不同，还有一种内存压缩的方式，即把frame放回外存并利用内部碎片，将其merge（没太懂。刷题的时候再看看</em></p>
+<h4 id="332">3.3.2 按需换页<a class="headerlink" href="#332" title="Permanent link">&para;</a></h4>
+<p>结合我们设计的页表和交换技术的思想，我们按需换页的流程如下：</p>
+<p><img alt="image-20241215190149847" src="../markdown-img/final_review.assets/image-20241215190149847.png" /></p>
+<p>在这个过程中会有三次上下文切换（假设这次demand paging合法）：</p>
+<ol>
+<li>产生异常进入异常处理程序</li>
+<li>后备存储-&gt;内存的I/O中断</li>
+<li>再次调度到page fault的指令处</li>
+</ol>
+<p>这里还有一些概念，我在此简单罗列一下：</p>
+<ul>
+<li>
+<p>在这里也会有两种不同的处理方式：</p>
+<ul>
+<li>
+<p>纯按需换页pure demand paging - 只有被需求才载入内存</p>
+</li>
+<li>
+<p>预换页pre-paging - 一开始先将需要的页载入内存</p>
+</li>
+</ul>
+</li>
+<li>
+<p>而页表中查询不到映射关系且demand paging合法的情况下也有两种可能：</p>
+<ul>
+<li>major/hard page fault - 缺了的页不在内存中</li>
+<li>minor/soft page fault - 缺了的页在内存中（共享页、刚被释放还没flush）</li>
+</ul>
+</li>
+</ul>
+<h3 id="34">3.4 物理帧管理<a class="headerlink" href="#34" title="Permanent link">&para;</a></h3>
+<ul>
+<li>可用帧列表free-frame-list - 用来记录空闲帧<ul>
+<li>free-frame buffer pool - 保证空闲帧数量大于等于一个数，小于这个数就开始置换，可以保证进程不需要等待置换 <em>置换范围为global</em></li>
+<li>reclaim pages - 如果空闲帧数量低于下界则置换直到空闲帧数量大于上界 - 由内核例程<strong>收割者（reapers）</strong>完成</li>
+<li>OOM(out-of-memory) - 特殊情况导致空闲帧数量特别少，OOM killer杀死OOM score（和进程使用内存百分比正相关）最高的进程</li>
+</ul>
+</li>
+</ul>
+<h4 id="341">3.4.1 分配策略<a class="headerlink" href="#341" title="Permanent link">&para;</a></h4>
+<ul>
+<li>分配界限<ul>
+<li>上界：空闲帧总数</li>
+<li>下界：每一条指令执行所需帧最大值</li>
+</ul>
+</li>
+<li>分配算法<ul>
+<li>equal allocation - 平均分配</li>
+<li>proportional allocation - 按照进程大小加权分配<ul>
+<li>可以在此基础上综合考虑进程优先级</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="342">3.4.2 置换策略<a class="headerlink" href="#342" title="Permanent link">&para;</a></h4>
+<p>牺牲帧（victim frame）：被页置换选中的帧，选中后需要判断<code>dirty</code>位是否为<code>1</code>，如果为<code>1</code>则写回后备存储。写回后更新相关元信息并返回该帧作为空闲帧。</p>
+<ol>
+<li>OPT - 理论最优建模：在未来最久的时间内不会被访问到的页</li>
+<li>FIFO - 维护一个FIFO队列即可实现，但是对opt拟合不好</li>
+<li>LRU - 栈算法实现：计数器/链表序列，对opt拟合好但是开销大</li>
+<li>LRU Approx - 基于优化LRU开销的想法，提出的一些类LRU算法<ul>
+<li>Additional-Reference-Bits Algorithm - 维护一个bits vector，在每个时钟中断的时候右移vector并在高位补上一个时间片内的reference bit（被使用过置<code>1</code>，否则置<code>0</code>）；算法的LRU就对应最小vector</li>
+<li>Second-Chance Algorithm - 循环遍历frame，检查reference bit，如果为<code>0</code>则替换，为<code>1</code>则置<code>0</code></li>
+<li>Enhanced Second-Chance Algorithm / NRU - 再上一个算法的基础上纳入dirty bit，考虑<code>(reference, dirty)</code>，按照<span class="arithmatex">\((0,0)\to(0,1)\to(1,0)\to(1,1)\)</span>的替换优先级循环遍历查找</li>
+</ul>
+</li>
+<li>基于计数的替换 - counter表示被使用的次数<ul>
+<li>LFU - 选择counter最小的frame作为victim frame</li>
+<li>MFU - 选择counter最大的frame作为victim frame</li>
+</ul>
+</li>
+</ol>
+<p>置换范围：</p>
+<ul>
+<li>local - 置换只发生在当前进程的帧中</li>
+<li>global - scope的所有帧（受frame下界约束）<ul>
+<li>priority replacement - 只允许高优先级的进程替换低优先级的frame</li>
+</ul>
+</li>
+</ul>
+<h3 id="35-thrashing">3.5 抖动 - thrashing<a class="headerlink" href="#35-thrashing" title="Permanent link">&para;</a></h3>
+<p>抖动定义：几乎所有frames都在被使用，几乎每次置换都会有一次page fault</p>
+<p>解决方法：</p>
+<ol>
+<li>priority replacement  algorithm - 本质还是循环抢占，规定抢占方向（？）就可以避免这个问题</li>
+<li>working set<ul>
+<li>判定是否会thrashing：将每一个进程在一个<span class="arithmatex">\(\Delta\)</span>时间窗口内用到过的frame建模为工作集<span class="arithmatex">\(WS_i\)</span>，判断工作集之和和可用frame总量，如果大于则会thrashing</li>
+<li>解决thrashing：挂起部分进程</li>
+</ul>
+</li>
+<li>PFF - 缺页频率：与可用帧数量大致负相关，设定上下界进行负反馈控制</li>
+</ol>
+<h3 id="36">3.6 内核内存<a class="headerlink" href="#36" title="Permanent link">&para;</a></h3>
+<p>避免内存碎片、保障连续性。</p>
+<ol>
+<li>Buddy系统 - 通过二分的方式找到合适的内存，并在需要的时候可用合并回更大的内存</li>
+<li>Slab分配 - 预先了解到内核常见数据结构大小 <span class="arithmatex">\(\to\)</span> 将对应大小的内存块注册到cache <span class="arithmatex">\(\to\)</span> 需要的时候分配对应大小的内存</li>
+</ol>
+<h2 id="4">4 输入/输出<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 定义<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<ul>
+<li>总线bus - 硬件与协议的统一，连接各个硬件传输数据</li>
+<li>端口port - 设备与总线连接点</li>
+<li>控制器controller - 控制硬件的设备组成</li>
+</ul>
+<h3 id="42-io">4.2 I/O方式<a class="headerlink" href="#42-io" title="Permanent link">&para;</a></h3>
+<h4 id="421-polling">4.2.1 轮询polling<a class="headerlink" href="#421-polling" title="Permanent link">&para;</a></h4>
+<p>CPU不断向controller查询状态直至可以完成I/O</p>
+<h4 id="422-interrupt">4.2.2 中断Interrupt<a class="headerlink" href="#422-interrupt" title="Permanent link">&para;</a></h4>
+<p>CPU提出I/O请求 <span class="arithmatex">\(\to\)</span> 调走进程 <span class="arithmatex">\(\to\)</span> I/O设备处理 <span class="arithmatex">\(\to\)</span> 向CPU发送中断，CPU对该进程做处理</p>
+<h4 id="423-dma">4.2.3 DMA<a class="headerlink" href="#423-dma" title="Permanent link">&para;</a></h4>
+<p>内存和I/O设备直接交互，CPU向DMA controller发送命令 <span class="arithmatex">\(\to\)</span> DMA处理完成后controller向CPU发送中断</p>
+<h3 id="43-io">4.3 I/O接口<a class="headerlink" href="#43-io" title="Permanent link">&para;</a></h3>
+<p>各设备区别：</p>
+<p><img alt="image-20241216150941187" src="../markdown-img/final_review.assets/image-20241216150941187.png" /></p>
+<p>利用driver和controller屏蔽不同设备区别：</p>
+<p><img alt="image-20241216150958517" src="../markdown-img/final_review.assets/image-20241216150958517.png" /></p>
+<h2 id="5">5 存储<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p><strong>我现在觉得这块复习得很不充分、、到时候再看看</strong></p>
+<h3 id="51-hdd">5.1 硬盘 - HDD<a class="headerlink" href="#51-hdd" title="Permanent link">&para;</a></h3>
+<p>属于易失性内存。</p>
+<h4 id="511-io">5.1.1 I/O流程及开销计算<a class="headerlink" href="#511-io" title="Permanent link">&para;</a></h4>
+<ol>
+<li>磁头r/w heads<span class="arithmatex">\(\to\)</span>柱面cylinders<span class="arithmatex">\(\to\)</span>磁道tracks - 寻道时间seek time</li>
+<li>磁头<span class="arithmatex">\(\to\)</span>扇区sectors - 旋转时延rotational latency - 平均旋转时延<span class="arithmatex">\(\frac{1}{2} · \frac{1}{rpm} · 60s\)</span><ul>
+<li>和寻道时间相加是average access time（开销大头，距离越远开销越大）</li>
+</ul>
+</li>
+<li>数据传输 - 传输时间transfer time = <span class="arithmatex">\(\frac{\text{data to transfer}}{\text{transfer rate}}\)</span></li>
+</ol>
+<p>此外计算average I/O time的时候还要加上控制器开销controller overhead</p>
+<p>而评估I/O性能的指标为disk bandwidth = <span class="arithmatex">\(\frac{\text{传输数据量}}{{请求开始到传输完成的时间间隔}}\)</span></p>
+<h4 id="512">5.1.2 调度算法<a class="headerlink" href="#512" title="Permanent link">&para;</a></h4>
+<p>默认会选择SSTF，I/O较为频繁的时候用LOOK或者C-LOOK</p>
+<h5 id="5121-fcfs">5.1.2.1 FCFS<a class="headerlink" href="#5121-fcfs" title="Permanent link">&para;</a></h5>
+<p>没有优化。</p>
+<h5 id="5122-sstf">5.1.2.2 SSTF<a class="headerlink" href="#5122-sstf" title="Permanent link">&para;</a></h5>
+<ul>
+<li>低平均响应时间、高吞吐量</li>
+<li><strong>不是理论最优</strong>、方差大、饥饿问题、seek time计算开销</li>
+</ul>
+<h5 id="5123-scan">5.1.2.3 SCAN<a class="headerlink" href="#5123-scan" title="Permanent link">&para;</a></h5>
+<p><img alt="image-20241217163753307" src="../markdown-img/final_review.assets/image-20241217163753307.png" /></p>
+<ul>
+<li>低平均响应时间、低方差、高吞吐量</li>
+<li>部分磁头刚刚经过的地方的请求要等待的时间更长</li>
+</ul>
+<h5 id="5124-look">5.1.2.4 LOOK<a class="headerlink" href="#5124-look" title="Permanent link">&para;</a></h5>
+<p>在SCAN的基础上走到最靠近边界的请求对应的LBA就提前掉头 - 减少不必要的SCAN</p>
+<h5 id="5125-c-scan">5.1.2.5 C-SCAN<a class="headerlink" href="#5125-c-scan" title="Permanent link">&para;</a></h5>
+<p>在SCAN的基础上到达边界的时候径直返回另一端</p>
+<p><img alt="image-20241217164618853" src="../markdown-img/final_review.assets/image-20241217164618853.png" /></p>
+<ul>
+<li>等待时间比SCAN更均匀</li>
+</ul>
+<h5 id="5126-c-look">5.1.2.6 C-LOOK<a class="headerlink" href="#5126-c-look" title="Permanent link">&para;</a></h5>
+<p>在C-SCAN的基础上走到最靠近边界的请求对应的LBA就提前掉头 - 减少不必要的C-SCAN</p>
+<p><a href="https://note.isshikih.top/cour_note/D3QD_OperatingSystem/Unit5/#c-scan--c-look">一道不错的例题</a></p>
+<h3 id="52-nvm">5.2 非易失性内存 - NVM<a class="headerlink" href="#52-nvm" title="Permanent link">&para;</a></h3>
+<p>例如固态硬盘SSD</p>
+<ol>
+<li>没有寻道时间和旋转时延，比HDD更可靠快速小巧功耗低，价格更贵<ul>
+<li>瓶颈在总线传输速率 - 会直接连接到系统总线</li>
+</ul>
+</li>
+<li>以page粒度读写，必须先擦后写</li>
+<li>由若干die组成，支持并行</li>
+<li>擦除操作导致存在寿命</li>
+</ol>
+<h3 id="53">5.3 存储介质管理技术<a class="headerlink" href="#53" title="Permanent link">&para;</a></h3>
+<p>jjm复习课：要知道windows和Linux系统的交换空间的基本形式。</p>
+<h4 id="531">5.3.1 初始化流程<a class="headerlink" href="#531" title="Permanent link">&para;</a></h4>
+<ol>
+<li>低级格式化 - 实现自身结构化管理<ul>
+<li>分扇区、创建映射和闪存转换层</li>
+<li>为扇区或页维护数据结构信息，将数据包装为 header + data + tail 的形式（元数据）<ul>
+<li><em>“由于扇区数量与 header &amp; tail 占用的空间正相关，所以扇区越大一般意味着用户可用空间越大。”没懂。</em></li>
+</ul>
+</li>
+<li>将坏块映射到不可见的备用分区</li>
+</ul>
+</li>
+<li>记录操作系统所需数据结构<ul>
+<li>分区partitioning - 将存储空间划分为一个个单独的logical disk</li>
+<li>卷创建与卷管理volume creating &amp; management - 划定文件系统覆盖的范围</li>
+<li>逻辑格式化logical formatting - 在卷上创建和初始化文件系统</li>
+</ul>
+</li>
+</ol>
+<h4 id="532-raid-">5.3.2 RAID - 独立磁盘冗余阵列<a class="headerlink" href="#532-raid-" title="Permanent link">&para;</a></h4>
+<p>使用冗余的方法解决硬盘的不可靠问题（具体可以看数据库笔记）。</p>
+<h3 id="54-io">5.4 I/O设备分类<a class="headerlink" href="#54-io" title="Permanent link">&para;</a></h3>
+<ul>
+<li>character device 字符设备 - 按字符流进行读写操作的设备，按字节流顺序读写，实时性要求高，没有缓存机制。</li>
+<li>e.g. 键盘、鼠标、串口、终端等；</li>
+<li>block device 块设备 - 数据以固定大小的块进行读写，具有随机访问的能力。</li>
+<li>e.g. 硬盘、SSD等；</li>
+</ul>
+<h2 id="6">6 文件系统<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<h3 id="61">6.1 文件系统<a class="headerlink" href="#61" title="Permanent link">&para;</a></h3>
+<ul>
+<li>文件系统FS：数据存储形式的逻辑视图<ul>
+<li>文件系统挂载mount - 把一个文件系统的根目录挂载到另一个文件系统的mount point（某个目录）使得其可以访问被挂载的文件系统</li>
+<li>分层设计：<ul>
+<li>application programs</li>
+<li>logical file system - 维护目录信息（不包括内容）</li>
+<li>file-organization module - 实现文件逻辑地址到物理地址的映射，管理空闲空间</li>
+<li>basic file system - 参与I/O调度，管理内存缓冲区和cache</li>
+<li>I/O control - 与具体设备交互的接口</li>
+<li>devices</li>
+</ul>
+</li>
+<li>数据结构：<ul>
+<li>硬盘数据结构<ul>
+<li>boot control block (per volume)</li>
+<li>volume control block (per volume)</li>
+<li>directory structure (per FS)</li>
+<li>file control block (per FS)</li>
+</ul>
+</li>
+<li>内存数据结构<ul>
+<li>mount table</li>
+<li>directory cache</li>
+<li>system-wide open-file table</li>
+<li>per-process open-file table</li>
+<li>buffers</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>虚拟文件系统VFS<ul>
+<li>封装具体文件操作以支持不同文件系统</li>
+<li>为文件系统提供唯一标识文件的数字提示符</li>
+</ul>
+</li>
+<li>性能与安全：页缓冲、恢复、日志系统</li>
+<li>典型文件系统（todo：参考笔记不全，待刷王道完善）<ul>
+<li>ext</li>
+<li>FAT</li>
+<li>NTFS</li>
+</ul>
+</li>
+</ul>
+<h3 id="62">6.2 目录<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<ul>
+<li>目录：文件进行结构化组织和管理的方式，实现filename到FCB的映射（目录项：filename和指向FCB/Inode的指针）<ul>
+<li>单级目录 - 文件名必须唯一，按文件名索引<ul>
+<li>多级目录不同目录下文件名可以相同</li>
+</ul>
+</li>
+<li>二级目录 - 主文件目录MFD下为每个用户分配一个用户文件目录UFD，按文件路径索引</li>
+<li>树形目录 - 叶子节点是非目录节点，非叶子节点是目录节点，按文件路径索引</li>
+<li>无环图目录 - 在树形目录基础上允许链接关系<ul>
+<li>软链接soft link/符号链接symbolic link - 特殊的文件，指向文件的指针，删除文件不会删链接而是使得链接失效</li>
+<li>硬链接hard link - 目录表项，复制所有元信息；需要维护一致性，删除使用reference counter维护；无法跨越文件系统</li>
+</ul>
+</li>
+<li>通用图目录 - 在无环图目录基础上允许存在环，通过算法避免问题</li>
+</ul>
+</li>
+<li>实现方法：<ul>
+<li>线性检索法</li>
+<li>哈希表法</li>
+</ul>
+</li>
+</ul>
+<h3 id="63">6.3 文件<a class="headerlink" href="#63" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>文件：数据在硬件存储的抽象</p>
+</li>
+<li>
+<p>文件控制块FCB：维护被打开文件具体信息（权限、操作日期、ACL、大小、所在地址）</p>
+<ul>
+<li>UFS中指的是一个inode；NTFS中在master file table中被维护</li>
+</ul>
+</li>
+<li>
+<p>文件属性：也被称为元数据，不同系统下包括不同的文件属性，例如<code>name</code>、<code>identifier</code>、<code>type</code>、<code>location</code>、<code>size</code>、<code>protection</code>、<code>timestamp</code>和<code>user identification</code>等</p>
+</li>
+<li>文件操作：<ul>
+<li><code>create</code> - 文件系统中为文件分配空间、创建FCB + 目录中创建对应条目、更新父目录信息</li>
+<li><code>open</code>/<code>close</code><ul>
+<li>对文件的操作通过打开文件后获得的句柄handle完成</li>
+<li>打开文件表open-file table：保存被打开文件的信息（句柄、位置、访问权限）<ul>
+<li>当前文件被打开次数open-file count - 在<code>delete</code>的时候如果<code>-1</code>后为<code>0</code>则释放空间</li>
+<li>系统调用<code>open()</code>的时候先在这里找（找到说明其他进程正在使用，付出额外一些开销即可使用），找不到再去目录结构找</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>read</code>/<code>write</code><ul>
+<li>当前操作位置current-file-position pointer</li>
+<li><code>repositioning</code>/<code>seek</code> - 把pointer重新定位到给定值</li>
+</ul>
+</li>
+<li><code>truncate</code> - 清空文件内容，保留文件属性</li>
+<li><code>locking</code></li>
+</ul>
+</li>
+<li>权限保护：访问控制列表ACL（性价比低，表项可能不定长）；访问权限位access permission bits</li>
+<li>文件类型：数据；程序。<em>UNIX系统使用magic number标识</em></li>
+<li>文件结构：无结构（流式存储）；简单记录结构（以record为单位存储）；复杂结构。</li>
+<li>访问方式：<ul>
+<li>顺序访问sequential access</li>
+<li>直接访问direct access/相对访问relative access/随机访问random access - 访问任意位置的时间几乎相同<ul>
+<li>索引顺序访问indexed sequential-sccess</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="64">6.4 块分配与块组织<a class="headerlink" href="#64" title="Permanent link">&para;</a></h3>
+<p><em>这块会考计算题。</em></p>
+<p><strong>连续contiguous</strong></p>
+<p>每个文件占用一段连续的block，目录记录文件名和起始地址、长度。</p>
+<ul>
+<li>文件变小 - 产生外部碎片<ul>
+<li>解决方式 - compacts，先迁移再存放消除空隙，但是开销大</li>
+</ul>
+</li>
+<li>文件变大 - 可能需要迁移文件<ul>
+<li>解决方式 - extent，分配新的空间链接到原始空间后面</li>
+</ul>
+</li>
+</ul>
+<p><strong>链接linked</strong></p>
+<p>目录记录文件名、起始地址和结束地址，每个block记录指向下一个block的指针（valid block size需要减去指针的长度）。</p>
+<ul>
+<li>无法随机访问</li>
+<li>指针需要额外存储空间<ul>
+<li>使用多个连续块为一个链节的<strong>簇cluster</strong>减少指针的额外开销</li>
+</ul>
+</li>
+</ul>
+<p><strong>索引indexed</strong></p>
+<p>目录记录文件名和index block，index block中顺序存放指向文件所有block的指针。</p>
+<p>当一个index block不够的时候我们的解决方案：</p>
+<ol>
+<li>链接索引</li>
+<li>多级索引</li>
+<li><strong>各多级索引混合模式</strong> - 容易出计算题，要理解</li>
+</ol>
+<h3 id="65">6.5 空闲空间管理<a class="headerlink" href="#65" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>位图bitmap</strong></p>
+<ul>
+<li>
+<p>用一个bit<code>0/1</code>标识该block是否空闲。</p>
+</li>
+<li>
+<p>容易得到连续空间，bit和block相邻关系一致。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>链表</strong> - 将空闲的block连起来</p>
+</li>
+<li><strong>分组</strong> - n个空闲块地址存放第0个空闲块中，在第n个空闲块存储后n个空闲块的地址</li>
+<li><strong>计数</strong> - 维护每个连续内存段起始地址和长度（块数）</li>
+</ul>
+<hr />
+<p>嘿嘿第一轮完结撒花！不过预计还有很多需要补充的，后续刷王道会慢慢update上去！</p>
+<p>2024.12.19</p>
+<p>考完补充：
+因为各种各样的原因（比如bs和让人难以兼顾的考试安排）所以一轮之后就没怎么动过笔记了（x。后期的复习主要以刷王道考研真题和季江民老师的小测作业为主。上述笔记应该包含了所有操作系统的主干知识（导致很多东西看来看去也就这点东西不知道再看什么了），但是这个考试有40道选择，会考很多奇奇怪怪的概念和细碎的知识点（我真懒得喷，，），所以还是有必要在最后复习的时候看一下这些东西（具体怎么复习我也不是很清楚，感觉期末考得不算好，可能看看ppt或者王道？）。A4可以早点准备，一边打印下来一边复习补充，毕竟3张A4的作用还是很大的，不提前准备的话并不能完全发挥作用。附上我的<a href="../A4_wyr_ver.pdf">A4</a>。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.sections", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+        <script src="https://gcore.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
